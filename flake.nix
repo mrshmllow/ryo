@@ -1,70 +1,94 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    devenv.url = "github:cachix/devenv";
+    yard-search.url = "github:mrshmllow/yard-search";
+    nix2container.url = "github:nlewo/nix2container";
+    nix2container.inputs = {nixpkgs.follows = "nixpkgs";};
+    mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
   };
 
-  outputs = {
-    self,
+  outputs = inputs @ {
+    flake-parts,
     nixpkgs,
-  }: let
-    getTailscale = subdomain: subdomain + ".cat-magellanic.ts.net";
-  in {
-    colmena = {
-      meta = {
-        nixpkgs = import nixpkgs {
-          system = "x86_64-linux";
+    ...
+  }:
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = [
+        "x86_64-linux"
+      ];
+
+      imports = [
+        inputs.devenv.flakeModule
+      ];
+
+      perSystem = {pkgs, ...}: {
+        devenv.shells.default = {
+          packages = with pkgs; [colmena age];
         };
       };
 
-      defaults = {pkgs, ...}: {
-        services.tailscale = {
-          enable = true;
-          authKeyFile = "/run/keys/tailscale.key";
-          permitCertUid = "caddy";
+      flake.colmena = {
+        meta = {
+          nixpkgs = import nixpkgs {
+            system = "x86_64-linux";
+          };
+	  specialArgs = {inherit inputs;};
         };
 
-        deployment.keys."tailscale.key" = {
-          keyCommand = ["age" "--decrypt" "-i" "/home/marsh/key.txt" "secrets/tailscale.key"];
-
-          uploadAt = "pre-activation";
-        };
-
-        services.prometheus.exporters = {
-          node = {
+        defaults = {
+          pkgs,
+          node,
+          nodes,
+          ...
+        }: {
+          services.tailscale = {
             enable = true;
-            enabledCollectors = ["systemd"];
-            port = 9002;
+            authKeyFile = "/run/keys/tailscale.key";
+            permitCertUid = "caddy";
+          };
+
+          deployment.keys."tailscale.key" = {
+            keyCommand = ["age" "--decrypt" "-i" "/home/marsh/key.txt" "secrets/tailscale.key"];
+
+            uploadAt = "pre-activation";
+          };
+
+          services.prometheus.exporters = {
+            node = {
+              enable = true;
+              enabledCollectors = ["systemd"];
+              port = 9002;
+            };
           };
         };
 
-        # By default, Colmena will replace unknown remote profile
-        # (unknown means the profile isn't in the nix store on the
-        # host running Colmena) during apply (with the default goal,
-        # boot, and switch).
-        # If you share a hive with others, or use multiple machines,
-        # and are not careful to always commit/push/pull changes
-        # you can accidentaly overwrite a remote profile so in those
-        # scenarios you might want to change this default to false.
-        # deployment.replaceUnknownProfiles = true;
-      };
+        outpost-1 = {name, ...}: {
+          deployment = {
+            #targetHost = name;
+            targetHost = "37.27.42.71";
+            targetUser = "root";
+            buildOnTarget = true;
+          };
 
-      outpost-1 = {
-        name,
-        nodes,
-        pkgs,
-        lib,
-        modulesPath,
-        config,
-        ...
-      }: {
-        deployment = {
-          targetHost = builtins.trace name name;
-          targetUser = "root";
-          buildOnTarget = true;
+          deployment.keys."meilimasterkey" = {
+            keyCommand = ["age" "--decrypt" "-i" "/home/marsh/key.txt" "secrets/meilimasterkey"];
+
+            uploadAt = "pre-activation";
+          };
+
+          imports = [./nodes/${name}];
         };
 
-        imports = [./nodes/outpost-1];
+        pi = {name, ...}: {
+          deployment = {
+            targetHost = "100.115.246.65";
+            targetUser = "root";
+            buildOnTarget = false;
+          };
+
+          imports = [./nodes/${name}];
+        };
       };
     };
-  };
 }
