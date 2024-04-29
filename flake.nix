@@ -33,7 +33,7 @@
           nixpkgs = import nixpkgs {
             system = "x86_64-linux";
           };
-	  specialArgs = {inherit inputs;};
+          specialArgs = {inherit inputs;};
         };
 
         defaults = {
@@ -75,6 +75,16 @@
             keyCommand = ["age" "--decrypt" "-i" "/home/marsh/key.txt" "secrets/meilimasterkey"];
 
             uploadAt = "pre-activation";
+          };
+
+          imports = [./nodes/${name}];
+        };
+
+        outpost-2 = {name, ...}: {
+          deployment = {
+            targetHost = name;
+            targetUser = "root";
+            buildOnTarget = true;
           };
 
           imports = [./nodes/${name}];
