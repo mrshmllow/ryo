@@ -19,13 +19,16 @@
     after = ["network.target"];
     description = "yard-search web server";
     environment = {
-      NEXT_PUBLIC_MEILISEARCH_URL = "https://meilisearch.jerma.fans/";
-      NEXT_PUBLIC_MEILISEARCH_KEY = "hellothisisakey";
+      NEXT_PUBLIC_MEILISEARCH_URL = "http://meilisearch.jerma.fans/";
+      NEXT_PUBLIC_MEILISEARCH_KEY = "feb70b6ea5a7601485404c4468e77a131c57e2fc686e4a2a86dbe485f8dde885";
     };
     serviceConfig = {
       Type = "simple";
       DynamicUser = true;
-      ExecStart = lib.getExe inputs.yard-search.packages.aarch64-linux.yard-search;
+      ExecStart = lib.getExe (inputs.yard-search.packages.aarch64-linux.yard-search.overrideAttrs {
+        NEXT_PUBLIC_MEILISEARCH_URL = "http://meilisearch.jerma.fans/";
+        NEXT_PUBLIC_MEILISEARCH_KEY = "feb70b6ea5a7601485404c4468e77a131c57e2fc686e4a2a86dbe485f8dde885";
+      });
       SyslogLevel = "debug";
     };
   };
