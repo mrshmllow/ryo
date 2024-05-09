@@ -6,6 +6,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./grafana.nix
     ./forge.nix
   ];
 
