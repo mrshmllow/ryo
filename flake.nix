@@ -46,6 +46,7 @@
             enable = true;
             authKeyFile = "/run/keys/tailscale.key";
             permitCertUid = "caddy";
+            extraUpFlags = ["--ssh"];
           };
 
           deployment.keys."tailscale.key" = {
