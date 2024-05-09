@@ -6,6 +6,7 @@
     nix2container.url = "github:nlewo/nix2container";
     nix2container.inputs = {nixpkgs.follows = "nixpkgs";};
     mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
+    pre-commit-hooks-nix.url = "github:cachix/pre-commit-hooks.nix";
   };
 
   outputs = inputs @ {
@@ -20,11 +21,18 @@
 
       imports = [
         inputs.devenv.flakeModule
+        inputs.pre-commit-hooks-nix.flakeModule
       ];
 
       perSystem = {pkgs, ...}: {
         devenv.shells.default = {
           packages = with pkgs; [colmena age];
+
+          pre-commit.hooks = {
+            alejandra.enable = true;
+            # statix.enable = true;
+            # deadnix.enable = true;
+          };
         };
       };
 
