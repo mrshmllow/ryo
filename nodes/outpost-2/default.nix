@@ -6,6 +6,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./forge.nix
   ];
 
   # Use the GRUB 2 boot loader.
