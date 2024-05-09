@@ -64,23 +64,6 @@
           };
         };
 
-        outpost-1 = {name, ...}: {
-          deployment = {
-            #targetHost = name;
-            targetHost = "37.27.42.71";
-            targetUser = "root";
-            buildOnTarget = true;
-          };
-
-          deployment.keys."meilimasterkey" = {
-            keyCommand = ["age" "--decrypt" "-i" "/home/marsh/key.txt" "secrets/meilimasterkey"];
-
-            uploadAt = "pre-activation";
-          };
-
-          imports = [./nodes/${name}];
-        };
-
         outpost-2 = {name, ...}: {
           deployment = {
             targetHost = name;
