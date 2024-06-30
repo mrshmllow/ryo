@@ -29,15 +29,5 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
 
-  services.searx.enable = true;
-  services.searx.settings.server.port = 9090;
-
-  services.caddy = {
-    enable = true;
-    virtualHosts."search.althaea.zone".extraConfig = ''
-      reverse_proxy http://127.0.0.1:${toString config.services.searx.settings.server.port}
-    '';
-  };
-
   system.stateVersion = "24.05";
 }
