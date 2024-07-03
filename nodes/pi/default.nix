@@ -134,12 +134,6 @@
       reverse_proxy http://127.0.0.1:8096
     '';
 
-    virtualHosts."http://10.1.1.2".extraConfig = ''
-      header /.well-known/matrix/* Content-Type application/json
-      header /.well-known/matrix/* Access-Control-Allow-Origin *
-      respond /.well-known/matrix/server `{"m.server": "matrix.althaea.zone:443"}`
-      respond /.well-known/matrix/client `{"m.homeserver":{"base_url":"https://matrix.althaea.zone"}}`
-    '';
     virtualHosts."https://althaea.zone".extraConfig = ''
       header /.well-known/matrix/* Content-Type application/json
       header /.well-known/matrix/* Access-Control-Allow-Origin *
