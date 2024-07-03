@@ -20,17 +20,13 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
       - id: nodes
-        name: nodes
         run: |
           echo "nodes=$(nix eval .#colmena --no-substitute --apply 'with builtins; x: filter (f: !elem f [ "defaults" "meta" ]) (attrNames x)' --json)" >> $GITHUB_OUTPUT
       - id: alive-nodes
-        name: alive nodes
         run: echo "alive=$(tailscale status --json | nix run nixpkgs#jq -- -c '[.Peer | to_entries[] | select(.value.Online == true) | .value.HostName]')" >> $GITHUB_OUTPUT
       - id: alive-matrix
-        name: alive matrix
         run: echo "alive-nodes=$(nix run nixpkgs#jq -- -cn --argjson nodes '${{ steps.nodes.outputs.nodes }}' --argjson alive '${{ steps.alive-nodes.outputs.alive }}' '$nodes - ($nodes - $alive)')" >> $GITHUB_OUTPUT
       - id: offline-matrix
-        name: offline matrix
         run: echo "offline-nodes=$(nix run nixpkgs#jq -- -cn --argjson nodes '${{ steps.nodes.outputs.nodes }}' --argjson alive '${{ steps.alive-nodes.outputs.alive }}' '$nodes - $alive')" >> $GITHUB_OUTPUT
   apply-online:
     runs-on: ubuntu-latest
@@ -57,26 +53,7 @@ jobs:
           nix run nixpkgs#colmena --
           apply -v
           --no-build-on-target
-          --no-keys
           --on ${{ matrix.node }}
-  upload-keys:
-    runs-on: ubuntu-latest
-    name: upload-keys
-    needs: apply-online
-    steps:
-      - uses: actions/checkout@v4
-      - uses: docker/setup-qemu-action@v3
-      - uses: cachix/install-nix-action@v27
-      - uses: DeterminateSystems/magic-nix-cache-action@main
-      - uses: tailscale/github-action@v2
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
-#      - name: upload keys
-#        run: nix run nixpkgs#colmena -- upload-keys -v
-      - name: upload keys
-        run: echo "TODO"
   build-offline:
     runs-on: ubuntu-latest
     name: build offline
