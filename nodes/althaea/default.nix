@@ -60,6 +60,8 @@
 
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
+  virtualisation.docker.enable = true;
+
   services.power-profiles-daemon.enable = false;
   sound.enable = true;
   hardware.pulseaudio.enable = false;

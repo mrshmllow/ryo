@@ -7,7 +7,7 @@
     isNormalUser = true;
     shell = pkgs.fish;
     description = "marsh";
-    extraGroups = ["wheel"];
+    extraGroups = ["wheel" "docker"];
   };
 
   programs.fish = {
