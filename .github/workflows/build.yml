@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     name: generate node matrix
     outputs:
-       alive-nodes: ${{ steps.alive-matrix.outputs.alive-nodes }}
-       offline-nodes: ${{ steps.offline-matrix.outputs.offline-nodes }}
+      alive-nodes: ${{ steps.alive-matrix.outputs.alive-nodes }}
+      offline-nodes: ${{ steps.offline-matrix.outputs.offline-nodes }}
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
@@ -28,11 +28,22 @@ jobs:
         run: echo "alive-nodes=$(nix run nixpkgs#jq -- -cn --argjson nodes '${{ steps.nodes.outputs.nodes }}' --argjson alive '${{ steps.alive-nodes.outputs.alive }}' '$nodes - ($nodes - $alive)')" >> $GITHUB_OUTPUT
       - id: offline-matrix
         run: echo "offline-nodes=$(nix run nixpkgs#jq -- -cn --argjson nodes '${{ steps.nodes.outputs.nodes }}' --argjson alive '${{ steps.alive-nodes.outputs.alive }}' '$nodes - $alive')" >> $GITHUB_OUTPUT
+  check:
+    runs-on: ubuntu-latest
+    name: check
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - run: nix flake check
   apply-online:
     runs-on: ubuntu-latest
     name: apply online
-    needs: gen-matrix
+    needs: 
+      - gen-matrix
+      - check
     strategy:
+      fail-fast: false
       matrix: 
         node: ${{ fromJson(needs.gen-matrix.outputs.alive-nodes) }}
     steps:
@@ -57,7 +68,9 @@ jobs:
   build-offline:
     runs-on: ubuntu-latest
     name: build offline
-    needs: gen-matrix
+    needs: 
+      - gen-matrix
+      - check
     strategy:
       matrix: 
         node: ${{ fromJson(needs.gen-matrix.outputs.offline-nodes) }}
@@ -75,3 +88,17 @@ jobs:
           build -v
           --no-build-on-target
           --on ${{ matrix.node }}
+  build-hm:
+    runs-on: ubuntu-latest
+    name: build home manager
+    needs: 
+      - check
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: build home manager
+        run: >
+          nix run nixpkgs#home-manager --
+          build -v
+          --flake .
