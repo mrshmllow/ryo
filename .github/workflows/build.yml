@@ -13,23 +13,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
+      - uses: DeterminateSystems/magic-nix-cache-action@main
       - uses: tailscale/github-action@v2
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
       - id: nodes
-        name: generate colmena nodes
         run: |
           echo "nodes=$(nix eval .#colmena --no-substitute --apply 'with builtins; x: filter (f: !elem f [ "defaults" "meta" ]) (attrNames x)' --json)" >> $GITHUB_OUTPUT
       - id: alive-nodes
-        name: find alive nodes
         run: echo "alive=$(tailscale status --json | nix run nixpkgs#jq -- -c '[.Peer | to_entries[] | select(.value.Online == true) | .value.HostName]')" >> $GITHUB_OUTPUT
       - id: alive-matrix
-        name: output intersection of alive & colmena nodes
         run: echo "alive-nodes=$(nix run nixpkgs#jq -- -cn --argjson nodes '${{ steps.nodes.outputs.nodes }}' --argjson alive '${{ steps.alive-nodes.outputs.alive }}' '$nodes - ($nodes - $alive)')" >> $GITHUB_OUTPUT
       - id: offline-matrix
-        name: output offline nodes
         run: echo "offline-nodes=$(nix run nixpkgs#jq -- -cn --argjson nodes '${{ steps.nodes.outputs.nodes }}' --argjson alive '${{ steps.alive-nodes.outputs.alive }}' '$nodes - $alive')" >> $GITHUB_OUTPUT
   apply-online:
     runs-on: ubuntu-latest
@@ -40,7 +37,12 @@ jobs:
         node: ${{ fromJson(needs.gen-matrix.outputs.alive-nodes) }}
     steps:
       - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
       - uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            extra-platforms = aarch64-linux i686-linux
+      - uses: DeterminateSystems/magic-nix-cache-action@main
       - uses: tailscale/github-action@v2
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
@@ -61,7 +63,12 @@ jobs:
         node: ${{ fromJson(needs.gen-matrix.outputs.offline-nodes) }}
     steps:
       - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
       - uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            extra-platforms = aarch64-linux i686-linux
+      - uses: DeterminateSystems/magic-nix-cache-action@main
       - name: build ${{ matrix.node }}
         run: >
           nix run nixpkgs#colmena --
