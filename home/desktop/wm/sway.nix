@@ -33,6 +33,7 @@ in {
   wayland.windowManager.sway = {
     enable = true;
     package = null;
+    checkConfig = false;
     config = {
       workspaceAutoBackAndForth = true;
       assigns = {
@@ -69,7 +70,7 @@ in {
         horizontal = outer;
         bottom = 0;
 
-        inner = 4;
+        inner = 0;
         smartBorders = "on";
         smartGaps = true;
       };
@@ -91,6 +92,10 @@ in {
           mode = "1920x1080@144.001Hz";
           bg = "${../wallpaper} fill";
         };
+        eDP-1 = {
+          mode = "2256x1504@59.99Hz";
+          bg = "${../wallpaper} fill";
+        };
       };
       startup = [
         {command = "${dbus-sway-environment}";}
@@ -101,18 +106,24 @@ in {
       window = {
         titlebar = false;
       };
-      keybindings = lib.mkOptionDefault {
-        "Mod4+Shift+s" = ''exec IMG=~/Pictures/$(date +%Y-%m-%d_%H-%m-%s).png && ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" $IMG && ${lib.getExe' pkgs.wl-clipboard "wl-copy"} < $IMG'';
-        "Mod4+n" = ''exec neovide'';
+      keybindings = let
+        pactl = lib.getExe' pkgs.pulseaudio "pactl";
+      in
+        lib.mkOptionDefault {
+          "Mod4+Shift+s" = ''exec IMG=~/Pictures/$(date +%Y-%m-%d_%H-%m-%s).png && ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" $IMG && ${lib.getExe' pkgs.wl-clipboard "wl-copy"} < $IMG'';
+          "Mod4+n" = ''exec neovide'';
 
-        "XF86AudioRaiseVolume" = ''exec ${lib.getExe' pkgs.pulseaudio "pactl"} set-sink-volume @DEFAULT_SINK@ +5%'';
-        "XF86AudioLowerVolume" = '' exec ${lib.getExe' pkgs.pulseaudio "pactl"} set-sink-volume @DEFAULT_SINK@ -5%'';
-        "XF86AudioPlay" = ''exec ${lib.getExe pkgs.playerctl} play-pause'';
-        "XF86AudioNext" = ''exec ${lib.getExe pkgs.playerctl} next'';
-        "XF86AudioPrev" = ''exec ${lib.getExe pkgs.playerctl} previous'';
-        "XF86MonBrightnessDown" = ''exec ${lib.getExe pkgs.brightnessctl} set 5%-'';
-        "XF86MonBrightnessUp" = ''exec ${lib.getExe pkgs.brightnessctl} set +5%'';
-      };
+          "XF86AudioRaiseVolume" = ''exec ${pactl} set-sink-volume @DEFAULT_SINK@ +5%'';
+          "XF86AudioLowerVolume" = ''exec ${pactl} set-sink-volume @DEFAULT_SINK@ -5%'';
+          "XF86AudioMute" = ''exec ${pactl} set-sink-mute @DEFAULT_SINK@ toggle'';
+
+          "XF86AudioPlay" = ''exec ${lib.getExe pkgs.playerctl} play-pause'';
+          "XF86AudioNext" = ''exec ${lib.getExe pkgs.playerctl} next'';
+          "XF86AudioPrev" = ''exec ${lib.getExe pkgs.playerctl} previous'';
+
+          "XF86MonBrightnessDown" = ''exec ${lib.getExe pkgs.brightnessctl} set 5%-'';
+          "XF86MonBrightnessUp" = ''exec ${lib.getExe pkgs.brightnessctl} set +5%'';
+        };
       bars = [
         {
           command = "${lib.getExe pkgs.waybar}";
@@ -142,10 +153,15 @@ in {
       };
     };
     extraConfig = ''
+      bindgesture swipe:right workspace prev
+      bindgesture swipe:left workspace next
+
+      layer_effects "notifications" blur disable; shadows disable;
+      layer_effects "waybar" blur enable;
+
+      blur enable
+      corner_radius 10
+      shadows enable
     '';
-    # layer_effects "notifications" blur enable; shadows enable;
-    # blur enable
-    # corner_radius 10
-    # shadows enable
   };
 }
