@@ -36,7 +36,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
-      - uses: DeterminateSystems/magic-nix-cache-action@main
       - id: users
         run: |
           echo "users=$(nix eval .#homeConfigurations --no-substitute --apply 'with builtins; x: (attrNames x)' --json)" >> $GITHUB_OUTPUT
