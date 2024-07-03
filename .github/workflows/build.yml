@@ -28,6 +28,18 @@ jobs:
         run: echo "alive-nodes=$(nix run nixpkgs#jq -- -cn --argjson nodes '${{ steps.nodes.outputs.nodes }}' --argjson alive '${{ steps.alive-nodes.outputs.alive }}' '$nodes - ($nodes - $alive)')" >> $GITHUB_OUTPUT
       - id: offline-matrix
         run: echo "offline-nodes=$(nix run nixpkgs#jq -- -cn --argjson nodes '${{ steps.nodes.outputs.nodes }}' --argjson alive '${{ steps.alive-nodes.outputs.alive }}' '$nodes - $alive')" >> $GITHUB_OUTPUT
+  gen-matrix-hm:
+    runs-on: ubuntu-latest
+    name: generate hm matrix
+    outputs:
+      users: ${{ steps.users.outputs.users }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - id: users
+        run: |
+          echo "users=$(nix eval .#homeConfigurations --no-substitute --apply 'with builtins; x: (attrNames x)' --json)" >> $GITHUB_OUTPUT
   check:
     runs-on: ubuntu-latest
     name: check
@@ -93,6 +105,10 @@ jobs:
     name: build home manager
     needs: 
       - check
+      - gen-matrix-hm
+    strategy:
+      matrix: 
+        user: ${{ fromJson(needs.gen-matrix-hm.outputs.users) }}
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
@@ -101,4 +117,4 @@ jobs:
         run: >
           nix run nixpkgs#home-manager --
           build -v
-          --flake .
+          --flake .#${{ matrix.user }}
