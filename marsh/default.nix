@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   users.users.marsh = {
     isNormalUser = true;
     shell = pkgs.fish;
@@ -26,5 +30,6 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
 
-  home-manager.users.marsh = import ../home.nix;
+  home-manager.users.marsh = import ../home;
+  home-manager.extraSpecialArgs = {inherit inputs;};
 }

@@ -1,13 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    devenv.url = "github:cachix/devenv";
-    nix2container = {
-      url = "github:nlewo/nix2container";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
-    pre-commit-hooks-nix.url = "github:cachix/pre-commit-hooks.nix";
+    pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager = {
@@ -22,16 +16,43 @@
     home-manager,
     nixpkgs,
     nixos-hardware,
+    self,
+    pre-commit-hooks,
     ...
   }: let
     forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux" "x86_64-darwin" "i686-linux" "aarch64-linux"];
   in {
-    packages = forAllSystems (system: let
+    homeConfigurations.marsh = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages."x86_64-linux";
+      extraSpecialArgs = {inherit inputs;};
+      modules = [
+        ./home
+        {
+          home.homeDirectory = "/home/marsh";
+        }
+      ];
+    };
+
+    checks = forAllSystems (system: {
+      pre-commit-check = pre-commit-hooks.lib.${system}.run {
+        src = ./.;
+        hooks = {
+          alejandra.enable = true;
+          luacheck.enable = true;
+        };
+      };
+    });
+
+    devShells = forAllSystems (system: let
       pkgs = nixpkgs.legacyPackages.${system};
     in {
-      homeConfigurations.marsh = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [./home.nix];
+      default = pkgs.mkShell {
+        inherit (self.checks.${system}.pre-commit-check) shellHook;
+        buildInputs = with pkgs;
+          self.checks.${system}.pre-commit-check.enabledPackages
+          ++ [
+            colmena
+          ];
       };
     });
 
