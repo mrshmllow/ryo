@@ -115,6 +115,6 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - name: build home manager
         run: >
-          NIXPKGS_ALLOW_UNFREE=1 nix run nixpkgs#home-manager --
+          nix run nixpkgs#home-manager --
           build -v
           --flake .#${{ matrix.user }}

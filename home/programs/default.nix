@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [./wezterm ./gpg.nix];
 
   programs.git = {
@@ -11,6 +15,11 @@
     enable = true;
     package = pkgs.google-chrome;
   };
+
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "google-chrome"
+    ];
 
   programs.fish = {
     enable = true;
