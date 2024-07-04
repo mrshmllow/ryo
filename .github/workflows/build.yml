@@ -13,7 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
-      - uses: DeterminateSystems/magic-nix-cache-action@main
       - uses: tailscale/github-action@v2
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
@@ -45,7 +44,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
-      - uses: DeterminateSystems/magic-nix-cache-action@main
       - run: nix flake check
   apply-online:
     runs-on: ubuntu-latest
@@ -69,7 +67,6 @@ jobs:
           name: ryo
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - uses: DeterminateSystems/magic-nix-cache-action@main
       - uses: tailscale/github-action@v2
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
@@ -106,7 +103,6 @@ jobs:
           name: ryo
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - uses: DeterminateSystems/magic-nix-cache-action@main
       - name: build ${{ matrix.node }}
         run: >
           nix run nixpkgs#colmena --
@@ -130,7 +126,6 @@ jobs:
           name: ryo
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - uses: DeterminateSystems/magic-nix-cache-action@main
       - name: build home manager
         run: >
           nix run nixpkgs#home-manager --
