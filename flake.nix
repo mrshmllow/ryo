@@ -97,7 +97,7 @@
         };
 
         deployment.keys."tailscale.key" = {
-          keyCommand = ["age" "--decrypt" "-i" "/home/marsh/key.txt" "secrets/tailscale.key"];
+          keyCommand = ["gpg" "--decrypt" "secrets/tailscale.key.gpg"];
 
           uploadAt = "pre-activation";
         };
@@ -136,7 +136,7 @@
           allowLocalDeployment = true;
 
           keys."wireless.env" = {
-            keyCommand = ["age" "--decrypt" "-i" "/home/marsh/key.txt" "secrets/wireless.env"];
+            keyCommand = ["gpg" "--decrypt" "secrets/wireless.env.gpg"];
             uploadAt = "pre-activation";
             destDir = "/etc/keys";
           };
