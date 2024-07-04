@@ -45,12 +45,34 @@ jobs:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
       - run: nix flake check
+  build-lix:
+    runs-on: ubuntu-latest
+    name: build lix
+    needs: 
+      - check
+    strategy:
+      matrix: 
+        system: [x86_64-linux, aarch64-linux]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            extra-platforms = aarch64-linux i686-linux
+      - uses: cachix/cachix-action@v14
+        with:
+          name: ryo
+          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: build ${{ matrix.system }}.lix
+        run: nix build .#packages.${{ matrix.system }}.lix
   apply-online:
     runs-on: ubuntu-latest
     name: apply online
     needs: 
       - gen-matrix
-      - check
+      - build-lix
     strategy:
       fail-fast: false
       matrix: 
@@ -87,7 +109,7 @@ jobs:
     name: build offline
     needs: 
       - gen-matrix
-      - check
+      - build-lix
     strategy:
       matrix: 
         node: ${{ fromJson(needs.gen-matrix.outputs.offline-nodes) }}

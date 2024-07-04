@@ -45,6 +45,10 @@
       ];
     };
 
+    packages = forAllSystems (system: {
+      lix = lix-module.packages.${system}.default;
+    });
+
     checks = forAllSystems (system: {
       pre-commit-check = pre-commit-hooks.lib.${system}.run {
         src = ./.;
