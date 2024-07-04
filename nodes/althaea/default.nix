@@ -34,10 +34,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  nix.extraOptions = ''
-    plugin-files = ${pkgs.nix-plugins}/lib/nix/plugins
-  '';
-
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];
     auto-optimise-store = true;
