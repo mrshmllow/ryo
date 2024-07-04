@@ -9,6 +9,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     candy.url = "github:mrshmllow/nvim-candy";
+
+    lix = {
+      url = "https://git.lix.systems/lix-project/lix/archive/release-2.90.tar.gz";
+      flake = false;
+    };
+
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/release-2.90.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.lix.follows = "lix";
+    };
   };
 
   outputs = inputs @ {
@@ -16,8 +27,9 @@
     home-manager,
     nixpkgs,
     nixos-hardware,
-    self,
     pre-commit-hooks,
+    lix-module,
+    self,
     ...
   }: let
     forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux" "x86_64-darwin" "i686-linux" "aarch64-linux"];
@@ -73,6 +85,10 @@
       }: let
         exporting_nodes = ["outpost-2" "pi"];
       in {
+        imports = [
+          lix-module.nixosModules.default
+        ];
+
         services.tailscale = {
           enable = true;
           authKeyFile = "/run/keys/tailscale.key";
