@@ -68,6 +68,7 @@
           self.checks.${system}.pre-commit-check.enabledPackages
           ++ [
             colmena
+            home-manager.packages.${system}.default
           ];
       };
     });
