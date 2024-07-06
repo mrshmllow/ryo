@@ -7,6 +7,7 @@
   imports = [
     ./hardware-configuration.nix
     ./grafana.nix
+    ./github.nix
     # ./forge.nix
   ];
 
@@ -15,6 +16,22 @@
   boot.loader.grub.device = "/dev/vda";
 
   networking.hostName = "outpost-2";
+
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+
+  nix.settings = {
+    experimental-features = ["nix-command" "flakes"];
+    auto-optimise-store = true;
+    substituters = [
+      "https://cache.nixos.org/"
+      "https://cache.garnix.io"
+      "https://ryo.cachix.org"
+    ];
+    trusted-public-keys = [
+      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      "ryo.cachix.org-1:f/pZAkaRjfBYsTX3myaeIdPpxV6rSMcG3m1ofszjjAw="
+    ];
+  };
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
