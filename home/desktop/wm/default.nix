@@ -127,6 +127,7 @@
           # "custom/gpu-memory"
           "pulseaudio"
           "backlight"
+          "custom/caffine"
           "network"
           "tray"
           "battery"
@@ -152,6 +153,13 @@
           format = "{} ";
           return-type = "";
           interval = 1;
+        };
+        "custom/caffine" = {
+          exec = pkgs.writeShellScript "caffine" ''
+            if [ $(systemd-inhibit --list | grep "Caffine" | wc -l) != "0" ]; then echo "INHIBIT "; fi
+          '';
+          interval = 10;
+          format = "<span color=\"#a6adc8\">{}</span>";
         };
         pulseaudio = {
           format = "<span color=\"#a6adc8\">VOL</span> {volume}% ";

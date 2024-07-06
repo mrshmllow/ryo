@@ -25,6 +25,10 @@
     gnome3.adwaita-icon-theme
     wl-clipboard
     pamixer
+
+    (pkgs.writeShellScriptBin "caffine" ''
+      systemd-inhibit --what=idle --who=Caffine --why=Caffine --mode=block sleep inf
+    '')
   ];
 
   home-manager.useGlobalPkgs = true;
