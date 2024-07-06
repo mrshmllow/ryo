@@ -105,23 +105,6 @@
       url_preview_enabled = true;
       max_upload_size = "200M";
       enable_registration = false;
-
-      oidc_providers = [
-        {
-          idp_id = "google";
-          idp_name = "Google";
-          idp_brand = "google";
-          issuer = "https://accounts.google.com/";
-          client_id = "368589021222-uensak8b258t3e7jqe9lqor4m07n4har.apps.googleusercontent.com";
-          scopes = ["openid" "profile"];
-          user_mapping_provider = {
-            config = {
-              localpart_template = "{{ user.given_name|lower }}";
-              display_name_template = "{{ user.name }}";
-            };
-          };
-        }
-      ];
     };
   };
 
