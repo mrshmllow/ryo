@@ -69,6 +69,8 @@
           ++ [
             colmena
             home-manager.packages.${system}.default
+            (writeShellScriptBin "apply-local" ''${lib.getExe colmena} apply-local -v --sudo "$@"'')
+            (writeShellScriptBin "apply-hm" ''${lib.getExe home-manager.packages.${system}.default} switch --flake .'')
           ];
       };
     });
