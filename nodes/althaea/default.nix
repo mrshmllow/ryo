@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  lib,
   ...
 }: {
   imports = [
@@ -17,7 +18,14 @@
     colmena
 
     vesktop
+    obsidian
+    keepassxc
   ];
+
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "obsidian"
+    ];
 
   networking.hostName = "althaea";
   networking.nameservers = ["1.1.1.1"];
