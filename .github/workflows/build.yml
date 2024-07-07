@@ -39,7 +39,7 @@ jobs:
       - uses: cachix/install-nix-action@v27
       - run: nix flake check
   build-lix:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: build lix
     needs: 
       - check
@@ -48,7 +48,7 @@ jobs:
         system: [x86_64-linux, aarch64-linux]
     steps:
       - uses: actions/checkout@v4
-      # - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-qemu-action@v3
       - uses: cachix/install-nix-action@v27
         with:
           extra_nix_config: |
@@ -61,7 +61,7 @@ jobs:
       - name: build ${{ matrix.system }}.lix
         run: nix build .#packages.${{ matrix.system }}.lix
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: build offline
     needs: 
       - gen-matrix
@@ -71,7 +71,7 @@ jobs:
         node: ${{ fromJson(needs.gen-matrix.outputs.all-nodes) }}
     steps:
       - uses: actions/checkout@v4
-      # - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-qemu-action@v3
       - uses: cachix/install-nix-action@v27
         with:
           extra_nix_config: |
