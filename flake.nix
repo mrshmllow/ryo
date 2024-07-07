@@ -96,6 +96,8 @@
           lix-module.nixosModules.default
         ];
 
+        deployment.replaceUnknownProfiles = false;
+
         services.tailscale = {
           enable = true;
           authKeyFile = "/run/keys/tailscale.key";
