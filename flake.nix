@@ -88,6 +88,7 @@
         name,
         nodes,
         lib,
+        config,
         ...
       }: let
         exporting_nodes = ["outpost-2" "pi"];
@@ -97,6 +98,17 @@
         ];
 
         deployment.replaceUnknownProfiles = false;
+
+        system.activationScripts.diff = {
+          supportsDryActivation = true;
+          text = ''
+            if [ -e /run/current-system ]; then
+              PATH=${lib.makeBinPath [config.nix.package]} \
+                ${lib.getExe pkgs.nvd} \
+                diff /run/current-system $systemConfig
+            fi
+          '';
+        };
 
         services.tailscale = {
           enable = true;
