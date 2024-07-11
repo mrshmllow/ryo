@@ -1,5 +1,5 @@
 {
-  imports = [./programs ./desktop];
+  imports = [./shell];
 
   home.username = "marsh";
 

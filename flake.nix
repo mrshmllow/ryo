@@ -2,24 +2,22 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
-
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     candy.url = "github:mrshmllow/nvim-candy";
-
     lix = {
       url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
       flake = false;
     };
-
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.lix.follows = "lix";
     };
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
   };
 
   outputs = inputs @ {
@@ -29,6 +27,7 @@
     nixos-hardware,
     pre-commit-hooks,
     lix-module,
+    nixos-wsl,
     self,
     ...
   }: let
@@ -74,6 +73,18 @@
           ];
       };
     });
+
+    nixosConfigurations.wsl = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = {inherit inputs;};
+      modules = [
+        nixos-wsl.nixosModules.default
+        home-manager.nixosModules.home-manager
+        lix-module.nixosModules.default
+        ./marsh
+        ./wsl
+      ];
+    };
 
     colmena = {
       meta = {
@@ -166,6 +177,7 @@
         imports = [
           ./nodes/${name}
           ./marsh
+          ./marsh/desktop.nix
           home-manager.nixosModules.home-manager
           nixos-hardware.nixosModules.framework-13th-gen-intel
         ];

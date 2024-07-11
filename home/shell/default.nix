@@ -3,23 +3,13 @@
   lib,
   ...
 }: {
-  imports = [./wezterm ./gpg.nix];
+  imports = [./gpg.nix];
 
   programs.git = {
     enable = true;
     userName = "marshmallow";
     userEmail = "marshycity@gmail.com";
   };
-
-  programs.google-chrome = {
-    enable = true;
-    package = pkgs.google-chrome;
-  };
-
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "google-chrome"
-    ];
 
   programs.fish = {
     enable = true;
