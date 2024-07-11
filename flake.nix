@@ -83,6 +83,7 @@
         lix-module.nixosModules.default
         ./marsh
         ./wsl
+        ./nix.nix
       ];
     };
 
@@ -106,6 +107,7 @@
       in {
         imports = [
           lix-module.nixosModules.default
+          ./nix.nix
         ];
 
         deployment.replaceUnknownProfiles = false;
