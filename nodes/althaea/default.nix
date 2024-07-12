@@ -13,7 +13,6 @@
   environment.systemPackages = with pkgs; [
     vim
     git
-    age
     colmena
 
     vesktop
