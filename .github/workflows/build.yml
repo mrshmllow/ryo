@@ -17,8 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
-        with:
-          install_url: https://install.lix.systems/lix
       - id: nodes
         run: |
           echo "all-nodes=$(nix eval .#colmena --no-substitute --apply 'with builtins; x: filter (f: !elem f [ "defaults" "meta" ]) (attrNames x)' --json)" >> $GITHUB_OUTPUT
@@ -30,9 +28,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
-        with:
-          install_url: https://install.lix.systems/lix
-          install_options: '--no-confirm'
       - id: users
         run: |
           echo "users=$(nix eval .#homeConfigurations --no-substitute --apply 'with builtins; x: (attrNames x)' --json)" >> $GITHUB_OUTPUT
@@ -42,8 +37,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
-        with:
-          install_url: https://install.lix.systems/lix
       - run: nix flake check
   build-lix:
     runs-on: ubuntu-latest
@@ -58,7 +51,6 @@ jobs:
       - uses: docker/setup-qemu-action@v3
       - uses: cachix/install-nix-action@v27
         with:
-          install_url: https://install.lix.systems/lix
           extra_nix_config: |
             extra-platforms = aarch64-linux i686-linux
       - uses: cachix/cachix-action@v14
@@ -82,7 +74,6 @@ jobs:
       - uses: docker/setup-qemu-action@v3
       - uses: cachix/install-nix-action@v27
         with:
-          install_url: https://install.lix.systems/lix
           extra_nix_config: |
             extra-platforms = aarch64-linux i686-linux
       - uses: cachix/cachix-action@v14
@@ -108,8 +99,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
-        with:
-          install_url: https://install.lix.systems/lix
       - uses: tailscale/github-action@v2
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
@@ -134,7 +123,6 @@ jobs:
       - uses: docker/setup-qemu-action@v3
       - uses: cachix/install-nix-action@v27
         with:
-          install_url: https://install.lix.systems/lix
           extra_nix_config: |
             extra-platforms = aarch64-linux i686-linux
       - uses: cachix/cachix-action@v14
@@ -169,8 +157,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
-        with:
-          install_url: https://install.lix.systems/lix
       - uses: cachix/cachix-action@v14
         with:
           name: ryo
