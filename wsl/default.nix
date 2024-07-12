@@ -3,4 +3,5 @@
   wsl.enable = true;
 
   wsl.defaultUser = "marsh";
+  virtualisation.docker.enable = true;
 }
