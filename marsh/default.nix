@@ -8,6 +8,10 @@
     shell = pkgs.fish;
     description = "marsh";
     extraGroups = ["wheel" "docker"];
+
+    packages = with pkgs; [
+      inputs.candy.packages.${pkgs.system}.default
+    ];
   };
 
   programs.fish = {

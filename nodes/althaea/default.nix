@@ -14,7 +14,6 @@
     vim
     git
     age
-    inputs.candy.packages.${pkgs.system}.default
     colmena
 
     vesktop
