@@ -14,9 +14,12 @@ jobs:
     name: generate node matrix
     outputs:
       all-nodes: ${{ steps.nodes.outputs.all-nodes }}
+    container:
+      image: git.lix.systems/lix-project/lix:latest
     steps:
+      - run: "echo 'experimental-features = nix-command flakes' >> /etc/nix/nix.conf"
+      - run: nix profile install nixpkgs#nodejs
       - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v27
       - id: nodes
         run: |
           echo "all-nodes=$(nix eval .#colmena --no-substitute --apply 'with builtins; x: filter (f: !elem f [ "defaults" "meta" ]) (attrNames x)' --json)" >> $GITHUB_OUTPUT
@@ -25,34 +28,38 @@ jobs:
     name: generate hm matrix
     outputs:
       users: ${{ steps.users.outputs.users }}
+    container:
+      image: git.lix.systems/lix-project/lix:latest
     steps:
       - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v27
+      - run: "echo 'experimental-features = nix-command flakes' >> /etc/nix/nix.conf"
       - id: users
         run: |
           echo "users=$(nix eval .#homeConfigurations --no-substitute --apply 'with builtins; x: (attrNames x)' --json)" >> $GITHUB_OUTPUT
   check:
     runs-on: ubuntu-latest
     name: check
+    container:
+      image: git.lix.systems/lix-project/lix:latest
     steps:
       - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v27
+      - run: "echo 'experimental-features = nix-command flakes' >> /etc/nix/nix.conf"
       - run: nix flake check
   build-lix:
     runs-on: ubuntu-latest
     name: build lix
     needs: 
       - check
+    container:
+      image: git.lix.systems/lix-project/lix:latest
     strategy:
       matrix: 
         system: [x86_64-linux, aarch64-linux]
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-qemu-action@v3
-      - uses: cachix/install-nix-action@v27
-        with:
-          extra_nix_config: |
-            extra-platforms = aarch64-linux i686-linux
+      - run: "echo 'experimental-features = nix-command flakes' >> /etc/nix/nix.conf"
+      - run: "echo 'extra-platforms = aarch64-linux i686-linux' >> /etc/nix/nix.conf"
       - uses: cachix/cachix-action@v14
         with:
           name: ryo
@@ -69,13 +76,13 @@ jobs:
     strategy:
       matrix: 
         node: ${{ fromJson(needs.gen-matrix.outputs.all-nodes) }}
+    container:
+      image: git.lix.systems/lix-project/lix:latest
     steps:
       - uses: actions/checkout@v4
+      - run: "echo 'experimental-features = nix-command flakes' >> /etc/nix/nix.conf"
+      - run: "echo 'extra-platforms = aarch64-linux i686-linux' >> /etc/nix/nix.conf"
       - uses: docker/setup-qemu-action@v3
-      - uses: cachix/install-nix-action@v27
-        with:
-          extra_nix_config: |
-            extra-platforms = aarch64-linux i686-linux
       - uses: cachix/cachix-action@v14
         with:
           name: ryo
@@ -96,9 +103,11 @@ jobs:
       - build
     outputs:
       alive-nodes: ${{ steps.alive-matrix.outputs.alive-nodes }}
+    container:
+      image: git.lix.systems/lix-project/lix:latest
     steps:
       - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v27
+      - run: "echo 'experimental-features = nix-command flakes' >> /etc/nix/nix.conf"
       - uses: tailscale/github-action@v2
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
@@ -118,13 +127,13 @@ jobs:
       fail-fast: false
       matrix: 
         node: ${{ fromJson(needs.gen-alive-matrix.outputs.alive-nodes) }}
+    container:
+      image: git.lix.systems/lix-project/lix:latest
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-qemu-action@v3
-      - uses: cachix/install-nix-action@v27
-        with:
-          extra_nix_config: |
-            extra-platforms = aarch64-linux i686-linux
+      - run: "echo 'experimental-features = nix-command flakes' >> /etc/nix/nix.conf"
+      - run: "echo 'extra-platforms = aarch64-linux i686-linux' >> /etc/nix/nix.conf"
       - uses: cachix/cachix-action@v14
         with:
           name: ryo
@@ -154,9 +163,11 @@ jobs:
     strategy:
       matrix: 
         user: ${{ fromJson(needs.gen-matrix-hm.outputs.users) }}
+    container:
+      image: git.lix.systems/lix-project/lix:latest
     steps:
       - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v27
+      - run: "echo 'experimental-features = nix-command flakes' >> /etc/nix/nix.conf"
       - uses: cachix/cachix-action@v14
         with:
           name: ryo
