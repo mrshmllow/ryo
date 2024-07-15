@@ -197,7 +197,10 @@
       password="@DETNSW_PASSWORD@"
     '';
   };
-  networking.wireless.networks."the internet".psk = "@HOME_PSK@";
+  networking.wireless.networks."the internet" = {
+    psk = "@HOME_PSK@";
+    priority = 100;
+  };
   networking.wireless.environmentFile = "/etc/keys/wireless.env";
 
   # Bootloader.
