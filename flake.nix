@@ -110,8 +110,6 @@
           ./nix.nix
         ];
 
-        deployment.replaceUnknownProfiles = false;
-
         system.activationScripts.diff = {
           supportsDryActivation = true;
           text = ''
