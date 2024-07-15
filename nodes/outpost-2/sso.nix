@@ -1,4 +1,10 @@
 {config, ...}: {
+  deployment.keys."keycloak-db.pass" = {
+    keyCommand = ["gpg" "--decrypt" "secrets/keycloak-db.pass.gpg"];
+
+    uploadAt = "pre-activation";
+  };
+
   services.keycloak = {
     enable = true;
     settings = {
@@ -7,6 +13,8 @@
       http-port = 9090;
       proxy = "edge";
     };
+
+    database.passwordFile = "/run/keys/keycloak-db.pass";
   };
 
   services.caddy = {
