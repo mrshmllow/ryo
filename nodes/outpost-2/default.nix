@@ -9,7 +9,7 @@
     ./grafana.nix
     ./gerrit.nix
     ./sso.nix
-    # ./forge.nix
+    ./forge.nix
   ];
 
   # Use the GRUB 2 boot loader.
