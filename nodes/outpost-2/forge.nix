@@ -13,6 +13,10 @@
         ALLOW_ONLY_EXTERNAL_REGISTRATION = true;
       };
     };
+
+    database = {
+      type = "postgres";
+    };
   };
 
   virtualisation.docker.enable = true;
