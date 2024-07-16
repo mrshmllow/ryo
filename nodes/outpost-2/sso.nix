@@ -3,6 +3,7 @@
     keyCommand = ["gpg" "--decrypt" "secrets/keycloak-db.pass.gpg"];
 
     uploadAt = "pre-activation";
+    destDir = "/etc/keys";
   };
 
   services.keycloak = {
@@ -14,7 +15,7 @@
       proxy = "edge";
     };
 
-    database.passwordFile = "/run/keys/keycloak-db.pass";
+    database.passwordFile = "/etc/keys/keycloak-db.pass";
   };
 
   services.caddy = {
