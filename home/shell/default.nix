@@ -11,6 +11,10 @@
     userEmail = "marshycity@gmail.com";
   };
 
+  home.shellAliases = {
+    G = ''nvim +"G" +":only"'';
+  };
+
   programs.fish = {
     enable = true;
     plugins = [
