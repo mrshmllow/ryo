@@ -86,6 +86,10 @@ in {
     lib.mkAfter ''
       (umask 027; ${lib.getExe' package "catppuccin-themes"})
     '';
+
+  # https://github.com/NixOS/nixpkgs/issues/306205
+  services.openssh.settings.AcceptEnv = "GIT_PROTOCOL";
+
   virtualisation.docker.enable = true;
 
   services.caddy = {
