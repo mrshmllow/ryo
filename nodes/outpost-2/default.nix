@@ -7,7 +7,6 @@
   imports = [
     ./hardware-configuration.nix
     ./grafana.nix
-    ./gerrit.nix
     ./sso.nix
     ./forge.nix
   ];

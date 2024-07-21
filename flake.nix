@@ -18,10 +18,6 @@
       inputs.lix.follows = "lix";
     };
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
-
-    nix-gerrit = {
-      url = "git+https://git.lix.systems/the-distro/nix-gerrit?ref=main";
-    };
   };
 
   outputs = inputs @ {
