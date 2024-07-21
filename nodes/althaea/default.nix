@@ -50,7 +50,6 @@
   virtualisation.docker.enable = true;
 
   services.power-profiles-daemon.enable = false;
-  sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
