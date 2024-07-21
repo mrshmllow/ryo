@@ -7,7 +7,7 @@
     isNormalUser = true;
     shell = pkgs.fish;
     description = "marsh";
-    extraGroups = ["wheel" "docker"];
+    extraGroups = ["wheel" "docker" "libvirtd"];
 
     packages = with pkgs; [
       inputs.candy.packages.${pkgs.system}.default

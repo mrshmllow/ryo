@@ -20,6 +20,8 @@
     keepassxc
   ];
 
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "obsidian"
