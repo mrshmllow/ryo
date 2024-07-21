@@ -14,6 +14,8 @@
     ];
   };
 
+  environment.variables.EDITOR = "nvim";
+
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
