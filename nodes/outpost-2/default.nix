@@ -1,14 +1,10 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{...}: {
   imports = [
     ./hardware-configuration.nix
     ./grafana.nix
     ./sso.nix
     ./forge.nix
+    ./matrix.nix
   ];
 
   # Use the GRUB 2 boot loader.
@@ -27,7 +23,7 @@
   services.fail2ban.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [80 443];
   # networking.firewall.allowedUDPPorts = [ ... ];
 
   system.stateVersion = "24.05";
