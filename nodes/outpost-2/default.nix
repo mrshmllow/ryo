@@ -4,7 +4,7 @@
     ./grafana.nix
     ./sso.nix
     ./forge.nix
-    ./matrix.nix
+    ./matrix
   ];
 
   # Use the GRUB 2 boot loader.

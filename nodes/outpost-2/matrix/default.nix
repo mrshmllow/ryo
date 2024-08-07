@@ -1,10 +1,22 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   services.postgresql = {
     enable = true;
     initialScript = pkgs.writeText "synapse-init.sql" ''
       CREATE ROLE "matrix-synapse" WITH LOGIN PASSWORD 'synapse';
       CREATE DATABASE "matrix-synapse" WITH OWNER "matrix-synapse" TEMPLATE template0 LC_COLLATE = "C" LC_CTYPE = "C";
     '';
+  };
+
+  deployment.keys."synapse-keycloak.yml" = {
+    keyCommand = ["gpg" "--decrypt" "nodes/outpost-2/matrix/synapse-keycloak.yml.gpg"];
+    uploadAt = "pre-activation";
+    destDir = "/etc/keys";
+    user = "matrix-synapse";
+    group = config.users.users.matrix-synapse.group;
   };
 
   services.matrix-synapse = {
@@ -18,7 +30,10 @@
       url_preview_enabled = true;
       max_upload_size = "200M";
       enable_registration = false;
+      password_config.enabled = false;
+      backchannel_logout_enabled = true;
     };
+    extraConfigFiles = ["/etc/keys/synapse-keycloak.yml"];
   };
 
   services.caddy = {
@@ -35,6 +50,21 @@
       reverse_proxy /_synapse/client/* localhost:8008
 
       tls /var/lib/caddy/althaea.zone.pem /var/lib/caddy/althaea.zone.key
+    '';
+
+    virtualHosts."element.althaea.zone".extraConfig = ''
+      root * ${pkgs.element-web.override {
+        conf = {
+          default_server_config = {
+            "m.homeserver" = {
+              base_url = "https://matrix.althaea.zone";
+              server_name = "althaea.zone";
+            };
+          };
+          permalink_prefix = "https://element.althaea.zone/";
+        };
+      }}
+      file_server
     '';
   };
 
