@@ -1,18 +1,33 @@
 {
-  inputs,
   name,
-  nodes,
-  pkgs,
-  lib,
-  modulesPath,
   config,
   ...
 }: {
   services.grafana = {
     enable = true;
 
-    settings.server.http_port = 2342;
-    settings.server.domain = "grafana.althaea.zone";
+    settings = {
+      server.http_port = 2342;
+      server.domain = "grafana.althaea.zone";
+      server.root_url = "https://grafana.althaea.zone/";
+
+      "auth.generic_oauth" = {
+        enable = true;
+        auto_login = false;
+        name = "Keycloak-OAuth";
+        allow_sign_up = true;
+        client_id = "grafana";
+        client_secret = ''''${KEYCLOAK_GRAFANA_SECRET}'';
+        scopes = ["openid" "email" "profile" "offline_access" "roles"];
+        email_attribute_path = "email";
+        login_attribute_path = "username";
+        name_attribute_path = "full_name";
+        auth_url = "https://identity.althaea.zone/realms/master/protocol/openid-connect/auth";
+        token_url = "https://identity.althaea.zone/realms/master/protocol/openid-connect/token";
+        api_url = "https://identity.althaea.zone/realms/master/protocol/openid-connect/userinfo";
+        role_attribute_path = "contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'";
+      };
+    };
 
     provision.datasources.settings.datasources = [
       {
@@ -28,6 +43,16 @@
         url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}";
       }
     ];
+  };
+
+  systemd.services.grafana.serviceConfig.EnvironmentFile = "/etc/keys/grafana.env";
+
+  deployment.keys."grafana.env" = {
+    keyCommand = ["gpg" "--decrypt" "nodes/outpost-2/grafana/grafana.env.gpg"];
+    uploadAt = "pre-activation";
+    destDir = "/etc/keys";
+    user = "grafana";
+    group = "grafana";
   };
 
   services.caddy = {
