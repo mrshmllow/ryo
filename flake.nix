@@ -18,6 +18,7 @@
       inputs.lix.follows = "lix";
     };
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
   };
 
   outputs = inputs @ {
@@ -27,6 +28,7 @@
     nixos-hardware,
     pre-commit-hooks,
     lix-module,
+    nix-minecraft,
     nixos-wsl,
     self,
     ...
@@ -122,7 +124,7 @@
         };
 
         services.tailscale = {
-          enable = true;
+          enable = false;
           authKeyFile = "/run/keys/tailscale.key";
           permitCertUid = "caddy";
           extraUpFlags = ["--ssh"];
@@ -161,6 +163,16 @@
         };
 
         imports = [./nodes/${name}];
+      };
+
+      minecraft-server = {name, ...}: {
+        deployment = {
+          targetHost = "154.26.156.106";
+          targetUser = "root";
+          buildOnTarget = true;
+        };
+
+        imports = [./nodes/${name} nix-minecraft.nixosModules.minecraft-servers];
       };
 
       althaea = {name, ...}: {
