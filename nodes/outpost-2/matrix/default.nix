@@ -12,7 +12,7 @@
   };
 
   deployment.keys."synapse-keycloak.yml" = {
-    keyCommand = ["gpg" "--decrypt" "nodes/outpost-2/matrix/synapse-keycloak.yml.gpg"];
+    keyCommand = ["gpg" "--decrypt" "${./synapse-keycloak.yml.gpg}"];
     uploadAt = "pre-activation";
     destDir = "/etc/keys";
     user = "matrix-synapse";

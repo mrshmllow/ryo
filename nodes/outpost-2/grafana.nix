@@ -48,7 +48,7 @@
   systemd.services.grafana.serviceConfig.EnvironmentFile = "/etc/keys/grafana.env";
 
   deployment.keys."grafana.env" = {
-    keyCommand = ["gpg" "--decrypt" "nodes/outpost-2/grafana/grafana.env.gpg"];
+    keyCommand = ["gpg" "--decrypt" "${./grafana/grafana.env.gpg}"];
     uploadAt = "pre-activation";
     destDir = "/etc/keys";
     user = "grafana";

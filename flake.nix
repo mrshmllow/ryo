@@ -131,7 +131,7 @@
         };
 
         deployment.keys."tailscale.key" = {
-          keyCommand = ["gpg" "--decrypt" "secrets/tailscale.key.gpg"];
+          keyCommand = ["gpg" "--decrypt" "${./secrets/tailscale.key.gpg}"];
 
           uploadAt = "pre-activation";
         };
@@ -180,7 +180,7 @@
           allowLocalDeployment = true;
 
           keys."wireless.env" = {
-            keyCommand = ["gpg" "--decrypt" "secrets/wireless.env.gpg"];
+            keyCommand = ["gpg" "--decrypt" "${./secrets/wireless.env.gpg}"];
             uploadAt = "pre-activation";
             destDir = "/etc/keys";
           };
