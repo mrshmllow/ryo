@@ -105,7 +105,7 @@
         config,
         ...
       }: let
-        exporting_nodes = ["outpost-2" "pi"];
+        exporting_nodes = ["outpost-2" "pi" "mc"];
       in {
         imports = [
           lix-module.nixosModules.default
@@ -124,7 +124,7 @@
         };
 
         services.tailscale = {
-          enable = false;
+          enable = true;
           authKeyFile = "/run/keys/tailscale.key";
           permitCertUid = "caddy";
           extraUpFlags = ["--ssh"];
@@ -165,14 +165,14 @@
         imports = [./nodes/${name}];
       };
 
-      minecraft-server = {name, ...}: {
+      mc = {name, ...}: {
         deployment = {
-          targetHost = "154.26.156.106";
+          targetHost = "mc";
           targetUser = "root";
           buildOnTarget = true;
         };
 
-        imports = [./nodes/${name} nix-minecraft.nixosModules.minecraft-servers];
+        imports = [./nodes/minecraft-server nix-minecraft.nixosModules.minecraft-servers];
       };
 
       althaea = {name, ...}: {

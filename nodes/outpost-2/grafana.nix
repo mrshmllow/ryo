@@ -83,6 +83,14 @@
           }
         ];
       }
+      {
+        job_name = "mc";
+        static_configs = [
+          {
+            targets = ["mc:9002"];
+          }
+        ];
+      }
     ];
   };
 

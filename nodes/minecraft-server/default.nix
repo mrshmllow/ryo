@@ -7,6 +7,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./backup.nix
     ./module.nix
   ];
 
