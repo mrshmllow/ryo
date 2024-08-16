@@ -148,7 +148,7 @@
           {
             "plugins/LuckPerms/config.yml" = pkgs.runCommand "config.yml" {} ''
               cp ${./lp.bukkit.yml} $out
-              substituteInPlace $out --replace "%SERVER%" "creative"
+              substituteInPlace $out --replace "%SERVER%" "survival"
             '';
             "plugins/BlueMap.jar" = pkgs.fetchurl {
               url = "https://cdn.modrinth.com/data/swbUV1cr/versions/TL5ElRWX/BlueMap-5.3-spigot.jar";
