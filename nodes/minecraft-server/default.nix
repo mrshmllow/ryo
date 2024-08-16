@@ -37,6 +37,20 @@
       MaterialTec = "ce4f5c09-bb90-45c6-ae1c-28ebe17b39af";
       Polarite_Panda = "307d67f3-7a4c-4853-b3a8-d8d78c1f90c8";
     };
+    plugins = {
+      "plugins/SimpleVoiceChat.jar" = pkgs.fetchurl {
+        url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/nS19YToN/voicechat-bukkit-2.5.20.jar";
+        hash = "sha256-XRJdYjkdj8guYuYV7Ti14F/FURoP6526YDm5/kGXfAg=";
+      };
+      "plugins/LuckPerms-Bukkit.jar" = pkgs.fetchurl {
+        url = "https://download.luckperms.net/1554/bukkit/loader/LuckPerms-Bukkit-5.4.139.jar";
+        hash = "sha256-8DhCoj9LSxhXKLmjwai598qp9hAQzbIPPNNmIzhVdRw=";
+      };
+      "plugins/LPCMinimessage.jar" = pkgs.fetchurl {
+        url = "https://cdn.modrinth.com/data/LOlAU5yB/versions/cfyseuAq/LPC-Minimessage.jar";
+        hash = "sha256-KjmZtbREOTXnqyawRpNZp6JLFO/fJOGd80bMn+yx8J0=";
+      };
+    };
   in {
     enable = true;
     eula = true;
@@ -62,6 +76,10 @@
             url = "https://download.luckperms.net/1554/velocity/LuckPerms-Velocity-5.4.139.jar";
             hash = "sha256-6v/CtD8QeqSuU9Y7oTIRJgIZCEiUrCOeslk52Euf38Y=";
           };
+          "plugins/Velocitab.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/Q10irTG0/versions/8lauusu2/Velocitab-1.7.1-b4746dd.jar";
+            hash = "sha256-DEA9dvkTP0MnvjpgJr2UDG53JrGXoHX3Ao1EzfGp54M=";
+          };
           "plugins/luckperms/config.yml" = ./lp.velocity.yml;
         };
       };
@@ -83,20 +101,14 @@
           server-port = 25567;
         };
 
-        symlinks = {
-          "plugins/LuckPerms/config.yml" = pkgs.runCommand "config.yml" {} ''
-            cp ${./lp.bukkit.yml} $out
-            substituteInPlace $out --replace "%SERVER%" "creative"
-          '';
-          "plugins/SimpleVoiceChat.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/nS19YToN/voicechat-bukkit-2.5.20.jar";
-            hash = "sha256-XRJdYjkdj8guYuYV7Ti14F/FURoP6526YDm5/kGXfAg=";
-          };
-          "plugins/LuckPerms-Bukkit.jar" = pkgs.fetchurl {
-            url = "https://download.luckperms.net/1554/bukkit/loader/LuckPerms-Bukkit-5.4.139.jar";
-            hash = "sha256-8DhCoj9LSxhXKLmjwai598qp9hAQzbIPPNNmIzhVdRw=";
-          };
-        };
+        symlinks =
+          {
+            "plugins/LuckPerms/config.yml" = pkgs.runCommand "config.yml" {} ''
+              cp ${./lp.bukkit.yml} $out
+              substituteInPlace $out --replace "%SERVER%" "creative"
+            '';
+          }
+          // plugins;
 
         files = {
           "config/paper-global.yml" = ./paper-global.yml;
@@ -119,24 +131,18 @@
           server-port = 25568;
         };
 
-        symlinks = {
-          "plugins/LuckPerms/config.yml" = pkgs.runCommand "config.yml" {} ''
-            cp ${./lp.bukkit.yml} $out
-            substituteInPlace $out --replace "%SERVER%" "creative"
-          '';
-          "plugins/BlueMap.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/swbUV1cr/versions/TL5ElRWX/BlueMap-5.3-spigot.jar";
-            hash = "sha256-fNHcgcoELud8Zxy2nmYX9bFLEIq5spnIk3uMASYfmiI=";
-          };
-          "plugins/SimpleVoiceChat.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/nS19YToN/voicechat-bukkit-2.5.20.jar";
-            hash = "sha256-XRJdYjkdj8guYuYV7Ti14F/FURoP6526YDm5/kGXfAg=";
-          };
-          "plugins/LuckPerms-Bukkit.jar" = pkgs.fetchurl {
-            url = "https://download.luckperms.net/1554/bukkit/loader/LuckPerms-Bukkit-5.4.139.jar";
-            hash = "sha256-8DhCoj9LSxhXKLmjwai598qp9hAQzbIPPNNmIzhVdRw=";
-          };
-        };
+        symlinks =
+          {
+            "plugins/LuckPerms/config.yml" = pkgs.runCommand "config.yml" {} ''
+              cp ${./lp.bukkit.yml} $out
+              substituteInPlace $out --replace "%SERVER%" "creative"
+            '';
+            "plugins/BlueMap.jar" = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/swbUV1cr/versions/TL5ElRWX/BlueMap-5.3-spigot.jar";
+              hash = "sha256-fNHcgcoELud8Zxy2nmYX9bFLEIq5spnIk3uMASYfmiI=";
+            };
+          }
+          // plugins;
 
         files = {
           "config/paper-global.yml" = ./paper-global.yml;
