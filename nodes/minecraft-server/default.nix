@@ -98,6 +98,19 @@
           difficulty = "normal";
           gamemode = "creative";
           level-type = "minecraft:flat";
+          generator-settings = builtins.toJSON {
+            layers = [
+              {
+                height = 3;
+                block = "minecraft:bedrock";
+              }
+              {
+                height = 116;
+                block = "minecraft:sandstone";
+              }
+            ];
+            biome = "minecraft:desert";
+          };
           server-port = 25567;
         };
 
