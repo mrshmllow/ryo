@@ -55,14 +55,14 @@
     enable = true;
     eula = true;
 
-    voicechat-servers = ["default" "creative"];
+    voicechat-servers = ["survival" "creative"];
 
     velocity = {
       enable = true;
       openFirewall = true;
       config = {
-        servers = ["default" "creative"];
-        try = ["default" "creative"];
+        servers = ["survival" "creative"];
+        try = ["survival" "creative"];
         motd = "visit <color:#4287f5>mc.althaea.zone</color:#4287f5> for the map";
       };
     };
@@ -116,7 +116,7 @@
         };
       };
 
-      default = {
+      survival = {
         enable = true;
         autoStart = true;
         # Do not open!
