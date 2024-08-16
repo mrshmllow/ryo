@@ -27,7 +27,7 @@
       pruneOpts = [
         "--keep-daily 7"
         "--keep-weekly 5"
-        "--keep-montly 3"
+        "--keep-monthly 3"
       ];
     };
   };

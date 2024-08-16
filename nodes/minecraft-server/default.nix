@@ -20,39 +20,13 @@
       ];
   };
 
-  services.minecraft-servers = let
-    fabric = pkgs.fabricServers.fabric-1_21_1;
-    mods = {
-      "mods/FabricProxy-Lite.jar" = pkgs.fetchurl {
-        url = "https://cdn.modrinth.com/data/8dI2tmqs/versions/AQhF7kvw/FabricProxy-Lite-2.9.0.jar";
-        hash = "sha256-wIQA86Uh6gIQgmr8uAJpfWY2QUIBlMrkFu0PhvQPoac=";
-      };
-      "mods/Lithium.jar" = pkgs.fetchurl {
-        url = "https://cdn.modrinth.com/data/gvQqBUqZ/versions/5szYtenV/lithium-fabric-mc1.21.1-0.13.0.jar";
-        hash = "sha256-ENNx/uOXvwMG4eLYY8VMVkQrzC3G4BYD8UafL+SRDWE=";
-      };
-      "mods/FerriteCore.jar" = pkgs.fetchurl {
-        url = "https://cdn.modrinth.com/data/uXXizFIs/versions/wmIZ4wP4/ferritecore-7.0.0-fabric.jar";
-        hash = "sha256-LDEgDR9d5qPPXtxMPTkgBjbh4GDEtUjc+CSe9IdmAyM=";
-      };
-      "mods/SimpleVoiceChat.jar" = pkgs.fetchurl {
-        url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/lZkOuATd/voicechat-fabric-1.21.1-2.5.20.jar";
-        hash = "sha256-YDFhGhT34iNWUT7jYBGn2A/E63RxhRZ6Jtdxzyf1y2U=";
-      };
-      "mods/Chunky.jar" = pkgs.fetchurl {
-        url = "https://cdn.modrinth.com/data/fALzjamp/versions/dPliWter/Chunky-1.4.16.jar";
-        hash = "sha256-yfA+Mi5jHulMy42/N3aFnNEnZuUTt1M+n5ZueZ20eTc=";
-      };
-      "mods/Fabric.jar" = pkgs.fetchurl {
-        url = "https://cdn.modrinth.com/data/P7dR8mSH/versions/bK6OgzFj/fabric-api-0.102.1%2B1.21.1.jar";
-        hash = "sha256-2ouVZNKtpqT/6uYrwSn7QhRHhsxTzx55oNcj8vaTopw=";
-      };
-      "mods/LuckPerms.jar" = pkgs.fetchurl {
-        url = "https://download.luckperms.net/1554/fabric/LuckPerms-Fabric-5.4.139.jar";
-        hash = "sha256-QOdw3jgJnYXOZuaVp45z0jzRH1Ar56FZwm4onJzBEtQ=";
-      };
-    };
+  deployment.keys."minecraft.env.gpg" = {
+    keyCommand = ["gpg" "--decrypt" "${./minecraft.env.gpg}"];
 
+    uploadAt = "pre-activation";
+  };
+
+  services.minecraft-servers = let
     whitelist = {
       marshmallow = "dd4edde3-f0c7-4e27-82df-9c374548f2b9";
 
@@ -79,6 +53,8 @@
       };
     };
 
+    environmentFile = config.deployment.keys."minecraft.env.gpg".path;
+
     servers = {
       velocity = {
         symlinks = {
@@ -95,7 +71,7 @@
         autoStart = true;
         # Do not open!
         openFirewall = false;
-        package = fabric;
+        package = pkgs.paperServers.paper-1_21_1;
 
         inherit whitelist;
 
@@ -107,14 +83,25 @@
           server-port = 25567;
         };
 
-        symlinks =
-          {
-            "config/luckperms/luckperms.conf" = pkgs.runCommand "luckperms.conf" {} ''
-              cp ${./lp.fabric.conf} $out
-              substituteInPlace $out --replace "%SERVER%" "creative"
-            '';
-          }
-          // mods;
+        symlinks = {
+          "plugins/LuckPerms/config.yml" = pkgs.runCommand "config.yml" {} ''
+            cp ${./lp.bukkit.yml} $out
+            substituteInPlace $out --replace "%SERVER%" "creative"
+          '';
+          "plugins/SimpleVoiceChat.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/nS19YToN/voicechat-bukkit-2.5.20.jar";
+            hash = "sha256-XRJdYjkdj8guYuYV7Ti14F/FURoP6526YDm5/kGXfAg=";
+          };
+          "plugins/LuckPerms-Bukkit.jar" = pkgs.fetchurl {
+            url = "https://download.luckperms.net/1554/bukkit/loader/LuckPerms-Bukkit-5.4.139.jar";
+            hash = "sha256-8DhCoj9LSxhXKLmjwai598qp9hAQzbIPPNNmIzhVdRw=";
+          };
+        };
+
+        files = {
+          "config/paper-global.yml" = ./paper-global.yml;
+          "config/paper-world-defaults.yml" = ./paper-world-defaults.yml;
+        };
       };
 
       default = {
@@ -122,7 +109,7 @@
         autoStart = true;
         # Do not open!
         openFirewall = false;
-        package = fabric;
+        package = pkgs.paperServers.paper-1_21_1;
 
         inherit whitelist;
 
@@ -132,19 +119,29 @@
           server-port = 25568;
         };
 
-        symlinks =
-          {
-            "config/luckperms/luckperms.conf" = pkgs.runCommand "luckperms.conf" {} ''
-              cp ${./lp.fabric.conf} $out
-              substituteInPlace $out --replace "%SERVER%" "survival"
-            '';
+        symlinks = {
+          "plugins/LuckPerms/config.yml" = pkgs.runCommand "config.yml" {} ''
+            cp ${./lp.bukkit.yml} $out
+            substituteInPlace $out --replace "%SERVER%" "creative"
+          '';
+          "plugins/BlueMap.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/swbUV1cr/versions/TL5ElRWX/BlueMap-5.3-spigot.jar";
+            hash = "sha256-fNHcgcoELud8Zxy2nmYX9bFLEIq5spnIk3uMASYfmiI=";
+          };
+          "plugins/SimpleVoiceChat.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/nS19YToN/voicechat-bukkit-2.5.20.jar";
+            hash = "sha256-XRJdYjkdj8guYuYV7Ti14F/FURoP6526YDm5/kGXfAg=";
+          };
+          "plugins/LuckPerms-Bukkit.jar" = pkgs.fetchurl {
+            url = "https://download.luckperms.net/1554/bukkit/loader/LuckPerms-Bukkit-5.4.139.jar";
+            hash = "sha256-8DhCoj9LSxhXKLmjwai598qp9hAQzbIPPNNmIzhVdRw=";
+          };
+        };
 
-            "mods/BlueMap.jar" = pkgs.fetchurl {
-              url = "https://cdn.modrinth.com/data/swbUV1cr/versions/Zpzf0Xab/BlueMap-5.3-fabric.jar";
-              hash = "sha256-5FdRX2773zgIR5MQSNAO52lblA5M9wi57fjbQSe0oXs=";
-            };
-          }
-          // mods;
+        files = {
+          "config/paper-global.yml" = ./paper-global.yml;
+          "config/paper-world-defaults.yml" = ./paper-world-defaults.yml;
+        };
       };
     };
   };
