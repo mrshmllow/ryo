@@ -3,6 +3,8 @@
   config,
   ...
 }: {
+  imports = [./bridge.nix];
+
   services.postgresql = {
     enable = true;
     initialScript = pkgs.writeText "synapse-init.sql" ''
