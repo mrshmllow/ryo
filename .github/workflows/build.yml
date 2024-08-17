@@ -45,7 +45,7 @@ jobs:
       - check
     strategy:
       matrix: 
-        system: [x86_64-linux, aarch64-linux]
+        system: [x86_64-linux]
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-qemu-action@v3
