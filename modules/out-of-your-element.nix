@@ -6,6 +6,7 @@
 }: let
   out-of-your-element = pkgs.callPackage ./out-of-your-element.package.nix {};
   cfg = config.services.out-of-your-element;
+  defaultUser = "out-of-your-element";
 in {
   options.services.out-of-your-element = {
     enable = lib.mkEnableOption "out-of-your-element";
@@ -17,12 +18,12 @@ in {
 
     user = lib.mkOption {
       type = lib.types.str;
-      default = "out-of-your-element";
+      default = defaultUser;
     };
 
     group = lib.mkOption {
       type = lib.types.str;
-      default = "out-of-your-element";
+      default = defaultUser;
     };
 
     configFile = lib.mkOption {
@@ -37,12 +38,15 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    users = {
-      groups.${cfg.group} = {};
-      users.${cfg.user} = {
+    users.users = lib.optionalAttrs (cfg.user == defaultUser) {
+      ${cfg.user} = {
         isSystemUser = true;
         group = cfg.group;
       };
+    };
+
+    users.groups = lib.optionalAttrs (cfg.group == defaultUser) {
+      ${cfg.group} = {};
     };
 
     systemd.tmpfiles.rules = [
