@@ -38,38 +38,42 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    users.users = lib.optionalAttrs (cfg.user == defaultUser) {
-      ${cfg.user} = {
-        isSystemUser = true;
-        group = cfg.group;
+    users = {
+      users = lib.optionalAttrs (cfg.user == defaultUser) {
+        ${cfg.user} = {
+          isSystemUser = true;
+          group = cfg.group;
+        };
+      };
+
+      groups = lib.optionalAttrs (cfg.group == defaultUser) {
+        ${cfg.group} = {};
       };
     };
 
-    users.groups = lib.optionalAttrs (cfg.group == defaultUser) {
-      ${cfg.group} = {};
-    };
+    systemd = {
+      tmpfiles.rules = [
+        "C+ ${cfg.dataDir} - - - - ${out-of-your-element}/lib/node_modules/out-of-your-element"
+        "Z ${cfg.dataDir} 0750 out-of-your-element out-of-your-element - -"
+        "d ${cfg.dataDir}/db 0750 out-of-your-element out-of-your-element - -"
+        "d ${cfg.dataDir}/node_modules 0750 out-of-your-element out-of-your-element - -"
 
-    systemd.tmpfiles.rules = [
-      "C+ ${cfg.dataDir} - - - - ${out-of-your-element}/lib/node_modules/out-of-your-element"
-      "Z ${cfg.dataDir} 0750 out-of-your-element out-of-your-element - -"
-      "d ${cfg.dataDir}/db 0750 out-of-your-element out-of-your-element - -"
-      "d ${cfg.dataDir}/node_modules 0750 out-of-your-element out-of-your-element - -"
+        "L ${cfg.dataDir}/config.js - - - - ${cfg.configFile}"
+        "L ${cfg.dataDir}/registration.yaml - - - - ${cfg.registrationFile}"
+      ];
 
-      "L ${cfg.dataDir}/config.js - - - - ${cfg.configFile}"
-      "L ${cfg.dataDir}/registration.yaml - - - - ${cfg.registrationFile}"
-    ];
+      services.out-of-your-element = {
+        enable = true;
+        path = [pkgs.vips];
+        wantedBy = ["multi-user.target"];
+        script = "${lib.getExe pkgs.nodejs_20} start.js";
+        preStart = "${lib.getExe pkgs.nodejs_20} scripts/seed.js";
 
-    systemd.services.out-of-your-element = {
-      enable = true;
-      path = [pkgs.vips];
-      wantedBy = ["multi-user.target"];
-      script = "${lib.getExe pkgs.nodejs_20} start.js";
-      preStart = "${lib.getExe pkgs.nodejs_20} scripts/seed.js";
-
-      serviceConfig = {
-        WorkingDirectory = cfg.dataDir;
-        Group = cfg.group;
-        User = cfg.user;
+        serviceConfig = {
+          WorkingDirectory = cfg.dataDir;
+          Group = cfg.group;
+          User = cfg.user;
+        };
       };
     };
   };
