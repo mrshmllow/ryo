@@ -56,7 +56,9 @@ in {
   systemd.services.out-of-your-element = {
     enable = true;
     path = [pkgs.vips];
+    wantedBy = ["multi-user.target"];
     script = "${lib.getExe pkgs.nodejs_20} start.js";
+    preStart = "${lib.getExe pkgs.nodejs_20} scripts/seed.js";
 
     serviceConfig = {
       WorkingDirectory = data-dir;
