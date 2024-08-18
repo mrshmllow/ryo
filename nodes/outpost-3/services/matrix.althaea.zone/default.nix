@@ -35,7 +35,7 @@
       password_config.enabled = false;
       backchannel_logout_enabled = true;
     };
-    extraConfigFiles = ["/etc/keys/synapse-keycloak.yml"];
+    extraConfigFiles = [config.deployment.keys."synapse-keycloak.yml".path];
   };
 
   services.caddy = {

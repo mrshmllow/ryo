@@ -111,7 +111,7 @@
 
         services.tailscale = {
           enable = true;
-          authKeyFile = "/run/keys/tailscale.key";
+          authKeyFile = config.deployment.keys."tailscale.key".path;
           permitCertUid = "caddy";
           extraUpFlags = ["--ssh"];
         };

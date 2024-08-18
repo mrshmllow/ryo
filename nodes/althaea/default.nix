@@ -1,6 +1,6 @@
 {
   pkgs,
-  inputs,
+  config,
   lib,
   ...
 }: {
@@ -202,7 +202,7 @@
     psk = "@HOME_PSK@";
     priority = 100;
   };
-  networking.wireless.environmentFile = "/etc/keys/wireless.env";
+  networking.wireless.environmentFile = config.deployment.keys."wireless.env".path;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;

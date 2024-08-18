@@ -15,7 +15,7 @@
       proxy = "edge";
     };
 
-    database.passwordFile = "/etc/keys/keycloak-db.pass";
+    database.passwordFile = config.deployment.keys."keycloak-db.pass".path;
   };
 
   services.caddy = {
