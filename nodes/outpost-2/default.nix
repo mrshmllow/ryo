@@ -2,9 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     ./grafana.nix
-    ./sso.nix
     ./forge.nix
-    ./matrix
   ];
 
   # Use the GRUB 2 boot loader.

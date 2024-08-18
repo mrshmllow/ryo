@@ -141,6 +141,16 @@
         imports = [./nodes/${name}];
       };
 
+      outpost-3 = {name, ...}: {
+        deployment = {
+          targetHost = name;
+          targetUser = "root";
+          buildOnTarget = true;
+        };
+
+        imports = [./nodes/${name}];
+      };
+
       pi = {name, ...}: {
         deployment = {
           targetHost = "100.115.246.65";
