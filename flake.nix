@@ -148,7 +148,7 @@
           buildOnTarget = true;
         };
 
-        imports = [./nodes/${name}];
+        imports = [./nodes/${name} ./modules/out-of-your-element.nix];
       };
 
       pi = {name, ...}: {
