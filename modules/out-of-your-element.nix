@@ -54,9 +54,9 @@ in {
     systemd = {
       tmpfiles.rules = [
         "C+ ${cfg.dataDir} - - - - ${out-of-your-element}/lib/node_modules/out-of-your-element"
-        "Z ${cfg.dataDir} 0750 out-of-your-element out-of-your-element - -"
-        "d ${cfg.dataDir}/db 0750 out-of-your-element out-of-your-element - -"
-        "d ${cfg.dataDir}/node_modules 0750 out-of-your-element out-of-your-element - -"
+        "Z ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group} - -"
+        "d ${cfg.dataDir}/db 0750 ${cfg.user} ${cfg.group} - -"
+        "d ${cfg.dataDir}/node_modules 0750 ${cfg.user} ${cfg.group} - -"
 
         "L ${cfg.dataDir}/config.js - - - - ${cfg.configFile}"
         "L ${cfg.dataDir}/registration.yaml - - - - ${cfg.registrationFile}"
