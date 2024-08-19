@@ -53,7 +53,6 @@ in {
 
     systemd = {
       tmpfiles.rules = [
-        "C+ ${cfg.dataDir} - - - - ${out-of-your-element}/lib/node_modules/out-of-your-element"
         "Z ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group} - -"
         "d ${cfg.dataDir}/db 0750 ${cfg.user} ${cfg.group} - -"
         "d ${cfg.dataDir}/node_modules 0750 ${cfg.user} ${cfg.group} - -"
@@ -67,7 +66,12 @@ in {
         path = [pkgs.vips];
         wantedBy = ["multi-user.target"];
         script = "${lib.getExe pkgs.nodejs_20} start.js";
-        preStart = "${lib.getExe pkgs.nodejs_20} scripts/seed.js";
+        preStart = ''
+          # feels unsafe but should be fine hopefully xd
+          cp -R ${out-of-your-element}/* .
+
+          ${lib.getExe pkgs.nodejs_20} scripts/seed.js
+        '';
 
         serviceConfig = {
           WorkingDirectory = cfg.dataDir;
