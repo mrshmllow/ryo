@@ -3,7 +3,6 @@
     ./identity.althaea.zone
     ./matrix.althaea.zone
     ./element.althaea.zone
+    ./git.althaea.zone
   ];
-
-  # systemd.services.matrix-synapse.wants = "keycloak.sercice";
 }
