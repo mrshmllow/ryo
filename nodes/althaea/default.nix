@@ -8,37 +8,23 @@
     ./hardware-configuration.nix
     # auto-cpufreq.nixosModules.default
   ];
+
+  desktop.enable = true;
+
   services.fwupd.enable = true;
 
   environment.systemPackages = with pkgs; [
     vim
     git
     colmena
-
-    vesktop
-    obsidian
-    keepassxc
   ];
 
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "obsidian"
-    ];
-
   networking.hostName = "althaea";
   networking.nameservers = ["1.1.1.1"];
 
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-  };
-
   programs.fuse.userAllowOther = true;
-
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   nixpkgs.config.allowUnfree = true;
 
@@ -64,27 +50,6 @@
     #   quantum = 64;
     #   rate = 48000;
     # };
-  };
-
-  fonts = {
-    enableDefaultPackages = true;
-    fontDir.enable = true;
-    packages = with pkgs; [
-      source-han-sans
-      source-han-sans-japanese
-      source-han-serif-japanese
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-      (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
-    ];
-    fontconfig = {
-      defaultFonts = {
-        monospace = ["JetBrainsMono"];
-        serif = ["Noto Serif" "Source Han Serif"];
-        sansSerif = ["Noto Sans" "Source Han Sans"];
-      };
-    };
   };
 
   # required for sway
@@ -207,8 +172,6 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  boot.plymouth.enable = true;
 
   system.stateVersion = "23.05";
 }

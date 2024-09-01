@@ -20,7 +20,7 @@
     };
   };
 in {
-  imports = [./wm ./wezterm];
+  imports = [./wezterm];
 
   gtk = {
     enable = true;
@@ -29,16 +29,6 @@ in {
       package = pkgs.adw-gtk3;
     };
   };
-
-  programs.google-chrome = {
-    enable = true;
-    package = pkgs.google-chrome;
-  };
-
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "google-chrome"
-    ];
 
   systemd.user.services.keepass = makeRcloneMount "/Keepass" "%h/.local/share/keepass";
   systemd.user.services.obsidian = makeRcloneMount "/obsidian" "%h/.local/share/obsidian";

@@ -94,6 +94,7 @@
       in {
         imports = [
           ./nix.nix
+          ./modules
         ];
 
         nix.package = pkgs.lix;
@@ -148,7 +149,7 @@
           buildOnTarget = true;
         };
 
-        imports = [./nodes/${name} ./modules/out-of-your-element.nix];
+        imports = [./nodes/${name}];
       };
 
       pi = {name, ...}: {
@@ -171,6 +172,22 @@
         imports = [./nodes/minecraft-server nix-minecraft.nixosModules.minecraft-servers];
       };
 
+      maple = {name, ...}: {
+        deployment = {
+          targetHost = "maple";
+          targetUser = "root";
+          buildOnTarget = true;
+          allowLocalDeployment = true;
+        };
+
+        imports = [
+          ./nodes/${name}
+          ./marsh
+          ./marsh/desktop.nix
+          home-manager.nixosModules.home-manager
+        ];
+      };
+
       althaea = {name, ...}: {
         deployment = {
           allowLocalDeployment = true;
@@ -186,6 +203,7 @@
           ./nodes/${name}
           ./marsh
           ./marsh/desktop.nix
+          ./marsh/wm.nix
           home-manager.nixosModules.home-manager
           nixos-hardware.nixosModules.framework-13th-gen-intel
         ];
