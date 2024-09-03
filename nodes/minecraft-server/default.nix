@@ -24,6 +24,7 @@
     keyCommand = ["gpg" "--decrypt" "${./minecraft.env.gpg}"];
 
     uploadAt = "pre-activation";
+    destDir = "/etc/keys";
   };
 
   services.minecraft-servers = let

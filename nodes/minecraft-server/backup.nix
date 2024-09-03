@@ -3,12 +3,14 @@
     keyCommand = ["gpg" "--decrypt" "${./b2.pass.gpg}"];
 
     uploadAt = "pre-activation";
+    destDir = "/etc/keys";
   };
 
   deployment.keys."minecraft-b2.env.gpg" = {
     keyCommand = ["gpg" "--decrypt" "${./b2.env.gpg}"];
 
     uploadAt = "pre-activation";
+    destDir = "/etc/keys";
   };
 
   services.restic.backups = {
