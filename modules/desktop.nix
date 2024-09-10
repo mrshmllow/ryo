@@ -19,7 +19,13 @@ in {
       environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
       environment.systemPackages = with pkgs; [
-        google-chrome
+        (google-chrome.override {
+          commandLineArgs = [
+            "--enable-features=VaapiVideoDecodeLinuxGL"
+            "--ignore-gpu-blocklist"
+            "--enable-zero-copy"
+          ];
+        })
 
         vesktop
         obsidian
@@ -67,9 +73,6 @@ in {
       };
     })
 
-    (lib.mkIf cfg.amd {
-      })
-
     (lib.mkIf cfg.gnome.enable {
       # Enable the X11 windowing system.
       services.xserver.enable = true;
@@ -78,7 +81,7 @@ in {
       services.xserver.displayManager.gdm.enable = true;
       services.xserver.desktopManager.gnome.enable = true;
 
-      environment.systemPackages = [pkgs.gnomeExtensions.appindicator];
+      environment.systemPackages = [pkgs.gnomeExtensions.appindicator pkgs.gnomeExtensions.clipboard-history];
 
       hardware.pulseaudio.enable = lib.mkForce false;
 
