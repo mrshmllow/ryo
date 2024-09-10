@@ -12,6 +12,8 @@
   desktop.gnome.enable = true;
   desktop.amd = true;
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
 
