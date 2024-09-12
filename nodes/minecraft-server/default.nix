@@ -56,14 +56,14 @@
     enable = true;
     eula = true;
 
-    voicechat-servers = ["survival" "creative"];
+    voicechat-servers = ["survival" "anarchy"];
 
     velocity = {
       enable = true;
       openFirewall = true;
       config = {
-        servers = ["survival" "creative"];
-        try = ["survival" "creative"];
+        servers = ["survival" "anarchy"];
+        try = ["survival" "anarchy"];
         motd = "visit <color:#4287f5>mc.althaea.zone</color:#4287f5> for the map";
       };
     };
@@ -85,7 +85,7 @@
         };
       };
 
-      creative = {
+      anarchy = {
         enable = true;
         autoStart = true;
         # Do not open!
@@ -97,21 +97,6 @@
         serverProperties = {
           white-list = true;
           difficulty = "normal";
-          gamemode = "creative";
-          level-type = "minecraft:flat";
-          generator-settings = builtins.toJSON {
-            layers = [
-              {
-                height = 3;
-                block = "minecraft:bedrock";
-              }
-              {
-                height = 116;
-                block = "minecraft:sandstone";
-              }
-            ];
-            biome = "minecraft:desert";
-          };
           server-port = 25567;
         };
 
@@ -119,7 +104,7 @@
           {
             "plugins/LuckPerms/config.yml" = pkgs.runCommand "config.yml" {} ''
               cp ${./lp.bukkit.yml} $out
-              substituteInPlace $out --replace "%SERVER%" "creative"
+              substituteInPlace $out --replace "%SERVER%" "anarchy"
             '';
           }
           // plugins;
