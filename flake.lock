@@ -12,11 +12,11 @@
         "tolerable": "tolerable"
       },
       "locked": {
-        "lastModified": 1725763432,
-        "narHash": "sha256-oZfRZATpsJTnOsGMr9E/+YJlPtLG/WX53tCftHd4fw0=",
+        "lastModified": 1726575743,
+        "narHash": "sha256-yVS3K8735qM+nEiLkdTwDs9eCy9w5aH3X3lp9reCSkk=",
         "owner": "mrshmllow",
         "repo": "nvim-candy",
-        "rev": "e125e62ba584286919ff27b86e6b86020bc967ac",
+        "rev": "dcdf6343da19e79ea099dd7b92f161979965bff8",
         "type": "github"
       },
       "original": {
