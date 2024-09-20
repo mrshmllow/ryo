@@ -42,10 +42,12 @@ in {
 
   services.forgejo = {
     enable = true;
+    package = pkgs.forgejo;
     settings = {
       server = {
         ROOT_URL = "https://git.althaea.zone";
         DOMAIN = "git.althaea.zone";
+        SSH_DOMAIN = "bare.git.althaea.zone";
         LANDING_PAGE = "explore";
         OFFLINE_MODE = false;
       };
