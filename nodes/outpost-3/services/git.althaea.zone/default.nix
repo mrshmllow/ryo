@@ -38,6 +38,8 @@
     "forgejo-dark-tritanopia"
   ];
 in {
+  imports = [./runner.nix];
+
   services.forgejo = {
     enable = true;
     settings = {
