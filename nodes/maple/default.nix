@@ -15,6 +15,7 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   virtualisation.libvirtd.enable = true;
+  virtualisation.docker.enable = true;
   programs.virt-manager.enable = true;
 
   # Use the systemd-boot EFI boot loader.
