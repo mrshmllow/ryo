@@ -30,6 +30,8 @@ in {
     };
   };
 
+  services.arrpc.enable = true;
+
   systemd.user.services.keepass = makeRcloneMount "/Keepass" "%h/.local/share/keepass";
   systemd.user.services.obsidian = makeRcloneMount "/obsidian" "%h/.local/share/obsidian";
 }
