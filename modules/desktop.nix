@@ -12,6 +12,7 @@ in {
     amd = lib.mkEnableOption "amdgpu";
 
     gnome.enable = lib.mkEnableOption "gnome desktop";
+    cosmic.enable = lib.mkEnableOption "cosmic desktop";
   };
 
   config = lib.mkMerge [
@@ -82,7 +83,14 @@ in {
       services.xserver.desktopManager.gnome.enable = true;
 
       environment.systemPackages = [pkgs.gnomeExtensions.appindicator pkgs.gnomeExtensions.clipboard-history];
+    })
 
+    (lib.mkIf cfg.cosmic.enable {
+      services.desktopManager.cosmic.enable = true;
+    })
+
+    (lib.mkIf (cfg.gnome.enable
+      || cfg.cosmic.enable) {
       hardware.pulseaudio.enable = lib.mkForce false;
 
       security.rtkit.enable = true;

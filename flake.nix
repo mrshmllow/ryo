@@ -10,6 +10,7 @@
     candy.url = "github:mrshmllow/nvim-candy";
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+    nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
   };
 
   outputs = inputs @ {
@@ -20,6 +21,7 @@
     pre-commit-hooks,
     nix-minecraft,
     nixos-wsl,
+    nixos-cosmic,
     self,
     ...
   }: let
@@ -95,6 +97,7 @@
         imports = [
           ./nix.nix
           ./modules
+          nixos-cosmic.nixosModules.default
         ];
 
         system.activationScripts.diff = {
