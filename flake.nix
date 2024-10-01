@@ -97,8 +97,6 @@
           ./modules
         ];
 
-        nix.package = pkgs.lix;
-
         system.activationScripts.diff = {
           supportsDryActivation = true;
           text = ''
