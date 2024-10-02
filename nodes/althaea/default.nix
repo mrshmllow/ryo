@@ -159,15 +159,15 @@
       key_mgmt=WPA-EAP
       eap=PEAP
       phase2="auth=MSCHAPV2"
-      identity="@DETNSW_IDENT@"
-      password="@DETNSW_PASSWORD@"
+      identity="ext:DETNSW_IDENT"
+      password=ext:DETNSW_PASSWORD
     '';
   };
   networking.wireless.networks."the internet" = {
-    psk = "@HOME_PSK@";
+    pskRaw = "ext:HOME_PSK";
     priority = 100;
   };
-  networking.wireless.environmentFile = config.deployment.keys."wireless.env".path;
+  networking.wireless.secretsFile = config.deployment.keys."wireless.env".path;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
