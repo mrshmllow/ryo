@@ -15,6 +15,11 @@
     G = ''nvim +"G" +":only"'';
   };
 
+  programs.ripgrep = {
+    enable = true;
+    arguments = ["--trim"];
+  };
+
   programs.fish = {
     enable = true;
     plugins = [
