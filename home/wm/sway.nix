@@ -87,14 +87,16 @@ in {
       # menu = "${lib.getExe pkgs.rofi} -normal-window -show drun";
       menu = "${lib.getExe pkgs.rofi} -normal-window -show drun";
       modifier = "Mod4";
-      output = {
+      output = let
+        bg = ../wallpaper.jpg;
+      in {
         DP-2 = {
           mode = "1920x1080@144.001Hz";
-          bg = "${../wallpaper} fill";
+          bg = "${bg} fill";
         };
         eDP-1 = {
           mode = "2256x1504@59.99Hz";
-          bg = "${../wallpaper} fill";
+          bg = "${bg} fill";
         };
       };
       startup = [
