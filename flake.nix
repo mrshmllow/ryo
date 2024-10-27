@@ -11,6 +11,7 @@
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
     nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
+    nix-gaming.url = "github:fufexan/nix-gaming";
   };
 
   outputs = inputs @ {

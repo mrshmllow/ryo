@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }: let
   cfg = config.desktop;
@@ -13,6 +14,7 @@ in {
 
     gnome.enable = lib.mkEnableOption "gnome desktop";
     cosmic.enable = lib.mkEnableOption "cosmic desktop";
+    games.sc.enable = lib.mkEnableOption "star citizen";
   };
 
   config = lib.mkMerge [
@@ -98,6 +100,15 @@ in {
         enable = true;
         pulse.enable = true;
       };
+    })
+
+    (lib.mkIf cfg.games.sc.enable {
+      boot.kernel.sysctl = {
+        "vm.max_map_count" = 16777216;
+        "fs.file-max" = 524288;
+      };
+
+      environment.systemPackages = [inputs.nix-gaming.packages.${pkgs.system}.star-citizen];
     })
   ];
 }

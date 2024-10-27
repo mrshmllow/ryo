@@ -13,6 +13,7 @@
   desktop.amd = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  desktop.games.sc.enable = true;
 
   virtualisation.libvirtd.enable = true;
   virtualisation.docker.enable = true;
