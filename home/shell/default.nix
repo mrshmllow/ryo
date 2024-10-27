@@ -42,7 +42,7 @@
     enable = true;
     enableFishIntegration = true;
     git = true;
-    icons = true;
+    icons = "auto";
     extraOptions = [
       "--group-directories-first"
       "--header"
