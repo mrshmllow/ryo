@@ -11,7 +11,7 @@
       {
         source = builtins.fetchurl {
           url = "https://github.com/mrshmllow.gpg";
-          sha256 = "01mb03xcws3f44vy79x5sk64q4811nh9a1m5y039q0888g95vix7";
+          sha256 = "0aaagw63bd89pzga82vhisg32gl9x5jz5b2alp47kzl2d6jgal9z";
         };
         trust = 5;
       }
