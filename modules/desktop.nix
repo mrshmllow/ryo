@@ -13,12 +13,19 @@ in {
     amd = lib.mkEnableOption "amdgpu";
 
     gnome.enable = lib.mkEnableOption "gnome desktop";
+    sway.enable = lib.mkEnableOption "sway wm";
     cosmic.enable = lib.mkEnableOption "cosmic desktop";
     games.sc.enable = lib.mkEnableOption "star citizen";
   };
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
+      home-manager.sharedModules = [
+        {
+          desktop.enable = true;
+        }
+      ];
+
       environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
       environment.systemPackages = with pkgs; [
@@ -92,7 +99,8 @@ in {
     })
 
     (lib.mkIf (cfg.gnome.enable
-      || cfg.cosmic.enable) {
+      || cfg.cosmic.enable
+      || cfg.sway.enable) {
       hardware.pulseaudio.enable = lib.mkForce false;
 
       security.rtkit.enable = true;
@@ -103,12 +111,74 @@ in {
     })
 
     (lib.mkIf cfg.games.sc.enable {
+      programs.gamemode.enable = true;
+
       boot.kernel.sysctl = {
         "vm.max_map_count" = 16777216;
         "fs.file-max" = 524288;
       };
 
-      environment.systemPackages = [inputs.nix-gaming.packages.${pkgs.system}.star-citizen];
+      environment.systemPackages = [
+        (inputs.nix-gaming.packages.${pkgs.system}.star-citizen.override
+          {
+            useUmu = true;
+          })
+      ];
+    })
+
+    (lib.mkIf cfg.sway.enable {
+      home-manager.sharedModules = [
+        {
+          desktop.sway.enable = true;
+        }
+      ];
+
+      environment.systemPackages = with pkgs; [
+        wayland
+        xdg-utils
+        glib
+        adwaita-icon-theme
+        wl-clipboard
+        pamixer
+
+        (pkgs.writeShellScriptBin "caffine" ''
+          systemd-inhibit --what=idle --who=Caffine --why=Caffine --mode=block sleep inf
+        '')
+      ];
+
+      services.greetd = {
+        enable = true;
+        settings = {
+          default_session = {
+            command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
+            user = "greeter";
+          };
+        };
+      };
+
+      security.polkit.enable = true;
+
+      programs.sway = {
+        enable = true;
+        package = pkgs.swayfx;
+        wrapperFeatures.gtk = true;
+      };
+
+      xdg.portal = {
+        enable = true;
+        wlr.enable = true;
+        # gtk portal needed to make gtk apps happy
+        extraPortals = [pkgs.xdg-desktop-portal-gtk];
+      };
+
+      security.pam.loginLimits = [
+        {
+          domain = "@users";
+          item = "rtprio";
+          type = "-";
+          value = 1;
+        }
+      ];
     })
   ];
 }

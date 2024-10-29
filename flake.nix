@@ -185,7 +185,6 @@
         imports = [
           ./nodes/${name}
           ./marsh
-          ./marsh/desktop.nix
           home-manager.nixosModules.home-manager
         ];
       };
@@ -193,19 +192,11 @@
       althaea = {name, ...}: {
         deployment = {
           allowLocalDeployment = true;
-
-          keys."wireless.env" = {
-            keyCommand = ["gpg" "--decrypt" "${./secrets/wireless.env.gpg}"];
-            uploadAt = "pre-activation";
-            destDir = "/etc/keys";
-          };
         };
 
         imports = [
           ./nodes/${name}
           ./marsh
-          ./marsh/desktop.nix
-          ./marsh/wm.nix
           home-manager.nixosModules.home-manager
           nixos-hardware.nixosModules.framework-13th-gen-intel
         ];

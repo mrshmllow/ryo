@@ -1,7 +1,6 @@
 {
   pkgs,
   inputs,
-  lib,
   ...
 }: {
   users.users.marsh = {
@@ -10,7 +9,7 @@
     description = "marsh";
     extraGroups = ["wheel" "docker" "libvirtd"];
 
-    packages = with pkgs; [
+    packages = [
       inputs.candy.packages.${pkgs.system}.default
     ];
   };

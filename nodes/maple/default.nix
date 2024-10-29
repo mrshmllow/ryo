@@ -1,18 +1,18 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
   ];
 
   desktop.enable = true;
-  desktop.gnome.enable = true;
+  desktop.sway.enable = true;
   desktop.amd = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  ryo-network = {
+    home.enable = true;
+    det.enable = true;
+  };
+
+  boot.kernelPackages = pkgs.linuxPackages_xanmod;
   desktop.games.sc.enable = true;
 
   virtualisation.libvirtd.enable = true;
@@ -33,7 +33,6 @@
   ];
 
   networking.hostName = "maple";
-  networking.networkmanager.enable = true;
 
   time.timeZone = "Australia/Sydney";
 
@@ -42,7 +41,6 @@
   users.users.marsh = {
     isNormalUser = true;
     extraGroups = ["wheel" "libvirtd"]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [];
   };
 
   system.stateVersion = "24.05"; # Did you read the comment?

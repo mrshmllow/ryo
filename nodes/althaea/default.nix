@@ -10,6 +10,12 @@
   ];
 
   desktop.enable = true;
+  desktop.sway.enable = true;
+
+  ryo-network = {
+    home.enable = true;
+    det.enable = true;
+  };
 
   services.fwupd.enable = true;
 
@@ -36,56 +42,6 @@
   virtualisation.docker.enable = true;
 
   services.power-profiles-daemon.enable = false;
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-
-    # lowLatency = {
-    #   enable = true;
-    #   # defaults (no need to be set unless modified)
-    #   quantum = 64;
-    #   rate = 48000;
-    # };
-  };
-
-  # required for sway
-  security.polkit.enable = true;
-
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
-        user = "greeter";
-      };
-    };
-  };
-
-  programs.sway = {
-    enable = true;
-    package = pkgs.swayfx;
-    wrapperFeatures.gtk = true;
-  };
-
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    # gtk portal needed to make gtk apps happy
-    extraPortals = [pkgs.xdg-desktop-portal-gtk];
-  };
-
-  security.pam.loginLimits = [
-    {
-      domain = "@users";
-      item = "rtprio";
-      type = "-";
-      value = 1;
-    }
-  ];
 
   services.printing.enable = true;
 
@@ -153,21 +109,6 @@
       USB_AUTOSUSPEND_DISABLE_ON_SHUTDOWN = false;
     };
   };
-  networking.wireless.enable = true;
-  networking.wireless.networks."detnsw-a" = {
-    auth = ''
-      key_mgmt=WPA-EAP
-      eap=PEAP
-      phase2="auth=MSCHAPV2"
-      identity="ext:DETNSW_IDENT"
-      password=ext:DETNSW_PASSWORD
-    '';
-  };
-  networking.wireless.networks."the internet" = {
-    pskRaw = "ext:HOME_PSK";
-    priority = 100;
-  };
-  networking.wireless.secretsFile = config.deployment.keys."wireless.env".path;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
