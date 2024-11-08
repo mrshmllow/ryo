@@ -12,6 +12,8 @@
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
     nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
     nix-gaming.url = "github:fufexan/nix-gaming";
+    umu.follows = "nix-gaming";
+    wezterm.url = "github:wez/wezterm/main?dir=nix";
   };
 
   outputs = inputs @ {
