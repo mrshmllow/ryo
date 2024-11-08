@@ -1,6 +1,8 @@
 {
   pkgs,
+  lib,
   config,
+  inputs,
   ...
 }: {
   imports = [
@@ -24,6 +26,25 @@
   boot.extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
   boot.kernelModules = [
     "v4l2loopback"
+  ];
+
+  environment.systemPackages = with pkgs; [
+    (opentrack.overrideAttrs (prev: {
+      version = "wine-extended-proton";
+      patches = [
+        (pkgs.replaceVars ../../0001-test.patch {
+          umu = lib.getExe' inputs.umu.packages.${pkgs.system}.umu "umu-run";
+        })
+      ];
+      src =
+        pkgs.fetchFromGitHub
+        {
+          owner = "Priton-CE";
+          repo = "opentrack-StarCitizen";
+          rev = "wine-extended-proton";
+          hash = "sha256-xN4Z1Cpmj8ktqWCQYPZTfqznHrYe28qlKkPoQxHRPJ8=";
+        };
+    }))
   ];
 
   boot.kernelPackages = pkgs.linuxPackages_xanmod;

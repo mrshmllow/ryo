@@ -1,0 +1,25 @@
+From b32b28771c1908c900d6871c91052d05e06bf151 Mon Sep 17 00:00:00 2001
+From: marshmallow <marshycity@gmail.com>
+Date: Wed, 6 Nov 2024 19:23:09 +1100
+Subject: [PATCH] test
+
+---
+ proto-wine/ftnoir_protocol_wine.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/proto-wine/ftnoir_protocol_wine.cpp b/proto-wine/ftnoir_protocol_wine.cpp
+index bae02b06..8b720d0d 100644
+--- a/proto-wine/ftnoir_protocol_wine.cpp
++++ b/proto-wine/ftnoir_protocol_wine.cpp
+@@ -94,7 +94,7 @@ module_status wine::initialize()
+     {
+         // PROTON
+ 
+-        wine_path = s.proton_path().toString() + "/bin/wine";
++        wine_path = "@umu@";
+     }
+     qDebug() << "proto/wine: wine_path:" << wine_path;
+ 
+-- 
+2.47.0
+
