@@ -140,6 +140,7 @@ in {
         adwaita-icon-theme
         wl-clipboard
         pamixer
+        pavucontrol
 
         (pkgs.writeShellScriptBin "caffine" ''
           systemd-inhibit --what=idle --who=Caffine --why=Caffine --mode=block sleep inf
