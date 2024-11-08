@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  inputs,
   lib,
   ...
 }: let
@@ -72,6 +73,7 @@ in {
 
       programs.wezterm = {
         enable = true;
+        package = inputs.wezterm.packages.${pkgs.system}.default;
         extraConfig = builtins.readFile ./wez-config.lua;
       };
     })
