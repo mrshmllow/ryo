@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -7,10 +11,20 @@
   desktop.sway.enable = true;
   desktop.amd = true;
 
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
+
   ryo-network = {
     home.enable = true;
     det.enable = true;
   };
+
+  # obs virtual camera
+  boot.extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
+  boot.kernelModules = [
+    "v4l2loopback"
+  ];
 
   boot.kernelPackages = pkgs.linuxPackages_xanmod;
   desktop.games.sc.enable = true;
