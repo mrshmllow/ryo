@@ -168,12 +168,12 @@
 
       mc = {name, ...}: {
         deployment = {
-          targetHost = "mc";
+          targetHost = "154.26.156.55";
           targetUser = "root";
           buildOnTarget = true;
         };
 
-        imports = [./nodes/minecraft-server nix-minecraft.nixosModules.minecraft-servers];
+        imports = [./nodes/minecraft-server-f nix-minecraft.nixosModules.minecraft-servers];
       };
 
       maple = {name, ...}: {

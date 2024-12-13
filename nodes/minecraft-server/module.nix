@@ -110,7 +110,7 @@ in {
 
           symlinks = {
             "plugins/SimpleVoiceChatVelocity.jar" = pkgs.fetchurl {
-              url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/svvcJhgC/voicechat-velocity-2.5.20.jar";
+              url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/yGTasgG4/voicechat-velocity-2.5.24.jar";
               hash = "sha256-GFMTzvlvfZAItpYAlzLUPbWTBZUarufgmjopTEQviFs=";
             };
             "velocity.toml" = let
