@@ -111,7 +111,7 @@ in {
           symlinks = {
             "plugins/SimpleVoiceChatVelocity.jar" = pkgs.fetchurl {
               url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/yGTasgG4/voicechat-velocity-2.5.24.jar";
-              hash = "sha256-GFMTzvlvfZAItpYAlzLUPbWTBZUarufgmjopTEQviFs=";
+              hash = "sha256-olCVpSs7FGcJQ9dgOaT+mTtmycuevxrBrFnv343zoRI=";
             };
             "velocity.toml" = let
               serverEntry = name: ''${name} = "${cfg.servers.${name}.serverProperties.server-ip}:${builtins.toString cfg.servers.${name}.serverProperties.server-port}"'';

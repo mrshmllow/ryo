@@ -173,7 +173,11 @@
           buildOnTarget = true;
         };
 
-        imports = [./nodes/minecraft-server-f nix-minecraft.nixosModules.minecraft-servers];
+        imports = [
+          ./nodes/minecraft-server-f
+          nix-minecraft.nixosModules.minecraft-servers
+          home-manager.nixosModules.home-manager
+        ];
       };
 
       maple = {name, ...}: {
