@@ -33,6 +33,7 @@
       Cinedaniel = "e844b36e-b0f0-4054-9c00-3fadf216fd90";
       gremyy = "6340aeb2-c218-45a2-bc54-14fd153468e9";
       Bacongoblin = "b3502b0b-13a1-42bb-9db6-504cf12a5f3e";
+      ReubenLaurence = "edf6913d-d73a-42ab-ad7a-f0736dc40b7c";
     };
   in {
     enable = true;
@@ -100,6 +101,10 @@
           "mods/simplevoicechat.jar" = pkgs.fetchurl {
             url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/pl9FpaYJ/voicechat-fabric-1.21.4-2.5.26.jar";
             hash = "sha256-2ni2tQjMCO3jaEA1OHXoonZpGqHGVlY/9rzVsijrxVA=";
+          };
+          "mods/xaeros-minimap.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/1bokaNcj/versions/cHos0KJK/Xaeros_Minimap_24.6.2_Fabric_1.21.4.jar";
+            hash = "sha256-kwBphLXmSJvP1r+VWeEcoWBf7yzdIXUmt3uRG3Ar9mU=";
           };
         };
 
