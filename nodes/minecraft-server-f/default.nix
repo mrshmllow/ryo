@@ -106,6 +106,18 @@
             url = "https://cdn.modrinth.com/data/1bokaNcj/versions/cHos0KJK/Xaeros_Minimap_24.6.2_Fabric_1.21.4.jar";
             hash = "sha256-kwBphLXmSJvP1r+VWeEcoWBf7yzdIXUmt3uRG3Ar9mU=";
           };
+          "mods/rei.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/nfn13YXA/versions/aBHkMOqF/RoughlyEnoughItems-18.0.796-fabric.jar";
+            hash = "sha256-z6TQqQFMD8X1gFQPBaoyF6TiiO90vMMjBpUAqRDLQRI=";
+          };
+          "mods/cloth-config.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/9s6osm5g/versions/TJ6o2sr4/cloth-config-17.0.144-fabric.jar";
+            hash = "sha256-H9oMSonU8HXlGz61VwpJEocGVtJS2AbqMJHSu8Bngeo=";
+          };
+          "mods/architectury.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/lhGA9TYQ/versions/XRwibvvn/architectury-15.0.1-fabric.jar";
+            hash = "sha256-KRvaGWBaL2a4OjU6cqk/HEpQ1xlRa30wSBzCFw06+A4=";
+          };
         };
 
         files = {
