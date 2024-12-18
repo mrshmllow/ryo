@@ -118,6 +118,14 @@
             url = "https://cdn.modrinth.com/data/lhGA9TYQ/versions/XRwibvvn/architectury-15.0.1-fabric.jar";
             hash = "sha256-KRvaGWBaL2a4OjU6cqk/HEpQ1xlRa30wSBzCFw06+A4=";
           };
+          "mods/dcintegration.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/rbJ7eS5V/versions/hd62ja8J/dcintegration-fabric-MC1.21.3-3.1.0.1.jar";
+            hash = "sha256-5Us8Ig8Nwv9zFLQx8X/C7cTz/O0uTDjeztYMAXBWK0Q=";
+          };
+          "mods/jade.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/nvQzSEkH/versions/uWLqeB9w/Jade-1.21.4-Fabric-17.1.0.jar";
+            hash = "sha256-cgHQhR/v5J0cfeO/ytqHRUSxYydQfJUGRASH86lPrpQ=";
+          };
         };
 
         files = {
