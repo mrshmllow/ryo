@@ -85,6 +85,11 @@
             url = "https://cdn.modrinth.com/data/sml2FMaA/versions/XYsqemKP/antixray-fabric-1.4.7%2B1.21.4.jar";
             hash = "sha256-/eCPum/EBDlVZGbC4HVXHOswerq+ANhlooi6YptoNq8=";
           };
+          # Discord Chat
+          "mods/dcintegration.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/rbJ7eS5V/versions/hd62ja8J/dcintegration-fabric-MC1.21.3-3.1.0.1.jar";
+            hash = "sha256-5Us8Ig8Nwv9zFLQx8X/C7cTz/O0uTDjeztYMAXBWK0Q=";
+          };
           # Dependencies
           "mods/fabric-api.jar" = pkgs.fetchurl {
             url = "https://cdn.modrinth.com/data/P7dR8mSH/versions/kgg9d3no/fabric-api-0.112.0%2B1.21.4.jar";
@@ -115,24 +120,24 @@
           };
           # Optional Client Mods w/ server support:
           "mods/xaeros-minimap.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/1bokaNcj/versions/cHos0KJK/Xaeros_Minimap_24.6.2_Fabric_1.21.4.jar";
-            hash = "sha256-kwBphLXmSJvP1r+VWeEcoWBf7yzdIXUmt3uRG3Ar9mU=";
+            url = "https://cdn.modrinth.com/data/1bokaNcj/versions/pGS4L9Gk/Xaeros_Minimap_24.7.1_Fabric_1.21.4.jar";
+            hash = "sha256-0/Ay3hAxbBNo5oflft/KV7mPnMY+0VPME059GLln0H8=";
           };
           "mods/rei.jar" = pkgs.fetchurl {
             url = "https://cdn.modrinth.com/data/nfn13YXA/versions/aBHkMOqF/RoughlyEnoughItems-18.0.796-fabric.jar";
             hash = "sha256-z6TQqQFMD8X1gFQPBaoyF6TiiO90vMMjBpUAqRDLQRI=";
           };
-          "mods/dcintegration.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/rbJ7eS5V/versions/hd62ja8J/dcintegration-fabric-MC1.21.3-3.1.0.1.jar";
-            hash = "sha256-5Us8Ig8Nwv9zFLQx8X/C7cTz/O0uTDjeztYMAXBWK0Q=";
-          };
           "mods/jade.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/nvQzSEkH/versions/uWLqeB9w/Jade-1.21.4-Fabric-17.1.0.jar";
-            hash = "sha256-cgHQhR/v5J0cfeO/ytqHRUSxYydQfJUGRASH86lPrpQ=";
+            url = "https://cdn.modrinth.com/data/nvQzSEkH/versions/EJub6tVz/Jade-1.21.4-Fabric-17.1.2.jar";
+            hash = "sha256-2Ywaudtc5aYjS76WPRKvBJUJYBO8qHSFQo/mF6dPcLo=";
           };
           "mods/itemswapper.jar" = pkgs.fetchurl {
             url = "https://cdn.modrinth.com/data/RPOSBQgq/versions/m5FBPEra/itemswapper-fabric-0.7.4-mc1.21.4.jar";
             hash = "sha256-ypX7hHcN2gD2b1F720zBNbjldga1cnTxLT2+SOv7q7w=";
+          };
+          "mods/shulkerboxtooltip.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/2M01OLQq/versions/L4CUJgGW/shulkerboxtooltip-fabric-5.2.2%2B1.21.4.jar";
+            hash = "sha256-JKYxcLCd8X6y/RtAyel30WEjhfvAxKGpuS0rXL2Nt/8=";
           };
         };
 
