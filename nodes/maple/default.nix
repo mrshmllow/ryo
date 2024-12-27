@@ -12,6 +12,7 @@
   desktop.enable = true;
   desktop.sway.enable = true;
   desktop.amd = true;
+  desktop.apps.davinci-resolve.enable = true;
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;

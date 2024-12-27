@@ -16,6 +16,7 @@ in {
     sway.enable = lib.mkEnableOption "sway wm";
     cosmic.enable = lib.mkEnableOption "cosmic desktop";
     games.sc.enable = lib.mkEnableOption "star citizen";
+    apps.davinci-resolve.enable = lib.mkEnableOption "davinci resolve";
   };
 
   config = lib.mkMerge [
@@ -186,6 +187,17 @@ in {
           value = 1;
         }
       ];
+    })
+
+    (lib.mkIf cfg.apps.davinci-resolve.enable {
+      environment.systemPackages = with pkgs; [davinci-resolve];
+
+      hardware.opengl = {
+        enable = true;
+        extraPackages = with pkgs; [
+          rocmPackages.clr.icd
+        ];
+      };
     })
   ];
 }
