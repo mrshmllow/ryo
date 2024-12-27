@@ -41,6 +41,7 @@ in {
         vesktop
         obsidian
         keepassxc
+        prismlauncher
       ];
 
       nixpkgs.config.allowUnfree = true;
