@@ -10,7 +10,8 @@
   ];
 
   desktop.enable = true;
-  desktop.sway.enable = true;
+  # desktop.sway.enable = true;
+  desktop.gnome.enable = true;
   desktop.amd = true;
   desktop.apps.davinci-resolve.enable = true;
 
@@ -18,10 +19,11 @@
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
 
-  ryo-network = {
-    home.enable = true;
-    det.enable = true;
-  };
+  # off until sway
+  # ryo-network = {
+  #   home.enable = true;
+  #   det.enable = true;
+  # };
 
   # obs virtual camera
   boot.extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
