@@ -119,11 +119,17 @@ in {
       };
 
       environment.systemPackages = [
-        (inputs.nix-gaming.packages.${pkgs.system}.star-citizen.override
-          {
-            useUmu = true;
-          })
+        (inputs.nix-citizen.packages.${pkgs.system}.star-citizen)
       ];
+
+      nix.settings = {
+        substituters = [
+          "https://nix-citizen.cachix.org"
+        ];
+        trusted-public-keys = [
+          "nix-citizen.cachix.org-1:lPMkWc2X8XD4/7YPEEwXKKBg+SVbYTVrAaLA2wQTKCo="
+        ];
+      };
     })
 
     (lib.mkIf cfg.sway.enable {

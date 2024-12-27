@@ -11,8 +11,13 @@
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
     nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
+
+    # star citizen
+    nix-citizen.url = "github:LovingMelody/nix-citizen";
+    nix-citizen.inputs.nix-gaming.follows = "nix-gaming";
     nix-gaming.url = "github:fufexan/nix-gaming";
     umu.follows = "nix-gaming";
+
     wezterm.url = "github:wez/wezterm/main?dir=nix";
   };
 
