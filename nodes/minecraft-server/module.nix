@@ -55,7 +55,7 @@ in {
       }))
       (lib.genAttrs cfg.voicechat-servers (name: {
         files = {
-          "plugins/voicechat/voicechat-server.properties" = pkgs.writeText "voicechat-server.properties" ''
+          "config/voicechat/voicechat-server.properties" = pkgs.writeText "voicechat-server.properties" ''
             # Setting this to "-1" sets the port to the Minecraft servers port (Not recommended)
             port=${builtins.toString ((lib.lists.findFirstIndex (n: n == name) null cfg.voicechat-servers) + 20000)}
             # Leave empty to use 'server-ip' of server.properties
