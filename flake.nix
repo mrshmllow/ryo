@@ -106,6 +106,8 @@
           ./nix.nix
           ./modules
           nixos-cosmic.nixosModules.default
+          home-manager.nixosModules.home-manager
+          nix-minecraft.nixosModules.minecraft-servers
         ];
 
         system.activationScripts.diff = {
@@ -180,7 +182,6 @@
 
         imports = [
           ./nodes/minecraft-server-f
-          nix-minecraft.nixosModules.minecraft-servers
           home-manager.nixosModules.home-manager
         ];
       };
