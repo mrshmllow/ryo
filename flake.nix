@@ -95,13 +95,10 @@
       defaults = {
         pkgs,
         name,
-        nodes,
         lib,
         config,
         ...
-      }: let
-        exporting_nodes = ["outpost-2" "pi" "mc"];
-      in {
+      }: {
         imports = [
           ./nix.nix
           ./modules
@@ -110,31 +107,10 @@
           nix-minecraft.nixosModules.minecraft-servers
         ];
 
-        system.activationScripts.diff = {
-          supportsDryActivation = true;
-          text = ''
-            if [ -e /run/current-system ]; then
-              PATH=${lib.makeBinPath [config.nix.package]} \
-                ${lib.getExe pkgs.nvd} \
-                diff /run/current-system $systemConfig
-            fi
-          '';
-        };
+        ryo.exporting_nodes = ["outpost-3" "mc-forgettable"];
+        ryo-network.tailscale.enable = true;
 
-        services.tailscale = {
-          enable = true;
-          authKeyFile = config.deployment.keys."tailscale.key".path;
-          permitCertUid = "caddy";
-          extraUpFlags = ["--ssh"];
-        };
-
-        deployment.keys."tailscale.key" = {
-          keyCommand = ["gpg" "--decrypt" "${./secrets/tailscale.key.gpg}"];
-
-          uploadAt = "pre-activation";
-        };
-
-        services.prometheus.exporters = lib.mkIf (builtins.elem name exporting_nodes) {
+        services.prometheus.exporters = lib.mkIf (builtins.elem name config.ryo.exporting_nodes) {
           node = {
             enable = true;
             enabledCollectors = ["systemd"];
@@ -155,7 +131,7 @@
 
       outpost-3 = {name, ...}: {
         deployment = {
-          targetHost = name;
+          targetHost = "100.74.233.10";
           targetUser = "root";
           buildOnTarget = true;
         };
@@ -173,7 +149,7 @@
         imports = [./nodes/${name}];
       };
 
-      mc = {name, ...}: {
+      mc-forgettable = {name, ...}: {
         deployment = {
           targetHost = "154.26.156.55";
           targetUser = "root";
