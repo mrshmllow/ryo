@@ -12,6 +12,11 @@ in {
       default = [];
     };
 
+    unifiedmetrics-servers = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [];
+    };
+
     velocity = {
       enable = lib.mkEnableOption "velocity server";
 
@@ -97,6 +102,39 @@ in {
             # If the voice chat server should reply to pings
             allow_pings=true
           '';
+        };
+      }))
+      (lib.genAttrs cfg.unifiedmetrics-servers (name: {
+        files = {
+          # 9101 because we leave velocity to use 9100 by default
+          "config/unifiedmetrics/driver/prometheus.yml" = pkgs.writeText "prometheus.yml" ''
+            mode: "HTTP"
+            http:
+              host: "0.0.0.0"
+              port: ${builtins.toString ((lib.lists.findFirstIndex (n: n == name) null cfg.unifiedmetrics-servers) + 9101)}
+              authentication:
+                scheme: "NONE"
+                username: "username"
+                password: "password"
+            pushGateway:
+              job: "unifiedmetrics"
+              url: "http://pushgateway:9091"
+              authentication:
+                scheme: "NONE"
+                username: "username"
+                password: "password"
+              interval: 10
+          '';
+        };
+        symlinks = {
+          "mods/unifiedmetrics-fabric.jar" = pkgs.fetchurl {
+            url = "https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetrics-platform-fabric-0.3.8.jar";
+            hash = "sha256-ytiOOjLtsxXTKd1Ig7oRxu9boHt7mPEi5zeodUc5rwI=";
+          };
+          "mods/kotlin.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/Ha28R6CL/versions/csX9r2wS/fabric-language-kotlin-1.13.0%2Bkotlin.2.1.0.jar";
+            hash = "sha256-in9nOy4TFb8svDzIaXU+III8Q/mqW+WW0PdNw8YmrZI=";
+          };
         };
       }))
       {

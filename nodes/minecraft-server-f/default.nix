@@ -90,6 +90,7 @@
     eula = true;
 
     voicechat-servers = ["survival" "creative"];
+    unifiedmetrics-servers = ["survival" "creative"];
 
     velocity = {
       enable = true;
@@ -104,6 +105,12 @@
     environmentFile = config.deployment.keys."minecraft.env.gpg".path;
 
     servers = {
+      velocity.symlinks = {
+        "plugins/unifiedmetrics-velocity.jar" = pkgs.fetchurl {
+          url = "https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetrics-platform-velocity-0.3.8.jar";
+          hash = "sha256-/lrv/m+uj7xhNnNeaOIK8ywfymR/zfwRhoWQMUtm2/w=";
+        };
+      };
       survival = {
         enable = true;
         autoStart = true;
