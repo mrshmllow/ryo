@@ -22,7 +22,6 @@
   # off until sway
   # ryo-network = {
   #   home.enable = true;
-  #   det.enable = true;
   # };
 
   # obs virtual camera

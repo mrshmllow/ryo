@@ -14,7 +14,6 @@
 
   ryo-network = {
     home.enable = true;
-    det.enable = true;
   };
 
   services.fwupd.enable = true;
