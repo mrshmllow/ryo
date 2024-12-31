@@ -8,7 +8,6 @@
   imports = [
     ./hardware-configuration.nix
     ./backup.nix
-    ../minecraft-server/module.nix
   ];
 
   nixpkgs = {
