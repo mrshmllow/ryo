@@ -12,7 +12,8 @@
       hostname = "identity.althaea.zone";
 
       http-port = 9090;
-      proxy = "edge";
+      proxy-headers = "xforwarded";
+      http-enabled = true;
     };
 
     database.passwordFile = config.deployment.keys."keycloak-db.pass".path;
