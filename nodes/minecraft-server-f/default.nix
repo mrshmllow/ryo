@@ -125,7 +125,6 @@
           difficulty = "normal";
           server-port = 25568;
           gamemode = "survival";
-          generate-structures = false;
         };
 
         symlinks =
@@ -167,6 +166,7 @@
           difficulty = "normal";
           server-port = 25569;
           level-type = "minecraft:flat";
+          generate-structures = false;
           generator-settings = builtins.toJSON {
             layers = [
               {
