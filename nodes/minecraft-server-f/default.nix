@@ -132,6 +132,7 @@
         # Do not open!
         openFirewall = false;
         package = pkgs.fabricServers.fabric-1_21_4;
+        jvmOpts = "-Xms6G -Xmx10G";
 
         inherit whitelist;
 
