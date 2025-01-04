@@ -40,6 +40,15 @@
         url = "https://cdn.modrinth.com/data/gvQqBUqZ/versions/t1FlWYl9/lithium-fabric-0.14.3%2Bmc1.21.4.jar";
         hash = "sha256-LJFVhw/3MnsPnYTHVZbM3xJtne1lV5twuYeqZSMZEn4=";
       };
+      # Permissions
+      "mods/luckperms.jar" = pkgs.fetchurl {
+        url = "https://cdn.modrinth.com/data/Vebnzrzj/versions/6h9SnsZu/LuckPerms-Fabric-5.4.150.jar";
+        hash = "sha256-nP/5jzU+v5/kAAsohmGlfNuvo56ms4XMznGotfhXQPQ=";
+      };
+      "mods/vanilla-permissions.jar" = pkgs.fetchurl {
+        url = "https://cdn.modrinth.com/data/fdZkP5Bb/versions/7awQNHzw/vanilla-permissions-0.2.4%2B1.21.3.jar";
+        hash = "sha256-Zq+0uLlvv/2YWB7vrOIAfep5r3Xr74ZDSglDOYr/4Hw=";
+      };
       # Dependencies
       "mods/fabric-api.jar" = pkgs.fetchurl {
         url = "https://cdn.modrinth.com/data/P7dR8mSH/versions/kgg9d3no/fabric-api-0.112.0%2B1.21.4.jar";
@@ -110,6 +119,12 @@
           url = "https://github.com/Cubxity/UnifiedMetrics/releases/download/v0.3.8/unifiedmetrics-platform-velocity-0.3.8.jar";
           hash = "sha256-/lrv/m+uj7xhNnNeaOIK8ywfymR/zfwRhoWQMUtm2/w=";
         };
+
+        "plugins/luckperms.jar" = pkgs.fetchurl {
+          url = "https://cdn.modrinth.com/data/Vebnzrzj/versions/vtXGoeps/LuckPerms-Velocity-5.4.145.jar";
+          hash = "sha256-PsjNc491PZ6mdGJxeOVUvQXkLU7+ljBn6N9bZQO7kmk=";
+        };
+        "plugins/luckperms/config.yml" = ./lp.velocity.yml;
       };
       survival = {
         enable = true;
@@ -149,6 +164,11 @@
               url = "https://cdn.modrinth.com/data/fALzjamp/versions/VkAgASL1/Chunky-Fabric-1.4.27.jar";
               hash = "sha256-A8kKcLIzQWvZZziUm+kJ0eytrHQ/fBVZQ18uQXN9Qf0=";
             };
+
+            "config/luckperms/luckperms.conf" = pkgs.runCommand "luckperms.conf" {} ''
+              cp ${./lp.fabric.conf} $out
+              substituteInPlace $out --replace "%SERVER%" "survival"
+            '';
           }
           // common-mods;
       };
@@ -189,6 +209,11 @@
               url = "https://cdn.modrinth.com/data/1u6JkXh5/versions/rIYOU6Ta/worldedit-mod-7.3.10-beta-01.jar";
               hash = "sha256-MRjoE402to7g/wdB+9hWl8GPBvpD0CuswHmQbwYzkJE=";
             };
+
+            "config/luckperms/luckperms.conf" = pkgs.runCommand "luckperms.conf" {} ''
+              cp ${./lp.fabric.conf} $out
+              substituteInPlace $out --replace "%SERVER%" "creative"
+            '';
           }
           // common-mods;
       };
@@ -224,6 +249,16 @@
 
   environment.systemPackages = with pkgs; [
     tmux
+
+    (pkgs.writeShellScriptBin "survival" ''
+      ${lib.getExe pkgs.tmux} -S /run/minecraft/survival.sock attach-session
+    '')
+    (pkgs.writeShellScriptBin "creative" ''
+      ${lib.getExe pkgs.tmux} -S /run/minecraft/creative.sock attach-session
+    '')
+    (pkgs.writeShellScriptBin "velocity" ''
+      ${lib.getExe pkgs.tmux} -S /run/minecraft/velocity.sock attach-session
+    '')
   ];
 
   boot.tmp.cleanOnBoot = true;
