@@ -42,6 +42,7 @@ in {
         obsidian
         keepassxc
         prismlauncher
+        jetbrains.idea-community-bin
       ];
 
       nixpkgs.config.allowUnfree = true;
