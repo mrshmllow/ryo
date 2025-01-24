@@ -67,29 +67,32 @@ in {
     };
   };
 
-  systemd.services.forgejo.preStart = let
-    name = "catppuccin-themes";
+  systemd.services.forgejo = {
+    preStart = let
+      name = "catppuccin-themes";
 
-    catppuccin-themes = pkgs.fetchurl {
-      url = "https://github.com/catppuccin/gitea/releases/download/v0.4.1/catppuccin-gitea.tar.gz";
-      sha256 = "sha256-/P4fLvswitlfeaKaUykrEKvjbNpw5Q/nzGQ/GZaLyUI=";
-    };
-    theme-dir = "${config.services.forgejo.customDir}/public/assets/css";
-    script = pkgs.writeShellScriptBin name ''
-      mkdir -p ${theme-dir}
-      tar -xf ${catppuccin-themes} --overwrite -C ${theme-dir}
-    '';
+      catppuccin-themes = pkgs.fetchurl {
+        url = "https://github.com/catppuccin/gitea/releases/download/v1.0.1/catppuccin-gitea.tar.gz";
+        sha256 = "sha256-TvC6DxmjCy/qskJL+WMZO7Y2tcUI++y4GUgeAkDaKaM=";
+      };
+      theme-dir = "${config.services.forgejo.customDir}/public/assets/css";
+      script = pkgs.writeShellScriptBin name ''
+        mkdir -p ${theme-dir}
+        tar -xf ${catppuccin-themes} --overwrite -C ${theme-dir}
+      '';
 
-    package = pkgs.symlinkJoin {
-      inherit name;
-      paths = [script] ++ [pkgs.gnutar pkgs.gzip];
-      buildInputs = [pkgs.makeWrapper];
-      postBuild = "wrapProgram $out/bin/${name} --prefix PATH : $out/bin";
-    };
-  in
-    lib.mkAfter ''
-      (umask 027; ${lib.getExe' package "catppuccin-themes"})
-    '';
+      package = pkgs.symlinkJoin {
+        inherit name;
+        paths = [script] ++ [pkgs.gnutar pkgs.gzip];
+        buildInputs = [pkgs.makeWrapper];
+        postBuild = "wrapProgram $out/bin/${name} --prefix PATH : $out/bin";
+      };
+    in
+      lib.mkAfter ''
+        (umask 027; ${lib.getExe' package "catppuccin-themes"})
+      '';
+    after = ["keycloak.service"];
+  };
 
   # https://github.com/NixOS/nixpkgs/issues/306205
   services.openssh.settings.AcceptEnv = "GIT_PROTOCOL";
