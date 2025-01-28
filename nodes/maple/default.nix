@@ -50,6 +50,19 @@
   ];
 
   boot.kernelPackages = pkgs.linuxPackages_xanmod;
+  services.ollama = {
+    enable = true;
+    acceleration = "rocm";
+    environmentVariables = {
+      HSA_OVERRIDE_GFX_VERSION = "10.3.0";
+    };
+  };
+
+  services.open-webui = {
+    enable = true;
+    environment = {WEBUI_AUTH = "False";};
+  };
+
   desktop.games.sc.enable = true;
 
   virtualisation.libvirtd.enable = true;
