@@ -37,8 +37,8 @@
     common-mods = {
       # Server Optomization
       "mods/litium.jar" = pkgs.fetchurl {
-        url = "https://cdn.modrinth.com/data/gvQqBUqZ/versions/t1FlWYl9/lithium-fabric-0.14.3%2Bmc1.21.4.jar";
-        hash = "sha256-LJFVhw/3MnsPnYTHVZbM3xJtne1lV5twuYeqZSMZEn4=";
+        url = "https://cdn.modrinth.com/data/gvQqBUqZ/versions/QCuodIia/lithium-fabric-0.14.7%2Bmc1.21.4.jar";
+        hash = "sha256-JdYfw/d/eY+TBnToy6xo8qAxhkpLztfVbce3P1JelGU=";
       };
       # Permissions
       "mods/luckperms.jar" = pkgs.fetchurl {
@@ -51,8 +51,8 @@
       };
       # Dependencies
       "mods/fabric-api.jar" = pkgs.fetchurl {
-        url = "https://cdn.modrinth.com/data/P7dR8mSH/versions/kgg9d3no/fabric-api-0.112.0%2B1.21.4.jar";
-        hash = "sha256-sF8YSSJ5P1yXWL69MSilqCz8ez9TjwDXQ0F5+MJMLMk=";
+        url = "https://cdn.modrinth.com/data/P7dR8mSH/versions/UnrycCWP/fabric-api-0.115.1%2B1.21.4.jar";
+        hash = "sha256-r7bbPrB0Qhhlv3J3kIPMne3NtOVvqzFVD6VKAN/KkuU=";
       };
       "mods/architectury.jar" = pkgs.fetchurl {
         url = "https://cdn.modrinth.com/data/lhGA9TYQ/versions/XRwibvvn/architectury-15.0.1-fabric.jar";
@@ -74,24 +74,24 @@
       };
       # Optional Client Mods w/ server support:
       "mods/xaeros-minimap.jar" = pkgs.fetchurl {
-        url = "https://cdn.modrinth.com/data/1bokaNcj/versions/pGS4L9Gk/Xaeros_Minimap_24.7.1_Fabric_1.21.4.jar";
-        hash = "sha256-0/Ay3hAxbBNo5oflft/KV7mPnMY+0VPME059GLln0H8=";
+        url = "https://cdn.modrinth.com/data/1bokaNcj/versions/uSoyLnlq/Xaeros_Minimap_25.0.1_Fabric_1.21.4.jar";
+        hash = "sha256-JjMj+QM3s9n0S92wjBu3BSSviIv0U8RMC2NrUJ/O7g8=";
       };
       "mods/rei.jar" = pkgs.fetchurl {
         url = "https://cdn.modrinth.com/data/nfn13YXA/versions/aBHkMOqF/RoughlyEnoughItems-18.0.796-fabric.jar";
         hash = "sha256-z6TQqQFMD8X1gFQPBaoyF6TiiO90vMMjBpUAqRDLQRI=";
       };
       "mods/jade.jar" = pkgs.fetchurl {
-        url = "https://cdn.modrinth.com/data/nvQzSEkH/versions/EJub6tVz/Jade-1.21.4-Fabric-17.1.2.jar";
-        hash = "sha256-2Ywaudtc5aYjS76WPRKvBJUJYBO8qHSFQo/mF6dPcLo=";
+        url = "https://cdn.modrinth.com/data/nvQzSEkH/versions/sSHUBFoq/Jade-1.21.4-Fabric-17.2.2.jar";
+        hash = "sha256-CF5xco3lEB3cZTH0pQ6rQkD8KCUnA7MHahKCb5ioTLk=";
       };
       "mods/itemswapper.jar" = pkgs.fetchurl {
-        url = "https://cdn.modrinth.com/data/RPOSBQgq/versions/m5FBPEra/itemswapper-fabric-0.7.4-mc1.21.4.jar";
-        hash = "sha256-ypX7hHcN2gD2b1F720zBNbjldga1cnTxLT2+SOv7q7w=";
+        url = "https://cdn.modrinth.com/data/RPOSBQgq/versions/OFTIJQlk/itemswapper-fabric-0.7.6-mc1.21.4.jar";
+        hash = "sha256-rxryTTSaenIoNq90GcYwxcEVSKe/teh6jt1Vg9vo91E=";
       };
       "mods/shulkerboxtooltip.jar" = pkgs.fetchurl {
-        url = "https://cdn.modrinth.com/data/2M01OLQq/versions/L4CUJgGW/shulkerboxtooltip-fabric-5.2.2%2B1.21.4.jar";
-        hash = "sha256-JKYxcLCd8X6y/RtAyel30WEjhfvAxKGpuS0rXL2Nt/8=";
+        url = "https://cdn.modrinth.com/data/2M01OLQq/versions/fy4w1xut/shulkerboxtooltip-fabric-5.2.3%2B1.21.4.jar";
+        hash = "sha256-i2iiAzDntAbgPhdUDEJ1AIzK+GhzL1BG+PdRwSno9mk=";
       };
     };
   in {
@@ -152,8 +152,8 @@
             };
             # Anti xray
             "mods/anti-xray.jar" = pkgs.fetchurl {
-              url = "https://cdn.modrinth.com/data/sml2FMaA/versions/XYsqemKP/antixray-fabric-1.4.7%2B1.21.4.jar";
-              hash = "sha256-/eCPum/EBDlVZGbC4HVXHOswerq+ANhlooi6YptoNq8=";
+              url = "https://cdn.modrinth.com/data/sml2FMaA/versions/5ihATFTB/antixray-fabric-1.4.8%2B1.21.4.jar";
+              hash = "sha256-QhARHoqFkc/fR0HlkMoC2aO1Htc8JcbuuTuFhQvvV1U=";
             };
             # Discord Chat
             "mods/dcintegration.jar" = pkgs.fetchurl {
@@ -207,8 +207,8 @@
           {
             # World Edit
             "mods/worldedit.jar" = pkgs.fetchurl {
-              url = "https://cdn.modrinth.com/data/1u6JkXh5/versions/rIYOU6Ta/worldedit-mod-7.3.10-beta-01.jar";
-              hash = "sha256-MRjoE402to7g/wdB+9hWl8GPBvpD0CuswHmQbwYzkJE=";
+              url = "https://cdn.modrinth.com/data/1u6JkXh5/versions/KI46lJsd/worldedit-mod-7.3.10.jar";
+              hash = "sha256-0n6eJRFaA4DNnVofv2fK06vpyyhNH2wAyArhh+/fD6k=";
             };
 
             "config/luckperms/luckperms.conf" = pkgs.runCommand "luckperms.conf" {} ''

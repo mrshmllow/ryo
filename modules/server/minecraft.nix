@@ -132,8 +132,8 @@ in {
             hash = "sha256-ytiOOjLtsxXTKd1Ig7oRxu9boHt7mPEi5zeodUc5rwI=";
           };
           "mods/kotlin.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/Ha28R6CL/versions/csX9r2wS/fabric-language-kotlin-1.13.0%2Bkotlin.2.1.0.jar";
-            hash = "sha256-in9nOy4TFb8svDzIaXU+III8Q/mqW+WW0PdNw8YmrZI=";
+            url = "https://cdn.modrinth.com/data/Ha28R6CL/versions/476dzMG5/fabric-language-kotlin-1.13.1%2Bkotlin.2.1.10.jar";
+            hash = "sha256-bXmCMjWsW2TusKnLVxGkyGYcAfcOIlRt3mpNsV/llxM=";
           };
         };
       }))
