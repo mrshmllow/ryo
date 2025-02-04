@@ -9,17 +9,40 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  wire:
+    runs-on: ubuntu-latest
+    name: build wire tool
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            extra-platforms = aarch64-linux i686-linux
+      - uses: cachix/cachix-action@v14
+        with:
+          name: ryo
+          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: build wire
+        run: >
+          nix build git+https://git.althaea.zone/wires/wire.git#wire
   gen-matrix:
     runs-on: ubuntu-latest
     name: generate node matrix
+    needs: wire
     outputs:
       all-nodes: ${{ steps.nodes.outputs.all-nodes }}
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27
+      - uses: cachix/cachix-action@v14
+        with:
+          name: ryo
+          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - id: nodes
         run: |
-          echo "all-nodes=$(nix eval .#colmena --no-substitute --apply 'with builtins; x: filter (f: !elem f [ "defaults" "meta" ]) (attrNames x)' --json)" >> $GITHUB_OUTPUT
+          echo "all-nodes=$(nix run git+https://git.althaea.zone/wires/wire.git#wire -- inspect --json | nix run nixpkgs#jq -- -c ".nodes | keys")" >> $GITHUB_OUTPUT
   gen-matrix-hm:
     runs-on: ubuntu-latest
     name: generate hm matrix
@@ -43,6 +66,7 @@ jobs:
     name: build offline
     needs: 
       - gen-matrix
+      - check
     strategy:
       matrix: 
         node: ${{ fromJson(needs.gen-matrix.outputs.all-nodes) }}
@@ -60,8 +84,8 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: build ${{ matrix.node }}
         run: >
-          nix run nixpkgs#colmena --
-          build -v
+          nix run git+https://git.althaea.zone/wires/wire.git#wire --
+          apply build -v
           --no-build-on-target
           --on ${{ matrix.node }}
   build-hm:
