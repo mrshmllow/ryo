@@ -42,7 +42,7 @@
     Service = {
       Type = "notify";
       ExecStartPre = "${lib.getExe' pkgs.coreutils "mkdir"} -p ${localPath}";
-      ExecStart = "${lib.getExe pkgs.rclone} mount google-drive:${remotePath} ${localPath} --allow-other --log-level INFO";
+      ExecStart = "${lib.getExe pkgs.rclone} mount google-drive:${remotePath} ${localPath} --allow-other --log-level INFO --vfs-cache-mode full";
       ExecStop = "${lib.getExe' pkgs.fuse "fusermount"} -u ${localPath}";
       Environment = ["PATH=/run/wrappers/bin/"];
     };
