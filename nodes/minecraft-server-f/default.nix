@@ -124,7 +124,19 @@
           url = "https://cdn.modrinth.com/data/Vebnzrzj/versions/vtXGoeps/LuckPerms-Velocity-5.4.145.jar";
           hash = "sha256-PsjNc491PZ6mdGJxeOVUvQXkLU7+ljBn6N9bZQO7kmk=";
         };
+
+        "plugins/floodgate.jar" = pkgs.fetchurl {
+          url = "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity";
+          hash = "sha256-T3XyJu1EgvXZCIgG95KZDbH66WH9Zpj6+RbIKX8Qhnc=";
+        };
+
+        "plugins/geyser.jar" = pkgs.fetchurl {
+          url = "https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity";
+          hash = "sha256-nvMC6jkNms+USvfphA5/YEF3DckvYueOdmXGKWtPPLw=";
+        };
+
         "plugins/luckperms/config.yml" = ./lp.velocity.yml;
+        "plugins/Geyser-Velocity/config.yml" = ./geyser.config.yml;
       };
       survival = {
         enable = true;
