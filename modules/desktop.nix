@@ -113,7 +113,7 @@ in {
     (lib.mkIf (cfg.gnome.enable
       || cfg.cosmic.enable
       || cfg.sway.enable) {
-      hardware.pulseaudio.enable = lib.mkForce false;
+      # hardware.pulseaudio.enable = lib.mkForce false;
 
       security.rtkit.enable = true;
       services.pipewire = {
