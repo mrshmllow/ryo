@@ -141,9 +141,8 @@
 
       pi = {name, ...}: {
         deployment = {
-          targetHost = "100.115.246.65";
+          targetHost = "10.1.1.2";
           targetUser = "root";
-          buildOnTarget = false;
         };
 
         imports = [./nodes/${name}];

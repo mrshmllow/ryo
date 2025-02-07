@@ -12,7 +12,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = ["xhci_pci" "usbhid" "uas"];
+  boot.initrd.availableKernelModules = ["uas"];
   boot.initrd.kernelModules = [];
   boot.kernelModules = [];
   boot.extraModulePackages = [];
@@ -22,8 +22,8 @@
     fsType = "ext4";
   };
 
-  fileSystems."/content" = {
-    device = "/dev/disk/by-uuid/f16682fb-bf6b-45f8-8a32-544a8267d56b";
+  fileSystems."/media" = {
+    device = "/dev/disk/by-uuid/71cef8ef-82ef-47da-b2a7-27eaf739cf59";
     fsType = "ext4";
   };
 
@@ -38,5 +38,4 @@
   # networking.interfaces.wlan0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
-  powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
 }
