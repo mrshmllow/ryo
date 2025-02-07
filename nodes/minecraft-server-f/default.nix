@@ -233,9 +233,12 @@
     };
   };
 
-  # caddy
-  networking.firewall.allowedUDPPorts = [config.services.minecraft-servers.velocity.port];
+  networking.firewall.allowedUDPPorts = [
+    config.services.minecraft-servers.velocity.port
+    19132 # geyser
+  ];
 
+  # caddy
   networking.firewall.allowedTCPPorts = [80 443];
 
   services.caddy = {
