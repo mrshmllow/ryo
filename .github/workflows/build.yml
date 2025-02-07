@@ -86,7 +86,7 @@ jobs:
         run: >
           nix run git+https://git.althaea.zone/wires/wire.git#wire --
           apply build -v
-          --no-build-on-target
+          --always-build-local ${{ matrix.node }}
           --on ${{ matrix.node }}
   build-hm:
     runs-on: ubuntu-latest
