@@ -3,7 +3,7 @@
   config,
   ...
 }: {
-  imports = [./bridge.nix];
+  # imports = [./bridge.nix];
 
   services.postgresql = {
     enable = true;
