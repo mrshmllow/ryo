@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  inputs,
   lib,
   ...
 }: let
@@ -54,6 +53,13 @@ in {
   options.desktop = {
     enable = lib.mkEnableOption "desktop computer";
     sway.enable = lib.mkEnableOption "sway wm";
+
+    wezterm.enable = lib.mkOption {
+      default = cfg.enable;
+      example = true;
+      description = "Whether to enable wezterm.";
+      type = lib.types.bool;
+    };
   };
 
   config = lib.mkMerge [
@@ -68,12 +74,17 @@ in {
 
       services.arrpc.enable = true;
 
+      services.gpg-agent = {
+        enable = true;
+        pinentryPackage = pkgs.pinentry-gnome3;
+      };
+
       systemd.user.services.keepass = makeRcloneMount "/Keepass" "%h/.local/share/keepass";
       systemd.user.services.obsidian = makeRcloneMount "/obsidian" "%h/.local/share/obsidian";
-
+    })
+    (lib.mkIf cfg.wezterm.enable {
       programs.wezterm = {
         enable = true;
-        package = inputs.wezterm.packages.${pkgs.system}.default;
         extraConfig = builtins.readFile ./wez-config.lua;
       };
     })

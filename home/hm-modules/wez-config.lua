@@ -14,4 +14,6 @@ return {
 	color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
 	window_background_opacity = 0.9,
 	automatically_reload_config = true,
+	-- https://github.com/wezterm/wezterm/issues/6731
+	warn_about_missing_glyphs = false,
 }

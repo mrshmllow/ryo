@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     home-manager = {
@@ -17,7 +18,9 @@
     nix-citizen.inputs.nix-gaming.follows = "nix-gaming";
     nix-gaming.url = "github:fufexan/nix-gaming";
 
-    wezterm.url = "github:wez/wezterm/main?dir=nix";
+    nix-darwin.url = "github:LnL7/nix-darwin/master";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    mac-app-util.url = "github:hraban/mac-app-util";
   };
 
   outputs = inputs @ {
@@ -29,10 +32,12 @@
     nix-minecraft,
     nixos-wsl,
     nixos-cosmic,
+    nix-darwin,
+    mac-app-util,
     self,
     ...
   }: let
-    forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux" "x86_64-darwin" "i686-linux" "aarch64-linux"];
+    forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-darwin" "i686-linux" "aarch64-linux"];
   in {
     homeConfigurations.marsh = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages."x86_64-linux";
@@ -43,6 +48,14 @@
           home.homeDirectory = "/home/marsh";
         }
       ];
+    };
+
+    darwinConfigurations.macbook = nix-darwin.lib.darwinSystem {
+      modules = [./darwin/configuration.nix home-manager.darwinModules.home-manager mac-app-util.darwinModules.default];
+      specialArgs = {
+        inherit inputs;
+        nixpkgs = inputs.nixpkgs-darwin;
+      };
     };
 
     checks = forAllSystems (system: {
@@ -65,8 +78,7 @@
           ++ [
             colmena
             home-manager.packages.${system}.default
-            (writeShellScriptBin "apply-local" ''${lib.getExe colmena} apply-local -v --sudo "$@"'')
-            (writeShellScriptBin "apply-hm" ''${lib.getExe home-manager.packages.${system}.default} switch --flake .'')
+            nix-darwin.packages.${system}.default
           ];
       };
     });
@@ -118,22 +130,14 @@
         };
       };
 
-      outpost-2 = {name, ...}: {
-        deployment = {
-          targetHost = name;
-          targetUser = "root";
-          buildOnTarget = true;
-        };
-
-        imports = [./nodes/${name}];
-      };
-
       outpost-3 = {name, ...}: {
         deployment = {
           targetHost = "100.74.233.10";
           targetUser = "root";
           buildOnTarget = true;
         };
+
+        nixpkgs.hostPlatform = "x86_64-linux";
 
         imports = [./nodes/${name}];
       };
@@ -147,18 +151,7 @@
         imports = [./nodes/${name}];
       };
 
-      mc-forgettable = {name, ...}: {
-        deployment = {
-          targetHost = "154.26.156.55";
-          targetUser = "root";
-          buildOnTarget = true;
-        };
-
-        imports = [
-          ./nodes/minecraft-server-f
-          home-manager.nixosModules.home-manager
-        ];
-      };
+      wsl = {nixpkgs.hostPlatform = "x86_64-linux";};
 
       maple = {name, ...}: {
         deployment = {
