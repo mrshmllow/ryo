@@ -95,8 +95,15 @@
             ++ [
               colmena
               home-manager.packages.${system}.default
-              nix-darwin.packages.${system}.default
-            ];
+              #
+            ]
+            ++ (
+              if system == "aarch64-darwin"
+              then [
+                nix-darwin.packages.${system}.default
+              ]
+              else []
+            );
         };
       }
     );
