@@ -28,9 +28,22 @@
   boot.extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
   boot.kernelModules = [
     "v4l2loopback"
+    "amd_3d_vcache"
   ];
 
+  services.postgresql.enable = true;
+
+  services.flatpak.enable = true;
+
   environment.systemPackages = with pkgs; [
+    (pkgs.wrapOBS {
+      plugins = with pkgs.obs-studio-plugins; [
+        obs-pipewire-audio-capture
+      ];
+    })
+
+    mpv
+
     (opentrack.overrideAttrs (prev: {
       version = "wine-extended-proton";
       patches = [
@@ -49,19 +62,22 @@
     }))
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_xanmod;
-  services.ollama = {
-    enable = true;
-    acceleration = "rocm";
-    environmentVariables = {
-      HSA_OVERRIDE_GFX_VERSION = "10.3.0";
-    };
-  };
+  boot.kernelPackages = pkgs.linuxPackages_cachyos;
 
-  services.open-webui = {
-    enable = true;
-    environment = {WEBUI_AUTH = "False";};
-  };
+  hardware.cpu.amd.updateMicrocode = true;
+
+  # services.ollama = {
+  #   enable = true;
+  #   acceleration = "rocm";
+  #   environmentVariables = {
+  #     HSA_OVERRIDE_GFX_VERSION = "10.3.0";
+  #   };
+  # };
+  #
+  # services.open-webui = {
+  #   enable = true;
+  #   environment = {WEBUI_AUTH = "False";};
+  # };
 
   desktop.games.sc.enable = true;
 
@@ -78,7 +94,7 @@
   swapDevices = [
     {
       device = "/var/lib/swapfile";
-      size = builtins.floor (33 * 1.5 * 1024);
+      size = builtins.floor (33 * 1024);
     }
   ];
 
