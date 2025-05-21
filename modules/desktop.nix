@@ -43,7 +43,13 @@ in {
         keepassxc
         prismlauncher
         jetbrains.idea-community-bin
+        heroic
+        qbittorrent
+        bottles
+        mangohud
       ];
+
+      programs.nix-ld.enable = true;
 
       nixpkgs.config.allowUnfree = true;
 
@@ -80,8 +86,14 @@ in {
         fontconfig = {
           defaultFonts = {
             monospace = ["JetBrainsMono"];
-            serif = ["Noto Serif" "Source Han Serif"];
-            sansSerif = ["Noto Sans" "Source Han Sans"];
+            serif = [
+              "Noto Serif"
+              "Source Han Serif"
+            ];
+            sansSerif = [
+              "Noto Sans"
+              "Source Han Sans"
+            ];
           };
         };
       };
@@ -93,9 +105,20 @@ in {
 
       # Enable the GNOME Desktop Environment.
       services.xserver.displayManager.gdm.enable = true;
-      services.xserver.desktopManager.gnome.enable = true;
 
-      environment.systemPackages = [pkgs.gnomeExtensions.appindicator pkgs.gnomeExtensions.clipboard-history];
+      services.xserver.desktopManager.gnome = {
+        enable = true;
+        extraGSettingsOverridePackages = [pkgs.mutter];
+        extraGSettingsOverrides = ''
+          [org.gnome.mutter]
+          experimental-features=['scale-monitor-framebuffer', 'xwayland-native-scaling', 'variable-refresh-rate']
+        '';
+      };
+
+      environment.systemPackages = [
+        pkgs.gnomeExtensions.appindicator
+        pkgs.gnomeExtensions.clipboard-history
+      ];
     })
 
     (lib.mkIf cfg.cosmic.enable {
@@ -111,9 +134,7 @@ in {
       };
     })
 
-    (lib.mkIf (cfg.gnome.enable
-      || cfg.cosmic.enable
-      || cfg.sway.enable) {
+    (lib.mkIf (cfg.gnome.enable || cfg.cosmic.enable || cfg.sway.enable) {
       # hardware.pulseaudio.enable = lib.mkForce false;
 
       security.rtkit.enable = true;
@@ -126,14 +147,17 @@ in {
     (lib.mkIf cfg.games.sc.enable {
       programs.gamemode.enable = true;
 
-      boot.kernel.sysctl = {
-        "vm.max_map_count" = 16777216;
-        "fs.file-max" = 524288;
-      };
+      nix-citizen.starCitizen = {
+        enable = true;
+        preCommands = ''
+          export DXVK_HUD=compiler;
+          export MANGO_HUD=1;
+        '';
+        helperScript.enable = true;
 
-      environment.systemPackages = [
-        (inputs.nix-citizen.packages.${pkgs.system}.star-citizen)
-      ];
+        patchXwayland = true;
+        umu.enable = true;
+      };
 
       nix.settings = {
         substituters = [

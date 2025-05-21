@@ -80,7 +80,7 @@ in {
       };
 
       systemd.user.services.keepass = makeRcloneMount "/Keepass" "%h/.local/share/keepass";
-      systemd.user.services.obsidian = makeRcloneMount "/obsidian" "%h/.local/share/obsidian";
+      # systemd.user.services.obsidian = makeRcloneMount "/obsidian" "%h/.local/share/obsidian";
     })
     (lib.mkIf cfg.wezterm.enable {
       programs.wezterm = {
@@ -187,7 +187,12 @@ in {
             position = "top";
             height = 32;
             spacing = 4;
-            modules-left = ["sway/workspaces" "sway/mode" "sway/scratchpad" "clock"];
+            modules-left = [
+              "sway/workspaces"
+              "sway/mode"
+              "sway/scratchpad"
+              "clock"
+            ];
             "sway/mode" = {
               format = "<span style=\"italic\">{}</span>";
             };

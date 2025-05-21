@@ -12,6 +12,7 @@
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
     nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
     # star citizen
     nix-citizen.url = "github:LovingMelody/nix-citizen";
@@ -21,6 +22,10 @@
     nix-darwin.url = "github:LnL7/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     mac-app-util.url = "github:hraban/mac-app-util";
+
+    umu.url = "github:Open-Wine-Components/umu-launcher?dir=packaging/nix";
+
+    wezterm.url = "github:wez/wezterm/main?dir=nix";
   };
 
   outputs = inputs @ {
@@ -34,10 +39,17 @@
     nixos-cosmic,
     nix-darwin,
     mac-app-util,
+    nix-citizen,
+    chaotic,
     self,
     ...
   }: let
-    forAllSystems = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-darwin" "i686-linux" "aarch64-linux"];
+    forAllSystems = nixpkgs.lib.genAttrs [
+      "x86_64-linux"
+      "aarch64-darwin"
+      "i686-linux"
+      "aarch64-linux"
+    ];
   in {
     homeConfigurations.marsh = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages."x86_64-linux";
@@ -51,7 +63,11 @@
     };
 
     darwinConfigurations.macbook = nix-darwin.lib.darwinSystem {
-      modules = [./darwin/configuration.nix home-manager.darwinModules.home-manager mac-app-util.darwinModules.default];
+      modules = [
+        ./darwin/configuration.nix
+        home-manager.darwinModules.home-manager
+        mac-app-util.darwinModules.default
+      ];
       specialArgs = {
         inherit inputs;
         nixpkgs = inputs.nixpkgs-darwin;
@@ -68,20 +84,22 @@
       };
     });
 
-    devShells = forAllSystems (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-    in {
-      default = pkgs.mkShell {
-        inherit (self.checks.${system}.pre-commit-check) shellHook;
-        buildInputs = with pkgs;
-          self.checks.${system}.pre-commit-check.enabledPackages
-          ++ [
-            colmena
-            home-manager.packages.${system}.default
-            nix-darwin.packages.${system}.default
-          ];
-      };
-    });
+    devShells = forAllSystems (
+      system: let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in {
+        default = pkgs.mkShell {
+          inherit (self.checks.${system}.pre-commit-check) shellHook;
+          buildInputs = with pkgs;
+            self.checks.${system}.pre-commit-check.enabledPackages
+            ++ [
+              colmena
+              home-manager.packages.${system}.default
+              nix-darwin.packages.${system}.default
+            ];
+        };
+      }
+    );
 
     nixosConfigurations.wsl = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -92,6 +110,7 @@
         ./marsh
         ./wsl
         ./nix.nix
+        {nixpkgs.hostPlatform = "x86_64-linux";}
       ];
     };
 
@@ -116,9 +135,11 @@
           nixos-cosmic.nixosModules.default
           home-manager.nixosModules.home-manager
           nix-minecraft.nixosModules.minecraft-servers
+          nix-citizen.nixosModules.StarCitizen
+          chaotic.nixosModules.default
         ];
 
-        ryo.exporting_nodes = ["outpost-3" "mc-forgettable"];
+        ryo.exporting_nodes = ["outpost-3"];
         ryo-network.tailscale.enable = true;
 
         services.prometheus.exporters = lib.mkIf (builtins.elem name config.ryo.exporting_nodes) {
@@ -148,10 +169,14 @@
           targetUser = "root";
         };
 
+        nixpkgs.hostPlatform = "aarch64-linux";
+
         imports = [./nodes/${name}];
       };
 
-      wsl = {nixpkgs.hostPlatform = "x86_64-linux";};
+      wsl = {
+        nixpkgs.hostPlatform = "x86_64-linux";
+      };
 
       maple = {name, ...}: {
         deployment = {
@@ -160,6 +185,8 @@
           buildOnTarget = true;
           allowLocalDeployment = true;
         };
+
+        nixpkgs.hostPlatform = "x86_64-linux";
 
         imports = [
           ./nodes/${name}
@@ -172,6 +199,8 @@
         deployment = {
           allowLocalDeployment = true;
         };
+
+        nixpkgs.hostPlatform = "x86_64-linux";
 
         imports = [
           ./nodes/${name}
