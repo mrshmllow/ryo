@@ -3,17 +3,19 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   imports = [
     ./hardware-configuration.nix
     # auto-cpufreq.nixosModules.default
   ];
 
   desktop.enable = true;
-  desktop.sway.enable = true;
+  desktop.gnome.enable = true;
 
   ryo-network = {
-    home.enable = true;
+    tailscale.enable = true;
+    # home.enable = true;
   };
 
   services.fwupd.enable = true;
@@ -27,7 +29,7 @@
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
   networking.hostName = "althaea";
-  networking.nameservers = ["1.1.1.1"];
+  networking.nameservers = [ "1.1.1.1" ];
 
   programs.fuse.userAllowOther = true;
 
@@ -36,7 +38,7 @@
   time.timeZone = "Australia/Sydney";
   time.hardwareClockInLocalTime = true;
 
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   virtualisation.docker.enable = true;
 

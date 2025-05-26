@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.ryo-network;
-in {
+in
+{
   options.ryo-network = {
     home.enable = lib.mkEnableOption "home wireless";
     tailscale.enable = lib.mkEnableOption "tailscale";
@@ -16,11 +18,15 @@ in {
         enable = true;
         authKeyFile = config.deployment.keys."tailscale.key".path;
         permitCertUid = "caddy";
-        extraUpFlags = ["--ssh"];
+        extraUpFlags = [ "--ssh" ];
       };
 
       deployment.keys."tailscale.key" = {
-        keyCommand = ["gpg" "--decrypt" "${../secrets/tailscale.key.gpg}"];
+        keyCommand = [
+          "gpg"
+          "--decrypt"
+          "${../secrets/tailscale.key.gpg}"
+        ];
 
         uploadAt = "pre-activation";
       };
@@ -33,7 +39,11 @@ in {
       networking.wireless.secretsFile = config.deployment.keys."wireless.env".path;
 
       deployment.keys."wireless.env" = {
-        keyCommand = ["gpg" "--decrypt" "${../secrets/wireless.env.gpg}"];
+        keyCommand = [
+          "gpg"
+          "--decrypt"
+          "${../secrets/wireless.env.gpg}"
+        ];
         uploadAt = "pre-activation";
         destDir = "/etc/keys";
       };
