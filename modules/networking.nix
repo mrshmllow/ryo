@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -30,6 +31,11 @@ in
 
         uploadAt = "pre-activation";
       };
+    })
+    (lib.mkIf (config.desktop.gnome.enable && cfg.tailscale.enable) {
+      environment.systemPackages = [
+        pkgs.gnomeExtensions.tailscale-qs
+      ];
     })
     (lib.mkIf (cfg.home.enable == false) {
       networking.networkmanager.enable = true;

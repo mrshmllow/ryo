@@ -605,6 +605,27 @@
         "type": "github"
       }
     },
+    "home-manager_3": {
+      "inputs": {
+        "nixpkgs": [
+          "zen-browser",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1748227609,
+        "narHash": "sha256-SaSdslyo6UGDpPUlmrPA4dWOEuxCy2ihRN9K6BnqYsA=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "d23d20f55d49d8818ac1f1b2783671e8a6725022",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
     "jovian": {
       "inputs": {
         "nix-github-actions": "nix-github-actions",
@@ -1215,7 +1236,8 @@
         "nixpkgs-darwin": "nixpkgs-darwin",
         "pre-commit-hooks": "pre-commit-hooks",
         "umu": "umu",
-        "wezterm": "wezterm"
+        "wezterm": "wezterm",
+        "zen-browser": "zen-browser"
       }
     },
     "rust-analyzer-src": {
@@ -1482,6 +1504,27 @@
         "owner": "wez",
         "ref": "main",
         "repo": "wezterm",
+        "type": "github"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "home-manager": "home-manager_3",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1748229380,
+        "narHash": "sha256-ulYljT6A8/v9QsMWnTsDYxa1/bG/22Ufy+KfrN4jA74=",
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
+        "rev": "14207b0fc7caba6b6a9c7a9aecf7f901435daa93",
+        "type": "github"
+      },
+      "original": {
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
         "type": "github"
       }
     },
