@@ -5,21 +5,29 @@
   ...
 }: {
   nix.settings = {
-    experimental-features = ["nix-command" "flakes"];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     builders-use-substitutes = true;
     extra-trusted-users = "marsh";
   };
 
-  nix.linux-builder = {
-    enable = false;
-    config = {
-      nix.settings.sandbox = false;
-    };
-    ephemeral = true;
-    package = inputs.nixpkgs-darwin.legacyPackages.${pkgs.system}.darwin.linux-builder;
-    maxJobs = 4;
-    supportedFeatures = ["kvm" "benchmark" "big-parallel" "nixos-test"];
-  };
+  # nix.linux-builder = {
+  #   enable = true;
+  #   config = {
+  #     nix.settings.sandbox = false;
+  #   };
+  #   ephemeral = true;
+  #   package = inputs.nixpkgs-darwin.legacyPackages.${pkgs.system}.darwin.linux-builder;
+  #   maxJobs = 4;
+  #   # supportedFeatures = [
+  #   #   "kvm"
+  #   #   "benchmark"
+  #   #   "big-parallel"
+  #   #   "nixos-test"
+  #   # ];
+  # };
 
   users.users.marsh = {
     shell = pkgs.fish;
@@ -35,6 +43,7 @@
     iterm2
     wezterm
     keepassxc
+    neovide
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg:
