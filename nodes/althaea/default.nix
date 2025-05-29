@@ -54,6 +54,7 @@
   # https://knowledgebase.frame.work/en_us/optimizing-ubuntu-battery-life-Sye_48Lg3
   services.power-profiles-daemon.enable = true;
   powerManagement.powertop.enable = true;
+  services.thermald.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
