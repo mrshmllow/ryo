@@ -5,5 +5,6 @@
     ./element.althaea.zone
     ./git.althaea.zone
     ./grafana.althaea.zone
+    ./bots
   ];
 }

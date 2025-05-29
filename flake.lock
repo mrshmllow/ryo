@@ -1235,6 +1235,7 @@
         "nixpkgs": "nixpkgs_11",
         "nixpkgs-darwin": "nixpkgs-darwin",
         "pre-commit-hooks": "pre-commit-hooks",
+        "typst-bot": "typst-bot",
         "umu": "umu",
         "wezterm": "wezterm",
         "zen-browser": "zen-browser"
@@ -1441,6 +1442,22 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "typst-bot": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1741374012,
+        "narHash": "sha256-mGofHf/A87VNVGOfnwIh13IKd0H3xvQ6QHtXIhlUBwY=",
+        "owner": "mattfbacon",
+        "repo": "typst-bot",
+        "rev": "19e41249a1172d6b6769dd191972f70bf5f9a9d6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mattfbacon",
+        "repo": "typst-bot",
         "type": "github"
       }
     },
