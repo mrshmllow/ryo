@@ -1,0 +1,13 @@
+diff --git a/crates/bot/src/worker.rs b/crates/bot/src/worker.rs
+index 253552c..b1fb457 100644
+--- a/crates/bot/src/worker.rs
++++ b/crates/bot/src/worker.rs
+@@ -120,7 +120,7 @@ struct Process {
+ 
+ impl Process {
+ 	async fn spawn() -> anyhow::Result<Self> {
+-		let child = std::process::Command::new("./worker")
++		let child = std::process::Command::new("%TYPST_WORKER_PATH%")
+ 			.stdin(Stdio::piped())
+ 			.stdout(Stdio::piped())
+ 			.stderr(Stdio::inherit())
