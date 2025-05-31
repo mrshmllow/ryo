@@ -39,6 +39,7 @@ in {
         })
 
         inputs.zen-browser.packages."${system}".default
+        pomodoro-gtk
         vesktop
         obsidian
         keepassxc
@@ -113,9 +114,10 @@ in {
         '';
       };
 
-      environment.systemPackages = [
-        pkgs.gnomeExtensions.appindicator
-        pkgs.gnomeExtensions.clipboard-history
+      environment.systemPackages = with pkgs; [
+        gnomeExtensions.appindicator
+        gnomeExtensions.clipboard-history
+        sushi
       ];
     })
 
