@@ -151,7 +151,6 @@ in {
           export DXVK_HUD=compiler;
           export MANGO_HUD=1;
         '';
-        helperScript.enable = true;
 
         patchXwayland = true;
         umu.enable = true;
