@@ -4,11 +4,9 @@
   lib,
   inputs,
   ...
-}:
-let
+}: let
   cfg = config.desktop;
-in
-{
+in {
   options.desktop = {
     enable = lib.mkEnableOption "desktop computer";
 
@@ -88,7 +86,7 @@ in
         ];
         fontconfig = {
           defaultFonts = {
-            monospace = [ "JetBrainsMono" ];
+            monospace = ["JetBrainsMono"];
             serif = [
               "Noto Serif"
               "Source Han Serif"
@@ -103,15 +101,12 @@ in
     })
 
     (lib.mkIf cfg.gnome.enable {
-      # Enable the X11 windowing system.
-      services.xserver.enable = true;
-
       # Enable the GNOME Desktop Environment.
-      services.xserver.displayManager.gdm.enable = true;
+      services.displayManager.gdm.enable = true;
 
-      services.xserver.desktopManager.gnome = {
+      services.desktopManager.gnome = {
         enable = true;
-        extraGSettingsOverridePackages = [ pkgs.mutter ];
+        extraGSettingsOverridePackages = [pkgs.mutter];
         extraGSettingsOverrides = ''
           [org.gnome.mutter]
           experimental-features=['scale-monitor-framebuffer', 'xwayland-native-scaling', 'variable-refresh-rate']
@@ -215,7 +210,7 @@ in
         enable = true;
         wlr.enable = true;
         # gtk portal needed to make gtk apps happy
-        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+        extraPortals = [pkgs.xdg-desktop-portal-gtk];
       };
 
       security.pam.loginLimits = [
@@ -229,9 +224,9 @@ in
     })
 
     (lib.mkIf cfg.apps.davinci-resolve.enable {
-      environment.systemPackages = with pkgs; [ davinci-resolve ];
+      environment.systemPackages = with pkgs; [davinci-resolve];
 
-      hardware.opengl = {
+      hardware.graphics = {
         enable = true;
         extraPackages = with pkgs; [
           rocmPackages.clr.icd
