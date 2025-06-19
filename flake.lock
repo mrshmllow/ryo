@@ -12,11 +12,11 @@
         "vim-firestore": "vim-firestore"
       },
       "locked": {
-        "lastModified": 1748309312,
-        "narHash": "sha256-jMP2b4Au8mNympBXidrNmt/vKErHaca1tJFe293eMn4=",
+        "lastModified": 1749946530,
+        "narHash": "sha256-IhvJvwmUE6kH4NLiEciaevbt4GJg6tq3US5yNdAaFkk=",
         "owner": "mrshmllow",
         "repo": "nvim-candy",
-        "rev": "03f5f3f8bef35208c1fe12c9a4ed5ebe2c9ebb44",
+        "rev": "56706da99b439121fa0ca275dbc5c186026d261e",
         "type": "github"
       },
       "original": {
