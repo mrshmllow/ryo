@@ -9,6 +9,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     candy.url = "github:mrshmllow/nvim-candy";
+    wire.url = "github:wires-org/wire";
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
     nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
@@ -130,9 +131,11 @@
       ];
     };
 
-    colmena = {
+    colmena = inputs.wire.makeHive {
+      inherit (self) nixosConfigurations;
+
       meta = {
-        nixpkgs = import nixpkgs {
+        nixpkgs = import inputs.nixpkgs {
           system = "x86_64-linux";
         };
         specialArgs = {inherit inputs;};
