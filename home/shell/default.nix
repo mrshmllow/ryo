@@ -8,7 +8,7 @@
   programs.git = {
     enable = true;
     userName = "marshmallow";
-    userEmail = "marshycity@gmail.com";
+    userEmail = "github@althaea.zone";
   };
 
   home.shellAliases = {
