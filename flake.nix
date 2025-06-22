@@ -135,7 +135,7 @@
       ];
     };
 
-    colmena = inputs.wire.makeHive {
+    wire = inputs.wire.makeHive {
       inherit (self) nixosConfigurations;
 
       meta = {
