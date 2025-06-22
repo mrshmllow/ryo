@@ -36,6 +36,10 @@
     typst-bot.flake = false;
 
     wezterm.url = "github:wez/wezterm/main?dir=nix";
+    auto-cpufreq = {
+      url = "github:AdnanHodzic/auto-cpufreq";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
