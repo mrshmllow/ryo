@@ -49,6 +49,8 @@ in {
         qbittorrent
         bottles
         mangohud
+        anki
+        signal-desktop
       ];
 
       programs.nix-ld.enable = true;
