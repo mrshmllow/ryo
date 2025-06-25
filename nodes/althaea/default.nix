@@ -1,13 +1,11 @@
 {
   pkgs,
-  config,
-  lib,
+  inputs,
   ...
-}:
-{
+}: {
   imports = [
     ./hardware-configuration.nix
-    # auto-cpufreq.nixosModules.default
+    inputs.auto-cpufreq.nixosModules.default
   ];
 
   desktop.enable = true;
@@ -26,10 +24,13 @@
     colmena
   ];
 
-  virtualisation.libvirtd.enable = true;
-  programs.virt-manager.enable = true;
+  # boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_14;
+
+  # virtualisation.libvirtd.enable = true;
+  # programs.virt-manager.enable = true;
   networking.hostName = "althaea";
-  networking.nameservers = [ "1.1.1.1" ];
+  networking.nameservers = ["1.1.1.1"];
 
   programs.fuse.userAllowOther = true;
 
@@ -38,7 +39,7 @@
   time.timeZone = "Australia/Sydney";
   time.hardwareClockInLocalTime = true;
 
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  # boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   virtualisation.docker.enable = true;
 
@@ -52,7 +53,10 @@
   };
 
   # https://knowledgebase.frame.work/en_us/optimizing-ubuntu-battery-life-Sye_48Lg3
-  services.power-profiles-daemon.enable = true;
+  services.power-profiles-daemon.enable = false;
+  programs.auto-cpufreq.enable = true;
+  services.tlp.enable = false;
+
   powerManagement.powertop.enable = true;
   services.thermald.enable = true;
 
