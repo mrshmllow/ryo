@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.desktop;
 
   dbus-sway-environment = pkgs.writeTextFile {
@@ -22,34 +23,37 @@
     name = "configure-gtk";
     destination = "/bin/configure-gtk";
     executable = true;
-    text = let
-      schema = pkgs.gsettings-desktop-schemas;
-      datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+    text =
+      let
+        schema = pkgs.gsettings-desktop-schemas;
+        datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+      in
       # What is this doing?
-    in ''
-      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-      gnome_schema=org.gnome.desktop.interface
-    '';
+      ''
+        export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+        gnome_schema=org.gnome.desktop.interface
+      '';
     # gsettings set $gnome_schema gtk-theme 'Dracula'
   };
 
   makeRcloneMount = remotePath: localPath: {
     Unit = {
-      After = ["network.target"];
-      Wants = ["network.target"];
+      After = [ "network.target" ];
+      Wants = [ "network.target" ];
     };
     Service = {
       Type = "notify";
       ExecStartPre = "${lib.getExe' pkgs.coreutils "mkdir"} -p ${localPath}";
       ExecStart = "${lib.getExe pkgs.rclone} mount google-drive:${remotePath} ${localPath} --allow-other --log-level INFO --vfs-cache-mode full";
       ExecStop = "${lib.getExe' pkgs.fuse "fusermount"} -u ${localPath}";
-      Environment = ["PATH=/run/wrappers/bin/"];
+      Environment = [ "PATH=/run/wrappers/bin/" ];
     };
     Install = {
-      WantedBy = ["default.target"];
+      WantedBy = [ "default.target" ];
     };
   };
-in {
+in
+{
   options.desktop = {
     enable = lib.mkEnableOption "desktop computer";
     sway.enable = lib.mkEnableOption "sway wm";

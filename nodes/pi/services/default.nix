@@ -1,3 +1,7 @@
 {
-  imports = [./jellyfin ./transmission ./arr];
+  imports = [
+    ./jellyfin
+    ./transmission
+    ./arr
+  ];
 }

@@ -4,7 +4,8 @@
   config,
   inputs,
   ...
-}: {
+}:
+{
   imports = [
     ./hardware-configuration.nix
   ];
@@ -25,7 +26,7 @@
   # };
 
   # obs virtual camera
-  boot.extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
   boot.kernelModules = [
     "v4l2loopback"
     "amd_3d_vcache"
@@ -51,14 +52,12 @@
           umu = lib.getExe' inputs.umu.packages.${pkgs.system}.umu "umu-run";
         })
       ];
-      src =
-        pkgs.fetchFromGitHub
-        {
-          owner = "Priton-CE";
-          repo = "opentrack-StarCitizen";
-          rev = "wine-extended-proton";
-          hash = "sha256-xN4Z1Cpmj8ktqWCQYPZTfqznHrYe28qlKkPoQxHRPJ8=";
-        };
+      src = pkgs.fetchFromGitHub {
+        owner = "Priton-CE";
+        repo = "opentrack-StarCitizen";
+        rev = "wine-extended-proton";
+        hash = "sha256-xN4Z1Cpmj8ktqWCQYPZTfqznHrYe28qlKkPoQxHRPJ8=";
+      };
     }))
   ];
 
@@ -106,7 +105,10 @@
 
   users.users.marsh = {
     isNormalUser = true;
-    extraGroups = ["wheel" "libvirtd"]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      "wheel"
+      "libvirtd"
+    ]; # Enable ‘sudo’ for the user.
   };
 
   system.stateVersion = "24.05"; # Did you read the comment?

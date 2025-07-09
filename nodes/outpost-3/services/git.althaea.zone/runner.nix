@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   services.gitea-actions-runner.instances.one = {
     name = "outpost-3";
     enable = true;

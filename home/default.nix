@@ -1,5 +1,8 @@
 {
-  imports = [./shell ./hm-modules/sway.nix];
+  imports = [
+    ./shell
+    ./hm-modules/sway.nix
+  ];
 
   home.username = "marsh";
 

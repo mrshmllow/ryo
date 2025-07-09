@@ -3,12 +3,18 @@
   config,
   pkgs,
   ...
-}: {
-  imports = [./desktop.nix ./out-of-your-element.nix ./networking.nix ./server/minecraft.nix];
+}:
+{
+  imports = [
+    ./desktop.nix
+    ./out-of-your-element.nix
+    ./networking.nix
+    ./server/minecraft.nix
+  ];
 
   options.ryo = {
     exporting_nodes = lib.mkOption {
-      default = [];
+      default = [ ];
       type = lib.types.listOf lib.types.str;
     };
   };
@@ -18,7 +24,7 @@
       supportsDryActivation = true;
       text = ''
         if [ -e /run/current-system ]; then
-          PATH=${lib.makeBinPath [config.nix.package]} \
+          PATH=${lib.makeBinPath [ config.nix.package ]} \
             ${lib.getExe pkgs.nvd} \
             diff /run/current-system $systemConfig
         fi

@@ -1,6 +1,11 @@
-{config, ...}: {
+{ config, ... }:
+{
   deployment.keys."keycloak-db.pass" = {
-    keyCommand = ["gpg" "--decrypt" "${./../../../../secrets/keycloak-db.pass.gpg}"];
+    keyCommand = [
+      "gpg"
+      "--decrypt"
+      "${./../../../../secrets/keycloak-db.pass.gpg}"
+    ];
 
     uploadAt = "pre-activation";
     destDir = "/etc/keys";

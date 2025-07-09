@@ -22,7 +22,7 @@ buildNpmPackage rec {
     pkgs.vips
   ];
 
-  nativeBuildInputs = [pkgs.pkg-config];
+  nativeBuildInputs = [ pkgs.pkg-config ];
 
   dontNpmBuild = true;
 

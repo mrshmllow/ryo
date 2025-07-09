@@ -2,8 +2,9 @@
   pkgs,
   lib,
   ...
-}: {
-  imports = [./gpg.nix];
+}:
+{
+  imports = [ ./gpg.nix ];
 
   programs.git = {
     enable = true;
@@ -17,7 +18,7 @@
 
   programs.ripgrep = {
     enable = true;
-    arguments = ["--trim"];
+    arguments = [ "--trim" ];
   };
 
   programs.fish = {

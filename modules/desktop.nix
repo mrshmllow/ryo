@@ -4,9 +4,11 @@
   lib,
   inputs,
   ...
-}: let
+}:
+let
   cfg = config.desktop;
-in {
+in
+{
   options.desktop = {
     enable = lib.mkEnableOption "desktop computer";
 
@@ -89,7 +91,7 @@ in {
         ];
         fontconfig = {
           defaultFonts = {
-            monospace = ["JetBrainsMono"];
+            monospace = [ "JetBrainsMono" ];
             serif = [
               "Noto Serif"
               "Source Han Serif"
@@ -109,7 +111,7 @@ in {
 
       services.desktopManager.gnome = {
         enable = true;
-        extraGSettingsOverridePackages = [pkgs.mutter];
+        extraGSettingsOverridePackages = [ pkgs.mutter ];
         extraGSettingsOverrides = ''
           [org.gnome.mutter]
           experimental-features=['scale-monitor-framebuffer', 'xwayland-native-scaling', 'variable-refresh-rate']
@@ -213,7 +215,7 @@ in {
         enable = true;
         wlr.enable = true;
         # gtk portal needed to make gtk apps happy
-        extraPortals = [pkgs.xdg-desktop-portal-gtk];
+        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
       };
 
       security.pam.loginLimits = [
@@ -227,7 +229,7 @@ in {
     })
 
     (lib.mkIf cfg.apps.davinci-resolve.enable {
-      environment.systemPackages = with pkgs; [davinci-resolve];
+      environment.systemPackages = with pkgs; [ davinci-resolve ];
 
       hardware.graphics = {
         enable = true;

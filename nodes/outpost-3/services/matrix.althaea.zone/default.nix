@@ -2,7 +2,8 @@
   pkgs,
   config,
   ...
-}: {
+}:
+{
   # imports = [./bridge.nix];
 
   services.postgresql = {
@@ -14,7 +15,11 @@
   };
 
   deployment.keys."synapse-keycloak.yml" = {
-    keyCommand = ["gpg" "--decrypt" "${./synapse-keycloak.yml.gpg}"];
+    keyCommand = [
+      "gpg"
+      "--decrypt"
+      "${./synapse-keycloak.yml.gpg}"
+    ];
     uploadAt = "pre-activation";
     destDir = "/etc/keys";
     user = "matrix-synapse";
@@ -35,7 +40,7 @@
       password_config.enabled = false;
       backchannel_logout_enabled = true;
     };
-    extraConfigFiles = [config.deployment.keys."synapse-keycloak.yml".path];
+    extraConfigFiles = [ config.deployment.keys."synapse-keycloak.yml".path ];
   };
 
   services.caddy = {
@@ -55,5 +60,5 @@
     '';
   };
 
-  networking.firewall.allowedTCPPorts = [8448];
+  networking.firewall.allowedTCPPorts = [ 8448 ];
 }

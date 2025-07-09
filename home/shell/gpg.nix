@@ -2,11 +2,14 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   programs.gpg = {
     enable = true;
     homedir = "${config.xdg.dataHome}/gnupg";
-    settings = {keyserver = "hkps://keys.openpgp.org";};
+    settings = {
+      keyserver = "hkps://keys.openpgp.org";
+    };
     publicKeys = [
       {
         source = builtins.fetchurl {

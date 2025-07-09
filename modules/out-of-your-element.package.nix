@@ -19,9 +19,9 @@ buildNpmPackage rec {
 
   npmDepsHash = "sha256-RtE1P/qTYyvb1setxOd2N5efPF0X0GIkVoaLgLxPuk8=";
 
-  buildInputs = [pkgs.vips];
+  buildInputs = [ pkgs.vips ];
 
-  nativeBuildInputs = [pkgs.pkg-config];
+  nativeBuildInputs = [ pkgs.pkg-config ];
 
   dontNpmBuild = true;
 

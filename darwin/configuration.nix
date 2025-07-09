@@ -3,7 +3,8 @@
   inputs,
   lib,
   ...
-}: {
+}:
+{
   nix.settings = {
     experimental-features = [
       "nix-command"
@@ -46,7 +47,8 @@
     neovide
   ];
 
-  nixpkgs.config.allowUnfreePredicate = pkg:
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
     builtins.elem (lib.getName pkg) [
       "Xcode.app"
     ];
@@ -68,12 +70,16 @@
 
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
-  home-manager.extraSpecialArgs = {inherit inputs;};
-
-  home-manager.users.marsh = {...}: {
-    imports = [../home];
-    desktop.wezterm.enable = true;
+  home-manager.extraSpecialArgs = {
+    inherit inputs;
   };
+
+  home-manager.users.marsh =
+    { ... }:
+    {
+      imports = [ ../home ];
+      desktop.wezterm.enable = true;
+    };
 
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code

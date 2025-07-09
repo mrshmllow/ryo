@@ -2,12 +2,17 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+{
   users.users.marsh = {
     isNormalUser = true;
     shell = pkgs.fish;
     description = "marsh";
-    extraGroups = ["wheel" "docker" "libvirtd"];
+    extraGroups = [
+      "wheel"
+      "docker"
+      "libvirtd"
+    ];
 
     packages = [
       inputs.candy.packages.${pkgs.system}.default
@@ -28,8 +33,10 @@
   home-manager.useUserPackages = true;
 
   home-manager.users.marsh = {
-    imports = [../home];
+    imports = [ ../home ];
   };
 
-  home-manager.extraSpecialArgs = {inherit inputs;};
+  home-manager.extraSpecialArgs = {
+    inherit inputs;
+  };
 }

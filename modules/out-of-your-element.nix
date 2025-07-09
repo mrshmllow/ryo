@@ -3,11 +3,13 @@
   pkgs,
   lib,
   ...
-}: let
-  out-of-your-element = pkgs.callPackage ./out-of-your-element.package.nix {};
+}:
+let
+  out-of-your-element = pkgs.callPackage ./out-of-your-element.package.nix { };
   cfg = config.services.out-of-your-element;
   defaultUser = "out-of-your-element";
-in {
+in
+{
   options.services.out-of-your-element = {
     enable = lib.mkEnableOption "out-of-your-element";
 
@@ -47,7 +49,7 @@ in {
       };
 
       groups = lib.optionalAttrs (cfg.group == defaultUser) {
-        ${cfg.group} = {};
+        ${cfg.group} = { };
       };
     };
 
@@ -63,8 +65,8 @@ in {
 
       services.out-of-your-element = {
         enable = true;
-        path = [pkgs.vips];
-        wantedBy = ["multi-user.target"];
+        path = [ pkgs.vips ];
+        wantedBy = [ "multi-user.target" ];
         script = "${lib.getExe pkgs.nodejs_20} start.js";
         preStart = ''
           # feels unsafe but should be fine hopefully xd

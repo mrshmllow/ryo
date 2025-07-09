@@ -2,7 +2,8 @@
   name,
   config,
   ...
-}: {
+}:
+{
   services.grafana = {
     enable = true;
 
@@ -18,7 +19,13 @@
         allow_sign_up = true;
         client_id = "grafana";
         client_secret = ''''${KEYCLOAK_GRAFANA_SECRET}'';
-        scopes = ["openid" "email" "profile" "offline_access" "roles"];
+        scopes = [
+          "openid"
+          "email"
+          "profile"
+          "offline_access"
+          "roles"
+        ];
         email_attribute_path = "email";
         login_attribute_path = "username";
         name_attribute_path = "full_name";
@@ -48,7 +55,11 @@
   systemd.services.grafana.serviceConfig.EnvironmentFile = "/etc/keys/grafana.env";
 
   deployment.keys."grafana.env" = {
-    keyCommand = ["gpg" "--decrypt" "${../../../../secrets/grafana.env.gpg}"];
+    keyCommand = [
+      "gpg"
+      "--decrypt"
+      "${../../../../secrets/grafana.env.gpg}"
+    ];
     uploadAt = "pre-activation";
     destDir = "/etc/keys";
     user = "grafana";
@@ -69,13 +80,13 @@
     scrapeConfigs = [
       {
         job_name = "servers";
-        static_configs = builtins.map (name: {targets = ["${name}:9002"];}) config.ryo.exporting_nodes;
+        static_configs = builtins.map (name: { targets = [ "${name}:9002" ]; }) config.ryo.exporting_nodes;
       }
       {
         job_name = "mc-forgettable-velocity";
         static_configs = [
           {
-            targets = ["mc-forgettable:9100"];
+            targets = [ "mc-forgettable:9100" ];
           }
         ];
       }
@@ -83,7 +94,7 @@
         job_name = "mc-forgettable-survival";
         static_configs = [
           {
-            targets = ["mc-forgettable:9101"];
+            targets = [ "mc-forgettable:9101" ];
           }
         ];
       }
@@ -91,7 +102,7 @@
         job_name = "mc-forgettable-creative";
         static_configs = [
           {
-            targets = ["mc-forgettable:9102"];
+            targets = [ "mc-forgettable:9102" ];
           }
         ];
       }

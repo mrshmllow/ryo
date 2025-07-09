@@ -42,196 +42,221 @@
     };
   };
 
-  outputs = inputs @ {
-    flake-parts,
-    home-manager,
-    nixpkgs,
-    nixos-hardware,
-    pre-commit-hooks,
-    nix-minecraft,
-    nixos-wsl,
-    nixos-cosmic,
-    nix-darwin,
-    mac-app-util,
-    nix-citizen,
-    chaotic,
-    self,
-    ...
-  }: let
-    forAllSystems = nixpkgs.lib.genAttrs [
-      "x86_64-linux"
-      "aarch64-darwin"
-      "i686-linux"
-      "aarch64-linux"
-    ];
-  in {
-    homeConfigurations.marsh = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages."x86_64-linux";
-      extraSpecialArgs = {inherit inputs;};
-      modules = [
-        ./home
-        {
-          home.homeDirectory = "/home/marsh";
-        }
+  outputs =
+    inputs@{
+      flake-parts,
+      home-manager,
+      nixpkgs,
+      nixos-hardware,
+      pre-commit-hooks,
+      nix-minecraft,
+      nixos-wsl,
+      nixos-cosmic,
+      nix-darwin,
+      mac-app-util,
+      nix-citizen,
+      chaotic,
+      self,
+      ...
+    }:
+    let
+      forAllSystems = nixpkgs.lib.genAttrs [
+        "x86_64-linux"
+        "aarch64-darwin"
+        "i686-linux"
+        "aarch64-linux"
       ];
-    };
-
-    darwinConfigurations.macbook = nix-darwin.lib.darwinSystem {
-      modules = [
-        ./darwin/configuration.nix
-        home-manager.darwinModules.home-manager
-        mac-app-util.darwinModules.default
-      ];
-      specialArgs = {
-        inherit inputs;
-        nixpkgs = inputs.nixpkgs-darwin;
-      };
-    };
-
-    checks = forAllSystems (system: {
-      pre-commit-check = pre-commit-hooks.lib.${system}.run {
-        src = ./.;
-        hooks = {
-          alejandra.enable = true;
-          luacheck.enable = true;
+    in
+    {
+      homeConfigurations.marsh = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages."x86_64-linux";
+        extraSpecialArgs = {
+          inherit inputs;
         };
-      };
-    });
-
-    devShells = forAllSystems (
-      system: let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in {
-        default = pkgs.mkShell {
-          inherit (self.checks.${system}.pre-commit-check) shellHook;
-          buildInputs = with pkgs;
-            self.checks.${system}.pre-commit-check.enabledPackages
-            ++ [
-              colmena
-              home-manager.packages.${system}.default
-              #
-            ]
-            ++ (
-              if system == "aarch64-darwin"
-              then [
-                nix-darwin.packages.${system}.default
-              ]
-              else []
-            );
-        };
-      }
-    );
-
-    nixosConfigurations.wsl = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
-      modules = [
-        nixos-wsl.nixosModules.default
-        home-manager.nixosModules.home-manager
-        ./marsh
-        ./wsl
-        ./nix.nix
-        {nixpkgs.hostPlatform = "x86_64-linux";}
-      ];
-    };
-
-    wire = inputs.wire.makeHive {
-      inherit (self) nixosConfigurations;
-
-      meta = {
-        nixpkgs = import inputs.nixpkgs {
-          system = "x86_64-linux";
-        };
-        specialArgs = {inherit inputs;};
-      };
-
-      defaults = {
-        pkgs,
-        name,
-        lib,
-        config,
-        ...
-      }: {
-        imports = [
-          ./nix.nix
-          ./modules
-          nixos-cosmic.nixosModules.default
-          home-manager.nixosModules.home-manager
-          nix-minecraft.nixosModules.minecraft-servers
-          nix-citizen.nixosModules.StarCitizen
-          chaotic.nixosModules.default
+        modules = [
+          ./home
+          {
+            home.homeDirectory = "/home/marsh";
+          }
         ];
+      };
 
-        ryo.exporting_nodes = ["outpost-3"];
-        ryo-network.tailscale.enable = true;
+      darwinConfigurations.macbook = nix-darwin.lib.darwinSystem {
+        modules = [
+          ./darwin/configuration.nix
+          home-manager.darwinModules.home-manager
+          mac-app-util.darwinModules.default
+        ];
+        specialArgs = {
+          inherit inputs;
+          nixpkgs = inputs.nixpkgs-darwin;
+        };
+      };
 
-        services.prometheus.exporters = lib.mkIf (builtins.elem name config.ryo.exporting_nodes) {
-          node = {
-            enable = true;
-            enabledCollectors = ["systemd"];
-            port = 9002;
+      checks = forAllSystems (system: {
+        pre-commit-check = pre-commit-hooks.lib.${system}.run {
+          src = ./.;
+          hooks = {
+            nixfmt-rfc-style.enable = true;
+            luacheck.enable = true;
           };
         };
-      };
+      });
 
-      outpost-3 = {name, ...}: {
-        deployment = {
-          targetHost = "100.74.233.10";
-          targetUser = "root";
-          buildOnTarget = true;
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
+
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          default = pkgs.mkShell {
+            inherit (self.checks.${system}.pre-commit-check) shellHook;
+            buildInputs =
+              with pkgs;
+              self.checks.${system}.pre-commit-check.enabledPackages
+              ++ [
+                colmena
+                home-manager.packages.${system}.default
+                #
+              ]
+              ++ (
+                if system == "aarch64-darwin" then
+                  [
+                    nix-darwin.packages.${system}.default
+                  ]
+                else
+                  [ ]
+              );
+          };
+        }
+      );
+
+      nixosConfigurations.wsl = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {
+          inherit inputs;
         };
-
-        nixpkgs.hostPlatform = "x86_64-linux";
-
-        imports = [./nodes/${name}];
-      };
-
-      pi = {name, ...}: {
-        deployment = {
-          targetHost = "10.1.1.2";
-          targetUser = "root";
-        };
-
-        nixpkgs.hostPlatform = "aarch64-linux";
-
-        imports = [./nodes/${name}];
-      };
-
-      wsl = {
-        nixpkgs.hostPlatform = "x86_64-linux";
-      };
-
-      maple = {name, ...}: {
-        deployment = {
-          targetHost = "maple";
-          targetUser = "root";
-          buildOnTarget = true;
-          allowLocalDeployment = true;
-        };
-
-        nixpkgs.hostPlatform = "x86_64-linux";
-
-        imports = [
-          ./nodes/${name}
-          ./marsh
+        modules = [
+          nixos-wsl.nixosModules.default
           home-manager.nixosModules.home-manager
+          ./marsh
+          ./wsl
+          ./nix.nix
+          { nixpkgs.hostPlatform = "x86_64-linux"; }
         ];
       };
 
-      althaea = {name, ...}: {
-        deployment = {
-          allowLocalDeployment = true;
+      wire = inputs.wire.makeHive {
+        inherit (self) nixosConfigurations;
+
+        meta = {
+          nixpkgs = import inputs.nixpkgs {
+            system = "x86_64-linux";
+          };
+          specialArgs = {
+            inherit inputs;
+          };
         };
 
-        nixpkgs.hostPlatform = "x86_64-linux";
+        defaults =
+          {
+            pkgs,
+            name,
+            lib,
+            config,
+            ...
+          }:
+          {
+            imports = [
+              ./nix.nix
+              ./modules
+              nixos-cosmic.nixosModules.default
+              home-manager.nixosModules.home-manager
+              nix-minecraft.nixosModules.minecraft-servers
+              nix-citizen.nixosModules.StarCitizen
+              chaotic.nixosModules.default
+            ];
 
-        imports = [
-          ./nodes/${name}
-          ./marsh
-          home-manager.nixosModules.home-manager
-          nixos-hardware.nixosModules.framework-12th-gen-intel
-        ];
+            ryo.exporting_nodes = [ "outpost-3" ];
+            ryo-network.tailscale.enable = true;
+
+            services.prometheus.exporters = lib.mkIf (builtins.elem name config.ryo.exporting_nodes) {
+              node = {
+                enable = true;
+                enabledCollectors = [ "systemd" ];
+                port = 9002;
+              };
+            };
+          };
+
+        outpost-3 =
+          { name, ... }:
+          {
+            deployment = {
+              targetHost = "100.74.233.10";
+              targetUser = "root";
+              buildOnTarget = true;
+            };
+
+            nixpkgs.hostPlatform = "x86_64-linux";
+
+            imports = [ ./nodes/${name} ];
+          };
+
+        pi =
+          { name, ... }:
+          {
+            deployment = {
+              targetHost = "10.1.1.2";
+              targetUser = "root";
+            };
+
+            nixpkgs.hostPlatform = "aarch64-linux";
+
+            imports = [ ./nodes/${name} ];
+          };
+
+        wsl = {
+          nixpkgs.hostPlatform = "x86_64-linux";
+        };
+
+        maple =
+          { name, ... }:
+          {
+            deployment = {
+              targetHost = "maple";
+              targetUser = "root";
+              buildOnTarget = true;
+              allowLocalDeployment = true;
+            };
+
+            nixpkgs.hostPlatform = "x86_64-linux";
+
+            imports = [
+              ./nodes/${name}
+              ./marsh
+              home-manager.nixosModules.home-manager
+            ];
+          };
+
+        althaea =
+          { name, ... }:
+          {
+            deployment = {
+              allowLocalDeployment = true;
+            };
+
+            nixpkgs.hostPlatform = "x86_64-linux";
+
+            imports = [
+              ./nodes/${name}
+              ./marsh
+              home-manager.nixosModules.home-manager
+              nixos-hardware.nixosModules.framework-12th-gen-intel
+            ];
+          };
       };
     };
-  };
 }

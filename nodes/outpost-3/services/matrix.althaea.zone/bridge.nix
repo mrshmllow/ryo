@@ -1,6 +1,11 @@
-{config, ...}: {
+{ config, ... }:
+{
   deployment.keys."out-of-your-element.config.js" = {
-    keyCommand = ["gpg" "--decrypt" "${./config.js.gpg}"];
+    keyCommand = [
+      "gpg"
+      "--decrypt"
+      "${./config.js.gpg}"
+    ];
     group = config.services.out-of-your-element.group;
     user = config.services.out-of-your-element.user;
     destDir = "/etc/keys";
@@ -8,7 +13,11 @@
   };
 
   deployment.keys."bridge.service.registration.yaml" = {
-    keyCommand = ["gpg" "--decrypt" "${./registration.yaml.gpg}"];
+    keyCommand = [
+      "gpg"
+      "--decrypt"
+      "${./registration.yaml.gpg}"
+    ];
     group = config.services.out-of-your-element.group;
     user = config.services.out-of-your-element.user;
     destDir = "/etc/keys";
@@ -16,7 +25,11 @@
   };
 
   deployment.keys."bridge.matrix.registration.yaml" = {
-    keyCommand = ["gpg" "--decrypt" "${./registration.yaml.gpg}"];
+    keyCommand = [
+      "gpg"
+      "--decrypt"
+      "${./registration.yaml.gpg}"
+    ];
     group = "matrix-synapse";
     user = "matrix-synapse";
     destDir = "/etc/keys";

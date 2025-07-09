@@ -3,18 +3,20 @@
   config,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.minecraft-servers;
-in {
+in
+{
   options.services.minecraft-servers = {
     voicechat-servers = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [ ];
     };
 
     unifiedmetrics-servers = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [ ];
     };
 
     velocity = {
@@ -38,12 +40,12 @@ in {
 
         servers = lib.mkOption {
           type = lib.types.listOf lib.types.str;
-          default = [];
+          default = [ ];
         };
 
         try = lib.mkOption {
           type = lib.types.listOf lib.types.str;
-          default = [];
+          default = [ ];
         };
       };
     };
@@ -62,7 +64,9 @@ in {
         files = {
           "config/voicechat/voicechat-server.properties" = pkgs.writeText "voicechat-server.properties" ''
             # Setting this to "-1" sets the port to the Minecraft servers port (Not recommended)
-            port=${builtins.toString ((lib.lists.findFirstIndex (n: n == name) null cfg.voicechat-servers) + 20000)}
+            port=${
+              builtins.toString ((lib.lists.findFirstIndex (n: n == name) null cfg.voicechat-servers) + 20000)
+            }
             # Leave empty to use 'server-ip' of server.properties
             bind_address=
             # The distance to where the voice can be heard
@@ -111,7 +115,9 @@ in {
             mode: "HTTP"
             http:
               host: "0.0.0.0"
-              port: ${builtins.toString ((lib.lists.findFirstIndex (n: n == name) null cfg.unifiedmetrics-servers) + 9101)}
+              port: ${
+                builtins.toString ((lib.lists.findFirstIndex (n: n == name) null cfg.unifiedmetrics-servers) + 9101)
+              }
               authentication:
                 scheme: "NONE"
                 username: "username"
@@ -151,11 +157,16 @@ in {
               url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/yGTasgG4/voicechat-velocity-2.5.24.jar";
               hash = "sha256-olCVpSs7FGcJQ9dgOaT+mTtmycuevxrBrFnv343zoRI=";
             };
-            "velocity.toml" = let
-              serverEntry = name: ''${name} = "${cfg.servers.${name}.serverProperties.server-ip}:${builtins.toString cfg.servers.${name}.serverProperties.server-port}"'';
-              serverEntries = lib.concatStringsSep "\n" (map serverEntry cfg.velocity.config.servers);
-              tryList = lib.concatStringsSep ", " (map (s: ''"${s}"'') cfg.velocity.config.try);
-            in
+            "velocity.toml" =
+              let
+                serverEntry =
+                  name:
+                  ''${name} = "${cfg.servers.${name}.serverProperties.server-ip}:${
+                    builtins.toString cfg.servers.${name}.serverProperties.server-port
+                  }"'';
+                serverEntries = lib.concatStringsSep "\n" (map serverEntry cfg.velocity.config.servers);
+                tryList = lib.concatStringsSep ", " (map (s: ''"${s}"'') cfg.velocity.config.try);
+              in
               pkgs.writeText "velocity.toml" ''
                 # Do not change this
                 config-version = "2.7"

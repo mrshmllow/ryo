@@ -2,7 +2,8 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+{
   imports = [
     ./hardware-configuration.nix
     inputs.auto-cpufreq.nixosModules.default
@@ -30,7 +31,7 @@
   # virtualisation.libvirtd.enable = true;
   # programs.virt-manager.enable = true;
   networking.hostName = "althaea";
-  networking.nameservers = ["1.1.1.1"];
+  networking.nameservers = [ "1.1.1.1" ];
 
   programs.fuse.userAllowOther = true;
 
