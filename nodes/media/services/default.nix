@@ -1,0 +1,7 @@
+{
+  imports = [
+    ./jellyfin
+    ./transmission
+    ./arr
+  ];
+}

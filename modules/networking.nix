@@ -17,7 +17,7 @@ in
     (lib.mkIf (cfg.tailscale.enable) {
       services.tailscale = {
         enable = true;
-        authKeyFile = config.deployment.keys."tailscale.key".path;
+        # authKeyFile = config.deployment.keys."tailscale.key".path;
         permitCertUid = "caddy";
         extraUpFlags = [ "--ssh" ];
       };

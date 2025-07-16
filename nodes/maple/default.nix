@@ -20,6 +20,28 @@
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
 
+  hardware.keyboard.qmk.enable = true;
+
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  nix.settings.extra-platforms = config.boot.binfmt.emulatedSystems;
+
+  deployment.keys."junk.data" = {
+    # source = [
+    #   "dd"
+    #   "if=/dev/urandom"
+    #   "bs=1M"
+    #   "count=1"
+    # ];
+    source = ''hi '';
+
+    # environment = {
+    #   A = "hi";
+    # };
+
+    destDir = "/etc/keys/test";
+    uploadAt = "post-activation";
+  };
+
   # off until sway
   # ryo-network = {
   #   home.enable = true;

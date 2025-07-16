@@ -179,7 +179,10 @@
               chaotic.nixosModules.default
             ];
 
-            ryo.exporting_nodes = [ "outpost-3" ];
+            ryo.exporting_nodes = [
+              "outpost-3"
+              "media"
+            ];
             ryo-network.tailscale.enable = true;
 
             services.prometheus.exporters = lib.mkIf (builtins.elem name config.ryo.exporting_nodes) {
@@ -196,6 +199,20 @@
           {
             deployment = {
               targetHost = "100.74.233.10";
+              targetUser = "root";
+              buildOnTarget = true;
+            };
+
+            nixpkgs.hostPlatform = "x86_64-linux";
+
+            imports = [ ./nodes/${name} ];
+          };
+
+        media =
+          { name, ... }:
+          {
+            deployment = {
+              targetHost = [ "10.1.1.117" ];
               targetUser = "root";
               buildOnTarget = true;
             };
