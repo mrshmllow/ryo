@@ -3,5 +3,6 @@
     ./jellyfin
     ./transmission
     ./arr
+    ./autobrr
   ];
 }
