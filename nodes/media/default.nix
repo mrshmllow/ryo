@@ -16,6 +16,33 @@
 
   networking.hostName = "media"; # Define your hostname.
 
+  networking.firewall = {
+    allowedTCPPorts = [
+      80
+      443
+      53
+    ];
+    allowedUDPPorts = [ 53 ];
+  };
+
+  services.blocky = {
+    enable = true;
+    settings = {
+      upstream.default = [
+        "https://one.one.one.one/dns-query"
+      ];
+      bootstrapDns = {
+        upstream = "https://one.one.one.one/dns-query";
+        ips = [
+          "1.1.1.1"
+          "1.0.0.1"
+        ];
+      };
+    };
+  };
+
+  services.caddy.enable = true;
+
   # Set your time zone.
   time.timeZone = "Australia/Sydney";
 
