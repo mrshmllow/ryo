@@ -26,7 +26,7 @@
   ];
 
   # boot.kernelPackages = pkgs.linuxPackages_cachyos;
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_14;
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_15;
 
   # virtualisation.libvirtd.enable = true;
   # programs.virt-manager.enable = true;
