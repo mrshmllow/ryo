@@ -1,7 +1,4 @@
 { config, ... }:
-let
-  domain = "autobrr.local";
-in
 {
   services.autobrr = {
     enable = true;
@@ -20,12 +17,5 @@ in
     uploadAt = "pre-activation";
   };
 
-  services.caddy.virtualHosts.${domain}.extraConfig = ''
-    reverse_proxy :${builtins.toString config.services.autobrr.settings.port}
-    tls internal
-  '';
-
-  services.blocky.settings.customDNS.mapping = {
-    ${domain} = "10.1.1.117";
-  };
+  media.subdomains."autobrr".port = config.services.autobrr.settings.port;
 }

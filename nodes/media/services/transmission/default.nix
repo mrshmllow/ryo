@@ -26,16 +26,9 @@
           authUserPass = config.deployment.keys."media.udp.ovpn.pass".path;
         };
       };
-
-      caddy.virtualHosts.${domain}.extraConfig = ''
-        reverse_proxy :${toString config.services.qbittorrent.webuiPort}
-        tls internal
-      '';
-
-      blocky.settings.customDNS.mapping = {
-        ${domain} = "10.1.1.117";
-      };
     };
+
+  media.subdomains."qbittorrent".port = config.services.qbittorrent.webuiPort;
 
   boot.kernelModules = [ "wireguard" ];
 

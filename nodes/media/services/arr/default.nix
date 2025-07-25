@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   nixpkgs.config.permittedInsecurePackages = [
     "dotnet-sdk-6.0.428"
@@ -21,5 +21,11 @@
       enable = true;
       openFirewall = true;
     };
+  };
+
+  media.subdomains = {
+    "radarr".port = config.services.radarr.settings.server.port;
+    "sonarr".port = config.services.sonarr.settings.server.port;
+    "prowlarr".port = config.services.prowlarr.settings.server.port;
   };
 }

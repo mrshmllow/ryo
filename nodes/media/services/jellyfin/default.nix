@@ -3,9 +3,6 @@
   lib,
   ...
 }:
-let
-  domain = "jellyfin.local";
-in
 {
   services.jellyfin = {
     enable = true;
@@ -41,12 +38,5 @@ in
       "intel-ocl"
     ];
 
-  services.caddy.virtualHosts.${domain}.extraConfig = ''
-    reverse_proxy :8096
-    tls internal
-  '';
-
-  services.blocky.settings.customDNS.mapping = {
-    ${domain} = "10.1.1.117";
-  };
+  media.subdomains."jellyfin".port = 8096;
 }
