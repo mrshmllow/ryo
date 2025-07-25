@@ -1,5 +1,4 @@
 {
-  name,
   config,
   ...
 }:
@@ -82,100 +81,6 @@
         job_name = "servers";
         static_configs = builtins.map (name: { targets = [ "${name}:9002" ]; }) config.ryo.exporting_nodes;
       }
-      {
-        job_name = "mc-forgettable-velocity";
-        static_configs = [
-          {
-            targets = [ "mc-forgettable:9100" ];
-          }
-        ];
-      }
-      {
-        job_name = "mc-forgettable-survival";
-        static_configs = [
-          {
-            targets = [ "mc-forgettable:9101" ];
-          }
-        ];
-      }
-      {
-        job_name = "mc-forgettable-creative";
-        static_configs = [
-          {
-            targets = [ "mc-forgettable:9102" ];
-          }
-        ];
-      }
     ];
   };
-
-  # services.loki = {
-  #   enable = true;
-  #   configuration = {
-  #     server.http_listen_port = 3030;
-  #     auth_enabled = false;
-  #
-  #     common = {
-  #       ring = {
-  #         instance_addr = "127.0.0.1";
-  #         kvstore.store = "inmemory";
-  #       };
-  #       replication_factor = 1;
-  #       path_prefix = "/tmp/loki";
-  #     };
-  #
-  #     schema_config = {
-  #       configs = [
-  #         {
-  #           from = "2020-05-15";
-  #           store = "tsdb";
-  #           object_store = "filesystem";
-  #           schema = "v13";
-  #           index = {
-  #             prefix = "index_";
-  #             period = "24h";
-  #           };
-  #         }
-  #       ];
-  #     };
-  #
-  #     storage_config.filesystem.directory = "/tmp/loki/chunks";
-  #   };
-  # };
-
-  # services.promtail = {
-  #   enable = true;
-  #   configuration = {
-  #     server = {
-  #       http_listen_port = 3031;
-  #       grpc_listen_port = 0;
-  #     };
-  #     positions = {
-  #       filename = "/tmp/positions.yaml";
-  #     };
-  #     clients = [
-  #       {
-  #         url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}/loki/api/v1/push";
-  #       }
-  #     ];
-  #     scrape_configs = [
-  #       {
-  #         job_name = "journal";
-  #         journal = {
-  #           max_age = "12h";
-  #           labels = {
-  #             job = "systemd-journal";
-  #             host = "outpost-2";
-  #           };
-  #         };
-  #         relabel_configs = [
-  #           {
-  #             source_labels = ["__journal__systemd_unit"];
-  #             target_label = "unit";
-  #           }
-  #         ];
-  #       }
-  #     ];
-  #   };
-  # };
 }
