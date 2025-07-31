@@ -1,24 +1,19 @@
 { config, ... }:
 {
-  services =
-    let
-      domain = "qbittorrent.local";
-    in
-    {
-      qbittorrent = {
-        enable = true;
-        openFirewall = true;
-        webuiPort = 8081;
-      };
+  services = {
+    qbittorrent = {
+      enable = true;
+      openFirewall = true;
+    };
 
-      openvpn.servers = {
-        vpn = {
-          config = ''config ${config.deployment.keys."media.udp.ovpn".path} '';
-          updateResolvConf = true;
-          authUserPass = config.deployment.keys."media.udp.ovpn.pass".path;
-        };
+    openvpn.servers = {
+      vpn = {
+        config = ''config ${config.deployment.keys."media.udp.ovpn".path} '';
+        updateResolvConf = true;
+        authUserPass = config.deployment.keys."media.udp.ovpn.pass".path;
       };
     };
+  };
 
   media.subdomains."qbittorrent".port = config.services.qbittorrent.webuiPort;
 
