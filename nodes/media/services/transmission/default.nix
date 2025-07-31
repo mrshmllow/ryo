@@ -5,15 +5,6 @@
       domain = "qbittorrent.local";
     in
     {
-      # TODO: Remove
-      deluge = {
-        enable = true;
-        web = {
-          enable = true;
-          openFirewall = true;
-        };
-      };
-
       qbittorrent = {
         enable = true;
         openFirewall = true;
