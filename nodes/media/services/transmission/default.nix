@@ -1,10 +1,14 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   services = {
     qbittorrent = {
       enable = true;
       openFirewall = true;
       webuiPort = 8081;
+      serverConfig.Preferences.WebUI = {
+        RootFolder = "${pkgs.vuetorrent}/share/vuetorrent";
+        AlternativeUIEnabled = true;
+      };
     };
 
     openvpn.servers = {
