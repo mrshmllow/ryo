@@ -15,26 +15,38 @@
           # 23:00
           Scheduler.end_time = "\0\0\0\xf\x4\xefm\x80";
         };
-        BitTorrent.Session = {
-          AlternativeGlobalDLSpeedLimit = 1000;
-          AlternativeGlobalUPSpeedLimit = 1000;
-          UseAlternativeGlobalSpeedLimit = true;
+        BitTorrent.Session =
+          let
+            unlimited = -1;
+          in
+          {
+            AlternativeGlobalDLSpeedLimit = 1000;
+            AlternativeGlobalUPSpeedLimit = 1000;
+            UseAlternativeGlobalSpeedLimit = true;
 
-          BandwidthSchedulerEnabled = true;
+            BandwidthSchedulerEnabled = true;
 
-          AnonymousModeEnabled = true;
+            AnonymousModeEnabled = true;
 
-          Preallocation = true;
-          TempPathEnabled = true;
+            Preallocation = true;
+            TempPathEnabled = true;
 
-          DefaultSavePath = "/storage/data/torrents/";
-          TempPath = "/storage/data/incomplete/";
+            DefaultSavePath = "/storage/data/torrents/";
+            TempPath = "/storage/data/incomplete/";
 
-          UseCategoryPathsInManualMode = true;
+            UseCategoryPathsInManualMode = true;
 
-          GlobalMaxSeedingMinutes = 8 * 1440;
-          GlobalMaxRatio = 1;
-        };
+            GlobalMaxSeedingMinutes = 8 * 1440;
+            GlobalMaxRatio = 1;
+
+            MaxActiveDownloads = unlimited;
+            MaxActiveTorrents = unlimited;
+            MaxActiveUploads = unlimited;
+            MaxConnections = unlimited;
+            MaxConnectionsPerTorrent = unlimited;
+            MaxUploads = unlimited;
+            MaxUploadsPerTorrent = unlimited;
+          };
       };
     };
 
