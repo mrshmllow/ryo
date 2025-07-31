@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   options.media = {
     subdomains = lib.mkOption {
@@ -39,6 +44,12 @@
 
       caddy = {
         enable = true;
+        email = "acme.amnesty785@passmail.com";
+        environmentFile = config.deployment.keys."caddy.env".path;
+        package = pkgs.caddy.withPlugins {
+          plugins = [ "github.com/caddy-dns/cloudflare@v0.2.1" ];
+          hash = "sha256-2D7dnG50CwtCho+U+iHmSj2w14zllQXPjmTHr6lJZ/A=";
+        };
         virtualHosts."*.home.althaea.zone".extraConfig =
           (lib.concatLines (
             lib.mapAttrsToList (name: value: ''
@@ -49,9 +60,22 @@
             '') config.media.subdomains
           ))
           + ''
-            tls /var/lib/caddy/star.home.althaea.zone.pem /var/lib/caddy/star.home.althaea.zone.key
+            tls {
+                dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
           '';
       };
+    };
+
+    deployment.keys."caddy.env" = {
+      keyCommand = [
+        "gpg"
+        "--decrypt"
+        "${../../secrets/media.caddy.env.gpg}"
+      ];
+
+      destDir = "/etc/keys";
+      uploadAt = "pre-activation";
     };
 
     networking.firewall = {
