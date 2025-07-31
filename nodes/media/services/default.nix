@@ -4,5 +4,6 @@
     ./transmission
     ./arr
     ./autobrr
+    ./unifi
   ];
 }

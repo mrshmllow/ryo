@@ -8,6 +8,7 @@
       qbittorrent = {
         enable = true;
         openFirewall = true;
+        webuiPort = 8081;
       };
 
       openvpn.servers = {
