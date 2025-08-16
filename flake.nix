@@ -153,7 +153,7 @@
 
         meta = {
           nixpkgs = import inputs.nixpkgs {
-            system = "x86_64-linux";
+            localSystem = "x86_64-linux";
           };
           specialArgs = {
             inherit inputs;
