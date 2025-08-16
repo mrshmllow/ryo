@@ -55,6 +55,9 @@
             lib.mapAttrsToList (name: value: ''
               @${name} host ${name}.home.althaea.zone
               handle @${name} {
+                @blocked not remote_ip 100.64.0.0/10 10.1.1.0/24
+                respond @blocked "Forbidden" 403
+
                 reverse_proxy localhost:${builtins.toString value.port}
               }
             '') config.media.subdomains
