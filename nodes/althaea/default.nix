@@ -23,6 +23,12 @@
     vim
     git
     colmena
+    ciscoPacketTracer8
+    wireshark
+  ];
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "libxml2-2.13.8"
   ];
 
   # boot.kernelPackages = pkgs.linuxPackages_cachyos;

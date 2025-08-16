@@ -46,13 +46,16 @@ in
         obsidian
         keepassxc
         prismlauncher
-        jetbrains.idea-community-bin
+        jetbrains.idea-ultimate
+        jetbrains.rust-rover
         heroic
         qbittorrent
         bottles
         mangohud
         anki
         signal-desktop
+
+        wl-clipboard
       ];
 
       programs.nix-ld.enable = true;
