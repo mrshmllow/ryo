@@ -180,7 +180,6 @@
             ];
 
             ryo.exporting_nodes = [
-              "outpost-3"
               "media"
             ];
             ryo-network.tailscale.enable = true;
@@ -192,20 +191,6 @@
                 port = 9002;
               };
             };
-          };
-
-        outpost-3 =
-          { name, ... }:
-          {
-            deployment = {
-              targetHost = "100.74.233.10";
-              targetUser = "root";
-              buildOnTarget = true;
-            };
-
-            nixpkgs.hostPlatform = "x86_64-linux";
-
-            imports = [ ./nodes/${name} ];
           };
 
         media =
