@@ -18,20 +18,20 @@ in
   services.hydra = {
     package = pkgs.hydra.overrideAttrs {
       patches = [
-        # https://github.com/NixOS/hydra/issues/366#issuecomment-650126996
-        # ./hydra.patch
+        # https://github.com/NixOS/hydra/issues/366
+        ./queue-runner.patch
 
         # ./flakes.patch
       ];
     };
     enable = true;
     buildMachinesFiles = [ ];
-    useSubstitutes = false;
-    hydraURL = "https://hydra.home.althaea.zone";
+    useSubstitutes = true;
+    hydraURL = "https://hydra.althaea.zone";
     notificationSender = "hydra@localhost";
     port = 3500;
     extraConfig = ''
-      store_uri = s3://wire-cache?write-nar-listing=1&ls-compression=br&log-compression=br&index-debug-info=true&endpoint=s3.us-east-005.backblazeb2.com
+      store_uri = s3://wire-cache?write-nar-listing=1&ls-compression=br&log-compression=br&index-debug-info=true&endpoint=s3.us-east-005.backblazeb2.com&secret-key=/var/lib/hydra/secrets/secret.key
       server_store_uri = https://cache.althaea.zone?local-nar-cache=${local-nar-cache}
       binary_cache_public_uri = https://cache.althaea.zone
 
@@ -58,6 +58,8 @@ in
     '';
   };
 
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
   # nix.buildMachines = [
   #   {
   #     hostName = "localhost";
@@ -75,8 +77,6 @@ in
   #     maxJobs = 8;
   #   }
   # ];
-
-  media.subdomains."hydra".port = config.services.hydra.port;
 
   services.anubis.instances.hydra.settings = {
     TARGET = "http://127.0.0.1:3500";
@@ -96,7 +96,23 @@ in
     }
   '';
 
-  # systemd.services.hydra-notify.enable = false;
+  services.cloudflare-dyndns = {
+    enable = true;
+    domains = [ "hydra.althaea.zone" ];
+    ipv4 = false;
+    ipv6 = true;
+    proxied = true;
+    apiTokenFile = config.deployment.keys."media.cf-dyndns.key".path;
+  };
 
-  networking.firewall.allowedTCPPorts = [ config.services.hydra.port ];
+  deployment.keys."media.cf-dyndns.key" = {
+    keyCommand = [
+      "gpg"
+      "--decrypt"
+      "${../../../../secrets/media.cf-dyndns.key.gpg}"
+    ];
+
+    destDir = "/etc/keys";
+    uploadAt = "pre-activation";
+  };
 }
