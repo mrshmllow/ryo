@@ -21,7 +21,7 @@
           in
           {
             AlternativeGlobalDLSpeedLimit = 1000;
-            AlternativeGlobalUPSpeedLimit = 1000;
+            AlternativeGlobalUPSpeedLimit = unlimited;
             UseAlternativeGlobalSpeedLimit = true;
 
             BandwidthSchedulerEnabled = true;
