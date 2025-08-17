@@ -1,6 +1,16 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   local-nar-cache = "/storage/nars";
+  constructQuery =
+    parameters:
+    builtins.concatStringsSep "&" (
+      builtins.map (param: "${param.name}=${builtins.toString param.value}") (lib.attrsToList parameters)
+    );
 in
 {
   deployment.keys."credentials" = {
@@ -30,32 +40,42 @@ in
     hydraURL = "https://hydra.althaea.zone";
     notificationSender = "hydra@localhost";
     port = 3500;
-    extraConfig = ''
-      store_uri = s3://wire-cache?write-nar-listing=1&ls-compression=br&log-compression=br&index-debug-info=true&endpoint=s3.us-east-005.backblazeb2.com&secret-key=/var/lib/hydra/secrets/secret.key
-      server_store_uri = https://cache.althaea.zone?local-nar-cache=${local-nar-cache}
-      binary_cache_public_uri = https://cache.althaea.zone
+    extraConfig =
+      let
+        query = constructQuery {
+          write-nar-listing = 1;
+          ls-compression = "br";
+          log-compression = "br";
+          endpoint = "s3.us-east-005.backblazeb2.com";
+          secret-key = "/var/lib/hydra/secrets/secret.key";
+        };
+      in
+      ''
+        store_uri = s3://wire-cache?${query}
+        server_store_uri = https://cache.althaea.zone?local-nar-cache=${local-nar-cache}
+        binary_cache_public_uri = https://cache.althaea.zone
 
-      log_prefix = https://cache.althaea.zone/
-      upload_logs_to_binary_cache = true
-      compress_build_logs = false
+        log_prefix = https://cache.althaea.zone/
+        upload_logs_to_binary_cache = true
+        compress_build_logs = false
 
-      <githubstatus>
-        jobs = wire:.*
-        ## This example will match all jobs
-        # jobs = .*
-        # inputs = src
-        excludeBuildFromContext = 1
-        useShortContext = 1
-      </githubstatus>
+        <githubstatus>
+          jobs = wire:.*
+          ## This example will match all jobs
+          # jobs = .*
+          # inputs = src
+          excludeBuildFromContext = 1
+          useShortContext = 1
+        </githubstatus>
 
-      <github_authorization>
-        Include /var/lib/hydra/secrets/github-secrets.conf
-      </github_authorization>
+        <github_authorization>
+          Include /var/lib/hydra/secrets/github-secrets.conf
+        </github_authorization>
 
-      <webhooks>
-        Include /var/lib/hydra/secrets/webhook-secrets.conf
-      </webhooks>
-    '';
+        <webhooks>
+          Include /var/lib/hydra/secrets/webhook-secrets.conf
+        </webhooks>
+      '';
   };
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
