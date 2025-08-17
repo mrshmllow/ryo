@@ -43,7 +43,6 @@ in
     extraConfig =
       let
         query = constructQuery {
-          write-nar-listing = 1;
           ls-compression = "br";
           log-compression = "br";
           endpoint = "s3.us-east-005.backblazeb2.com";
