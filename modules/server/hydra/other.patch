@@ -1,0 +1,26 @@
+From f63966a60adfebcdc48ce486d72d8b3564eadd37 Mon Sep 17 00:00:00 2001
+From: marshmallow <github@althaea.zone>
+Date: Wed, 20 Aug 2025 12:36:18 +1000
+Subject: [PATCH] thing
+
+---
+ src/lib/Hydra/Plugin/GithubPulls.pm | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/lib/Hydra/Plugin/GithubPulls.pm b/src/lib/Hydra/Plugin/GithubPulls.pm
+index 9d8412c3..d78b814f 100644
+--- a/src/lib/Hydra/Plugin/GithubPulls.pm
++++ b/src/lib/Hydra/Plugin/GithubPulls.pm
+@@ -61,6 +61,9 @@ sub fetchInput {
+     my $storePath = trim(`nix-store --add "$filename"`
+         or die "cannot copy path $filename to the Nix store.\n");
+     chomp $storePath;
++
++    print STDERR "json: " . (defined $storePath ? $storePath : "undef") . "\n";
++
+     my $timestamp = time;
+     return { storePath => $storePath, revision => strftime "%Y%m%d%H%M%S", gmtime($timestamp) };
+ }
+-- 
+2.50.1
+

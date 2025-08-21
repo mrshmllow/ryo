@@ -17,6 +17,9 @@
     # home.enable = true;
   };
 
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+
   services.fwupd.enable = true;
 
   environment.systemPackages = with pkgs; [

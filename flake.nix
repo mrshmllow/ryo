@@ -180,7 +180,7 @@
             ];
 
             ryo.exporting_nodes = [
-              "media"
+              # "media"
             ];
             ryo-network.tailscale.enable = true;
 
@@ -193,6 +193,20 @@
             };
           };
 
+        hydra =
+          { name, ... }:
+          {
+            deployment = {
+              targetHost = [ "78.46.84.55" ];
+              targetUser = "root";
+              buildOnTarget = true;
+            };
+
+            nixpkgs.hostPlatform = "x86_64-linux";
+
+            imports = [ ./nodes/${name} ];
+          };
+
         media =
           { name, ... }:
           {
@@ -203,19 +217,6 @@
             };
 
             nixpkgs.hostPlatform = "x86_64-linux";
-
-            imports = [ ./nodes/${name} ];
-          };
-
-        pi =
-          { name, ... }:
-          {
-            deployment = {
-              targetHost = "10.1.1.2";
-              targetUser = "root";
-            };
-
-            nixpkgs.hostPlatform = "aarch64-linux";
 
             imports = [ ./nodes/${name} ];
           };

@@ -5,6 +5,5 @@
     ./arr
     ./autobrr
     ./unifi
-    ./hydra
   ];
 }
