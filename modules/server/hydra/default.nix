@@ -106,7 +106,7 @@ in
           "big-parallel"
           "benchmark"
         ];
-        maxJobs = 1;
+        maxJobs = 2;
       }
     ];
 
