@@ -46,7 +46,7 @@ in
       buildMachinesFiles = [
         "/etc/nix/machines"
       ];
-      useSubstitutes = false;
+      useSubstitutes = true;
       hydraURL = "https://hydra.althaea.zone";
       notificationSender = "hydra@localhost";
       port = 3500;
