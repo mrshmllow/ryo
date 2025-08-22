@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.server.hydra;
-  local-nar-cache = "";
+  local-nar-cache = "/var/lib/hydra/nar-cache";
   constructQuery =
     parameters:
     builtins.concatStringsSep "&" (
