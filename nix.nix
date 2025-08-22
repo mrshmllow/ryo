@@ -9,10 +9,10 @@
     ];
     auto-optimise-store = true;
     substituters = lib.mkForce [
-      "https://cache.nixos.org/"
-      "https://cache.althaea.zone"
-      "https://cache.garnix.io"
-      "https://nix-community.cachix.org"
+      "https://cache.nixos.org?priority=1"
+      "https://cache.althaea.zone?priority=2"
+      "https://cache.garnix.io?priority=3"
+      "https://nix-community.cachix.org?priority=10"
     ];
     trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
