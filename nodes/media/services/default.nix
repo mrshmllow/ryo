@@ -5,5 +5,6 @@
     ./arr
     ./autobrr
     ./unifi
+    ./llms
   ];
 }
