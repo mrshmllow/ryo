@@ -1,6 +1,4 @@
 {
-  config,
-  lib,
   pkgs,
   inputs,
   ...
@@ -12,6 +10,8 @@
     ./hardware-configuration.nix
     ./services
   ];
+
+  server.openssh.enable = true;
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;
@@ -34,9 +34,6 @@
   ];
 
   networking.hostName = "pi";
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
 
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMsrE2dWjrj+nBTYrrfpVIaW6wxs3ClSDW3iKffD73p+ marsh@marsh-framework"
