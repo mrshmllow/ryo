@@ -197,7 +197,10 @@
           { name, ... }:
           {
             deployment = {
-              targetHost = [ "78.46.84.55" ];
+              targetHost = [
+                "hydra"
+                "78.46.84.55"
+              ];
               targetUser = "root";
               buildOnTarget = true;
             };
@@ -211,7 +214,10 @@
           { name, ... }:
           {
             deployment = {
-              targetHost = [ "10.1.1.117" ];
+              targetHost = [
+                "media"
+                "10.1.1.117"
+              ];
               targetUser = "root";
               buildOnTarget = true;
             };
