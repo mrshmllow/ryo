@@ -36,7 +36,7 @@
 
             UseCategoryPathsInManualMode = true;
 
-            GlobalMaxSeedingMinutes = 8 * 1440;
+            GlobalMaxSeedingMinutes = 8 * 1440 + 3 * 60;
             GlobalMaxRatio = 1;
 
             MaxActiveDownloads = unlimited;
