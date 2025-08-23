@@ -1,9 +1,14 @@
 {
   pkgs,
+  config,
   lib,
   ...
 }:
 {
+  server.backups.paths = [
+    config.services.jellyfin.dataDir
+  ];
+
   services.jellyfin = {
     enable = true;
     logDir = "/storage/jellyfin-logs";

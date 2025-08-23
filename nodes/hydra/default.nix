@@ -13,6 +13,16 @@
 
   server.hydra.enable = true;
   server.openssh.enable = true;
+  server.backups.enable = true;
+
+  server.backups = {
+    paths = [
+      "/var/lib/hydra"
+    ];
+    postgres-dbs = [
+      "hydra"
+    ];
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;

@@ -59,6 +59,10 @@
     };
   };
 
+  server.backups.paths = [
+    config.services.qbittorrent.profileDir
+  ];
+
   media.subdomains."qbittorrent".port = config.services.qbittorrent.webuiPort;
 
   boot.kernelModules = [ "wireguard" ];

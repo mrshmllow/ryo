@@ -1,5 +1,9 @@
 { config, ... }:
 {
+  server.backups.paths = [
+    "/var/lib/autobrr"
+  ];
+
   services.autobrr = {
     enable = true;
     openFirewall = true;

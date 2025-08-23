@@ -15,5 +15,9 @@ in
     ];
   };
 
+  server.backups.paths = [
+    "/var/lib/containers/storage/volumes/open-webui"
+  ];
+
   media.subdomains."ai".port = port;
 }

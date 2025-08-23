@@ -5,13 +5,19 @@
     "aspnetcore-runtime-6.0.36"
   ];
 
-  services.sonarr = {
-    enable = true;
-    openFirewall = true;
-    package = pkgs.sonarr.overrideAttrs { doCheck = false; };
-  };
+  server.backups.paths = [
+    config.services.sonarr.dataDir
+    config.services.radarr.dataDir
+    config.services.prowlarr.dataDir
+  ];
 
   services = {
+    sonarr = {
+      enable = true;
+      openFirewall = true;
+      package = pkgs.sonarr.overrideAttrs { doCheck = false; };
+    };
+
     radarr = {
       enable = true;
       openFirewall = true;
