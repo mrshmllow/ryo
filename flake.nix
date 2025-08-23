@@ -227,10 +227,6 @@
             imports = [ ./nodes/${name} ];
           };
 
-        wsl = {
-          nixpkgs.hostPlatform = "x86_64-linux";
-        };
-
         maple =
           { name, ... }:
           {
